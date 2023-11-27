@@ -1,0 +1,7 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "diffEditor.wordWrap": "off",
+    "files.trimFinalNewlines": true,
+    "workbench.colorTheme": "Default Dark+",
+    "editor.detectIndentation": true
+}
