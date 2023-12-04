@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -12,7 +13,7 @@ import (
 type Void struct{}
 
 func ReadInputFromCache(day int) string {
-	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d", day))
+	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d.txt", day))
 	if err != nil {
 		return ""
 	}
@@ -22,7 +23,7 @@ func ReadInputFromCache(day int) string {
 func SaveToCache(day int, input string) {
 	data := []byte(input)
 	os.Mkdir(".cache", 0755)
-	os.WriteFile(fmt.Sprintf(".cache/input_%d", day), data, 0644)
+	os.WriteFile(fmt.Sprintf(".cache/input_%d.txt", day), data, 0644)
 }
 
 func ReadInput(day int) (string, error) {
@@ -66,4 +67,20 @@ func ReadInput(day int) (string, error) {
 	SaveToCache(day, input)
 
 	return input, nil
+}
+
+func ReadInputLines(day int) ([]string, error) {
+	input, err := ReadInput(day)
+	if err != nil {
+		return nil, err
+	}
+	return strings.Split(input, "\n"), nil
+}
+
+func ReverseString(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
 }
