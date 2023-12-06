@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func SumInts(v []int) int {
@@ -14,9 +15,16 @@ func SumInts(v []int) int {
 }
 
 func MapToInt(in []string) []int {
-	r := make([]int, len(in))
-	for i, v := range in {
-		r[i], _ = strconv.Atoi(v)
+	r := make([]int, 0)
+	for _, v := range in {
+		v = strings.TrimSpace(v)
+		if v == "" {
+			continue
+		}
+		_r, err := strconv.Atoi(v)
+		if err == nil {
+			r = append(r, _r)
+		}
 	}
 	return r
 }
