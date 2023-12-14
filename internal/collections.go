@@ -44,3 +44,13 @@ func PrintC[T any](input []T) {
 	}
 	fmt.Println("]")
 }
+
+func Count(input []int, value int) int {
+	r := 0
+	for _, v := range input {
+		if v == value {
+			r++
+		}
+	}
+	return r
+}
