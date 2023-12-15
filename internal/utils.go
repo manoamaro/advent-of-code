@@ -77,6 +77,18 @@ func ReadInputLines(day int) ([]string, error) {
 	return strings.Split(input, "\n"), nil
 }
 
+func ReadInputSlice2d(day int) ([][]string, error) {
+	lines, err := ReadInputLines(day)
+	if err != nil {
+		return nil, err
+	}
+	var slice [][]string
+	for _, line := range lines {
+		slice = append(slice, strings.Split(line, ""))
+	}
+	return slice, nil
+}
+
 func ReverseString(s string) string {
 	runes := []rune(s)
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {

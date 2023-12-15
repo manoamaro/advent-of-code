@@ -85,3 +85,52 @@ func TestLowestCommonMultiple(t *testing.T) {
 		}
 	}
 }
+
+func TestSummation(t *testing.T) {
+	cases := []struct {
+		n        int
+		expected int
+	}{
+		{n: 1, expected: 1},
+		{n: 2, expected: 3},
+		{n: 3, expected: 6},
+		{n: 4, expected: 10},
+		{n: 5, expected: 15},
+		{n: 6, expected: 21},
+		{n: 7, expected: 28},
+		{n: 8, expected: 36},
+		{n: 9, expected: 45},
+		{n: 10, expected: 55},
+	}
+
+	for _, c := range cases {
+		actual := Summation(c.n)
+		if actual != c.expected {
+			t.Errorf("Summation(%d) == %d, expected %d", c.n, actual, c.expected)
+		}
+	}
+}
+
+func TestManhattanDistance(t *testing.T) {
+	cases := []struct {
+		a, b     []int
+		expected int
+	}{
+		{a: []int{0, 0}, b: []int{0, 0}, expected: 0},
+		{a: []int{0, 0}, b: []int{1, 0}, expected: 1},
+		{a: []int{0, 0}, b: []int{0, 1}, expected: 1},
+		{a: []int{0, 0}, b: []int{1, 1}, expected: 2},
+		{a: []int{1, 1}, b: []int{0, 0}, expected: 2},
+		{a: []int{-1, -1}, b: []int{0, 0}, expected: 2},
+		{a: []int{0, 0}, b: []int{-1, -1}, expected: 2},
+		{a: []int{1, 1}, b: []int{-1, -1}, expected: 4},
+		{a: []int{-1, -1}, b: []int{1, 1}, expected: 4},
+	}
+
+	for _, c := range cases {
+		actual := ManhattanDistance(c.a, c.b)
+		if actual != c.expected {
+			t.Errorf("ManhattanDistance(%v, %v) == %d, expected %d", c.a, c.b, actual, c.expected)
+		}
+	}
+}
