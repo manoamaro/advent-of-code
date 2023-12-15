@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"slices"
 	"strings"
 	"time"
 
@@ -27,26 +26,8 @@ func part1(input []string) {
 	count := 0
 
 	for _, line := range input {
-		lineInt, groups := parseLine(line)
-		qIdx := make([]int, 0)
-		for i := 0; i < len(lineInt); i++ {
-			if lineInt[i] == -1 {
-				qIdx = append(qIdx, i)
-			}
-		}
-
-		for i := 0; i < 1<<len(qIdx); i++ {
-			for j := 0; j < len(qIdx); j++ {
-				if i&(1<<j) != 0 {
-					lineInt[qIdx[j]] = 1
-				} else {
-					lineInt[qIdx[j]] = 0
-				}
-			}
-			if checkLineValid(lineInt, groups) {
-				count++
-			}
-		}
+		line, groups := parseLine(line)
+		count += Calculate(line, groups, map[string]int{})
 	}
 	fmt.Println(count)
 }
@@ -56,89 +37,60 @@ func part2(input []string) {
 	count := 0
 
 	for _, line := range input {
-		initLine, initGroups := parseLine(line)
-		lineInt := make([]int, 0)
-		groups := make([]int, 0)
-
+		line, groups := parseLine(line)
+		newLine, newGroups := "", []int{}
 		for i := 0; i < 5; i++ {
-			lineInt = append(lineInt, initLine...)
-			lineInt = append(lineInt, -1)
-			groups = append(groups, initGroups...)
-		}
-		qIdx := make([]int, 0)
-		for i := 0; i < len(lineInt); i++ {
-			if lineInt[i] == -1 {
-				qIdx = append(qIdx, i)
+			newLine += line
+			if i < 4 {
+				newLine += "?"
 			}
+			newGroups = append(newGroups, groups...)
 		}
-		count += t2(lineInt, qIdx, groups, 0, 0)
+
+		count += Calculate(newLine, newGroups, map[string]int{})
 	}
 
 	fmt.Println(count)
 }
 
-var memo = make(map[string]int)
-
-func t2(line []int, qidx []int, groups []int, pos int, count int) int {
-	lineStr := fmt.Sprintf("%v", line)
-	if val, ok := memo[lineStr]; ok {
+func Calculate(input string, groups []int, memo map[string]int) int {
+	if len(input) == 0 {
+		if len(groups) == 0 {
+			return 1
+		} else {
+			return 0
+		}
+	}
+	if len(groups) == 0 {
+		if strings.ContainsRune(input, '#') {
+			return 0
+		} else {
+			return 1
+		}
+	}
+	key := fmt.Sprintf("%s-%v", input, groups)
+	if val, ok := memo[key]; ok {
 		return val
 	}
 
-	if pos == len(qidx) {
-		// bottom of the tree
-		if checkLineValid(line, groups) {
-			return count + 1
-		} else {
-			return count
+	result := 0
+	if input[0] == '.' || input[0] == '?' {
+		result += Calculate(input[1:], groups, memo)
+	}
+
+	if input[0] == '#' || input[0] == '?' {
+		if len(input) >= groups[0] && !strings.ContainsRune(input[:groups[0]], '.') && (len(input) == groups[0] || input[groups[0]] != '#') {
+			n := internal.Min(groups[0]+1, len(input))
+			result += Calculate(input[n:], groups[1:], memo)
 		}
 	}
-	line[qidx[pos]] = 1
-	left := t2(line, qidx, groups, pos+1, count)
-	line[qidx[pos]] = 0
-	right := t2(line, qidx, groups, pos+1, count)
-	memo[lineStr] = left + right
-	return memo[lineStr]
+
+	memo[key] = result
+	return result
 }
 
-func findGroupsInLine(line []int) []int {
-	lineGroups := make([]int, 0)
-
-	for i := 0; i < len(line); {
-		for ; i < len(line) && line[i] == 0; i++ {
-		}
-		if i == len(line) {
-			break
-		}
-		start := i
-		count := 0
-		for ; start < len(line) && line[start] == 1; start++ {
-			count++
-		}
-		lineGroups = append(lineGroups, count)
-		i = start
-	}
-	return lineGroups
-}
-
-func checkLineValid(line []int, groups []int) bool {
-	lineGroups := findGroupsInLine(line)
-	return slices.Compare(lineGroups, groups) == 0
-}
-
-func parseLine(line string) ([]int, []int) {
+func parseLine(line string) (string, []int) {
 	parts := strings.Split(line, " ")
 	groups := internal.MapToInt(strings.Split(parts[1], ","))
-	lineInt := make([]int, 0)
-	for _, c := range parts[0] {
-		switch c {
-		case '.':
-			lineInt = append(lineInt, 0)
-		case '#':
-			lineInt = append(lineInt, 1)
-		case '?':
-			lineInt = append(lineInt, -1)
-		}
-	}
-	return lineInt, groups
+	return parts[0], groups
 }

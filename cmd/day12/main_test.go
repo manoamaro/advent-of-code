@@ -1,42 +1,8 @@
 package main
 
 import (
-	"slices"
 	"testing"
 )
-
-func TestFindGroupsInLines(t *testing.T) {
-	cases := []struct {
-		line     []int
-		expected []int
-	}{
-		{[]int{0, 0, 0, 0, 0}, []int{}},
-		{[]int{1, 1, 1, 1, 1}, []int{5}},
-		{[]int{0, 1, 1, 1, 1}, []int{4}},
-		{[]int{1, 1, 1, 1, 0}, []int{4}},
-		{[]int{1, 1, 1, 0, 1}, []int{3, 1}},
-		{[]int{1, 1, 0, 1, 1}, []int{2, 2}},
-		{[]int{1, 0, 1, 1, 1}, []int{1, 3}},
-		{[]int{0, 1, 1, 1, 0}, []int{3}},
-		{[]int{1, 1, 1, 0, 0}, []int{3}},
-		{[]int{1, 1, 0, 0, 1}, []int{2, 1}},
-		{[]int{1, 0, 0, 1, 1}, []int{1, 2}},
-		{[]int{0, 1, 1, 0, 0}, []int{2}},
-		{[]int{1, 1, 0, 0, 0}, []int{2}},
-		{[]int{1, 0, 0, 0, 1}, []int{1, 1}},
-		{[]int{0, 1, 0, 0, 0}, []int{1}},
-		{[]int{0, 0, 1, 0, 0}, []int{1}},
-		{[]int{0, 0, 0, 1, 0}, []int{1}},
-		{[]int{0, 0, 0, 0, 1}, []int{1}},
-		{[]int{1, 0, 1, 0, 1, 1, 1, 0, 1}, []int{1, 1, 3, 1}},
-	}
-	for _, c := range cases {
-		actual := findGroupsInLine(c.line)
-		if slices.Compare(actual, c.expected) != 0 {
-			t.Errorf("findGroupsInLine(%v) == %v, expected %v", c.line, actual, c.expected)
-		}
-	}
-}
 
 func TestPart1(t *testing.T) {
 	input := []string{
@@ -57,10 +23,24 @@ func TestPart2(t *testing.T) {
 	part2(input)
 }
 
-func TestPermutation2(t *testing.T) {
-	l := []int{-1, -1, -1, 0, 1, 1, 1}
-	g := []int{1, 1, 3}
-	qIdx := []int{0, 1, 2}
-	c := t2(l, qIdx, g, 0, 0)
-	println(c)
+func TestCalculate(t *testing.T) {
+	cases := []struct {
+		input  string
+		groups []int
+		want   int
+	}{
+		{"???.###", []int{1, 1, 3}, 1},
+		{".??..??...?##.", []int{1, 1, 3}, 4},
+		{"?#?#?#?#?#?#?#?", []int{1, 3, 1, 6}, 1},
+		{"????.#...#...", []int{4, 1, 1}, 1},
+		{"????.######..#####.", []int{1, 6, 5}, 4},
+		{"?###????????", []int{3, 2, 1}, 10},
+	}
+
+	for _, c := range cases {
+		got := Calculate(c.input, c.groups, map[string]int{})
+		if got != c.want {
+			t.Errorf("Calculate(%q, %v) == %d, want %d", c.input, c.groups, got, c.want)
+		}
+	}
 }

@@ -2,6 +2,10 @@ package internal
 
 import "math"
 
+type Number interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64
+}
+
 // LowestCommonMultiple returns the lowest common multiple of a and b.
 func LowestCommonMultiple(a, b uint64) uint64 {
 	return a / GreatestCommonDivisor(a, b) * b
@@ -61,4 +65,18 @@ func Summation(n int) int {
 // The function returns the Manhattan distance as an integer.
 func ManhattanDistance(a, b []int) int {
 	return int(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
+}
+
+func Max[T Number](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func Min[T Number](a, b T) T {
+	if a < b {
+		return a
+	}
+	return b
 }
