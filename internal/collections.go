@@ -30,9 +30,9 @@ func MapToInt(in []string) []int {
 }
 
 func Reverse[T any](input []T) []T {
-	r := input
-	for i, j := 0, len(r)-1; i < j; i, j = i+1, j-1 {
-		r[i], r[j] = r[j], r[i]
+	r := make([]T, len(input))
+	for i, v := range input {
+		r[len(input)-i-1] = v
 	}
 	return r
 }
@@ -53,4 +53,19 @@ func Count[T comparable](input []T, value T) int {
 		}
 	}
 	return r
+}
+
+// Diff returns the elements in a that aren't in b.
+func Diff[T comparable](a, b []T) []T {
+	mb := make(map[T]struct{}, len(b))
+	for _, x := range b {
+		mb[x] = struct{}{}
+	}
+	var diff []T
+	for _, x := range a {
+		if _, found := mb[x]; !found {
+			diff = append(diff, x)
+		}
+	}
+	return diff
 }
