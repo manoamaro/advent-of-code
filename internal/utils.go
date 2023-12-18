@@ -71,6 +71,7 @@ func ReadInput(day int) (string, error) {
 
 func ReadInputLines(day int) ([]string, error) {
 	input, err := ReadInput(day)
+	input = strings.TrimSpace(input)
 	if err != nil {
 		return nil, err
 	}
@@ -84,6 +85,9 @@ func ReadInputSlice2d(day int) ([][]string, error) {
 	}
 	var slice [][]string
 	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
 		slice = append(slice, strings.Split(line, ""))
 	}
 	return slice, nil

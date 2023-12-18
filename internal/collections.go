@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-func SumInts(v []int) int {
-	r := 0
+func Sum[N Number](v []N) N {
+	r := N(0)
 	for _, i := range v {
 		r += i
 	}
@@ -37,7 +37,7 @@ func Reverse[T any](input []T) []T {
 	return r
 }
 
-func PrintC[T any](input []T) {
+func PrintSlice[T any](input []T) {
 	fmt.Print("[")
 	for _, v := range input {
 		fmt.Printf("%v,", v)
@@ -45,7 +45,7 @@ func PrintC[T any](input []T) {
 	fmt.Println("]")
 }
 
-func Count(input []int, value int) int {
+func Count[T comparable](input []T, value T) int {
 	r := 0
 	for _, v := range input {
 		if v == value {

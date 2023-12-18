@@ -2,31 +2,40 @@ package internal
 
 import "math"
 
+type IntNumber interface {
+	int | int8 | int16 | int32 | int64 |
+		uint | uint8 | uint16 | uint32 | uint64
+}
+
 type Number interface {
-	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64
+	IntNumber | float32 | float64
 }
 
 // LowestCommonMultiple returns the lowest common multiple of a and b.
-func LowestCommonMultiple(a, b uint64) uint64 {
+func LowestCommonMultiple[N IntNumber](a, b N) N {
 	return a / GreatestCommonDivisor(a, b) * b
 }
 
 // GreatestCommonDivisor returns the greatest common divisor of a and b.
-func GreatestCommonDivisor(a, b uint64) uint64 {
+func GreatestCommonDivisor[N IntNumber](a, b N) N {
 	for b != 0 {
 		a, b = b, a%b
 	}
 	return a
 }
 
-// Array3D creates a 3D array of ints with dimensions x, y, z.
-func Array3D(x, y, z int) [][][]int {
-	s := make([][][]int, x)
+func Array2D[T any](x, y int) [][]T {
+	s := make([][]T, x)
 	for i := range s {
-		s[i] = make([][]int, y)
-		for j := range s[i] {
-			s[i][j] = make([]int, z)
-		}
+		s[i] = make([]T, y)
+	}
+	return s
+}
+
+func Array3D[T any](x, y, z int) [][][]T {
+	s := make([][][]T, x)
+	for i := range s {
+		s[i] = Array2D[T](y, z)
 	}
 	return s
 }
