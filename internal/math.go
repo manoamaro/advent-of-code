@@ -1,30 +1,36 @@
 package internal
 
-import "math"
+import (
+	"math"
+	"strconv"
+)
 
-type IntNumber interface {
-	int | int8 | int16 | int32 | int64 |
-		uint | uint8 | uint16 | uint32 | uint64
+type Integer interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64
+}
+
+type Float interface {
+	float32 | float64
 }
 
 type Number interface {
-	IntNumber | float32 | float64
+	Integer | Float
 }
 
 // LowestCommonMultiple returns the lowest common multiple of a and b.
-func LowestCommonMultiple[N IntNumber](a, b N) N {
+func LowestCommonMultiple[N Integer](a, b N) N {
 	return a / GreatestCommonDivisor(a, b) * b
 }
 
 // GreatestCommonDivisor returns the greatest common divisor of a and b.
-func GreatestCommonDivisor[N IntNumber](a, b N) N {
+func GreatestCommonDivisor[N Integer](a, b N) N {
 	for b != 0 {
 		a, b = b, a%b
 	}
 	return a
 }
 
-func Array2D[T any](x, y int) [][]T {
+func Array2D[T Number](x, y int) [][]T {
 	s := make([][]T, x)
 	for i := range s {
 		s[i] = make([]T, y)
@@ -32,7 +38,7 @@ func Array2D[T any](x, y int) [][]T {
 	return s
 }
 
-func Array3D[T any](x, y, z int) [][][]T {
+func Array3D[T Number](x, y, z int) [][][]T {
 	s := make([][][]T, x)
 	for i := range s {
 		s[i] = Array2D[T](y, z)
@@ -40,7 +46,7 @@ func Array3D[T any](x, y, z int) [][][]T {
 	return s
 }
 
-func RotateMatrix[T any](matrix [][]T) [][]T {
+func RotateMatrix[T Number](matrix [][]T) [][]T {
 
 	// reverse the matrix
 	for i, j := 0, len(matrix)-1; i < j; i, j = i+1, j-1 {
@@ -56,7 +62,7 @@ func RotateMatrix[T any](matrix [][]T) [][]T {
 	return matrix
 }
 
-func PrintMatrix[T any](matrix [][]T) {
+func PrintMatrix[T Number](matrix [][]T) {
 	for _, row := range matrix {
 		for _, v := range row {
 			print(v)
@@ -65,15 +71,15 @@ func PrintMatrix[T any](matrix [][]T) {
 	}
 }
 
-func Summation(n int) int {
+func Summation[T Number](n T) T {
 	return n * (n + 1) / 2
 }
 
 // ManhattanDistance calculates the Manhattan distance between two points in a 2D space.
 // It takes two integer slices, 'a' and 'b', representing the coordinates of the two points.
 // The function returns the Manhattan distance as an integer.
-func ManhattanDistance(a, b []int) int {
-	return int(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
+func ManhattanDistance[T Integer](a, b []T) T {
+	return T(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
 }
 
 func Max[T Number](a, b T) T {
@@ -88,4 +94,31 @@ func Min[T Number](a, b T) T {
 		return a
 	}
 	return b
+}
+
+func Atoi[T Number](str string) T {
+	var zero T
+	switch any(zero).(type) {
+	case int:
+		num, _ := strconv.Atoi(str)
+		return T(num)
+	case int64:
+		num, _ := strconv.ParseInt(str, 10, 64)
+		return T(num)
+	case float32:
+		num, _ := strconv.ParseFloat(str, 32)
+		return T(num)
+	case float64:
+		num, _ := strconv.ParseFloat(str, 64)
+		return T(num)
+	default:
+		return zero
+	}
+}
+
+func Abs[T Number](a T) T {
+	if a < 0 {
+		return -a
+	}
+	return a
 }
