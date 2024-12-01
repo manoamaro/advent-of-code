@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(4)
+	input, err := internal.ReadInputLines(2023, 4)
 	if err != nil {
 		panic(err)
 	}

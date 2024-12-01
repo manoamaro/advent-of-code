@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(5)
+	input, err := internal.ReadInputLines(2023, 5)
 	if err != nil {
 		panic(err)
 	}

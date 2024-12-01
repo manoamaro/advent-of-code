@@ -1,5 +1,5 @@
 generate:
-	go run cmd/generator/main.go $(day)
+	go run cmd/generator/main.go $(year) $(day)
 
 run:
-	go run cmd/day$(day)/main.go
+	go run cmd/aoc$(year)/day$(day)/main.go

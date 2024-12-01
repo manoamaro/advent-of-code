@@ -12,23 +12,23 @@ import (
 
 type Void struct{}
 
-func ReadInputFromCache(day int) string {
-	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d.txt", day))
+func ReadInputFromCache(year int, day int) string {
+	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day))
 	if err != nil {
 		return ""
 	}
 	return string(data)
 }
 
-func SaveToCache(day int, input string) {
+func SaveToCache(year int, day int, input string) {
 	data := []byte(input)
 	os.Mkdir(".cache", 0755)
-	os.WriteFile(fmt.Sprintf(".cache/input_%d.txt", day), data, 0644)
+	os.WriteFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day), data, 0644)
 }
 
-func ReadInput(day int) (string, error) {
+func ReadInput(year int, day int) (string, error) {
 
-	if cached := ReadInputFromCache(day); len(cached) > 0 {
+	if cached := ReadInputFromCache(year, day); len(cached) > 0 {
 		return cached, nil
 	}
 
@@ -39,7 +39,7 @@ func ReadInput(day int) (string, error) {
 		return "", fmt.Errorf("cannot find session")
 	}
 
-	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/2023/day/%d/input", day), nil)
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day), nil)
 	if err != nil {
 		return "", err
 	}
@@ -64,13 +64,13 @@ func ReadInput(day int) (string, error) {
 
 	input := string(b)
 
-	SaveToCache(day, input)
+	SaveToCache(year, day, input)
 
 	return input, nil
 }
 
-func ReadInputLines(day int) ([]string, error) {
-	input, err := ReadInput(day)
+func ReadInputLines(year int, day int) ([]string, error) {
+	input, err := ReadInput(year, day)
 	input = strings.TrimSpace(input)
 	if err != nil {
 		return nil, err
@@ -78,8 +78,8 @@ func ReadInputLines(day int) ([]string, error) {
 	return strings.Split(input, "\n"), nil
 }
 
-func ReadInputSlice2d(day int) ([][]string, error) {
-	lines, err := ReadInputLines(day)
+func ReadInputSlice2d(year int, day int) ([][]string, error) {
+	lines, err := ReadInputLines(year, day)
 	if err != nil {
 		return nil, err
 	}

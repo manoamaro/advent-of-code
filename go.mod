@@ -1,5 +1,5 @@
-module manoamaro.github.com/aoc-2023
+module manoamaro.github.com/advent-of-code
 
-go 1.21
+go 1.23
 
-require github.com/joho/godotenv v1.4.0
+require github.com/joho/godotenv v1.5.1

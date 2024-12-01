@@ -12,12 +12,19 @@ import (
 var fs string
 
 type Data struct {
-	Day int
+	Year int
+	Day  int
 }
 
 func main() {
 
-	argDay := os.Args[1]
+	argYear := os.Args[1]
+	argDay := os.Args[2]
+
+	year, err := strconv.Atoi(argYear)
+	if err != nil {
+		panic(err)
+	}
 
 	day, err := strconv.Atoi(argDay)
 	if err != nil {
@@ -25,12 +32,13 @@ func main() {
 	}
 
 	data := Data{
-		Day: day,
+		Year: year,
+		Day:  day,
 	}
 
 	t := template.Must(template.New("day").Parse(fs))
 
-	folderPath := fmt.Sprintf("cmd/day%d", data.Day)
+	folderPath := fmt.Sprintf("cmd/aoc%d/day%d", data.Year, data.Day)
 	os.MkdirAll(folderPath, 0755)
 	mainFilePath := fmt.Sprintf("%s/main.go", folderPath)
 	mainFile, err := os.OpenFile(mainFilePath, os.O_CREATE|os.O_WRONLY, 0644)

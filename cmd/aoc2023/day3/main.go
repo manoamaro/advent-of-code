@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"unicode"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(3)
+	input, err := internal.ReadInputLines(2023, 3)
 	if err != nil {
 		panic(err)
 	}

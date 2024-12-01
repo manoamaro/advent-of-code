@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"slices"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func main() {
-	input, err := internal.ReadInputSlice2d(10)
+	input, err := internal.ReadInputSlice2d(2023, 10)
 	if err != nil {
 		panic(err)
 	}

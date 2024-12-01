@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func testInput() []string {
@@ -21,7 +21,7 @@ func testInput() []string {
 }
 
 func main() {
-	input, err := internal.ReadInputLines(1)
+	input, err := internal.ReadInputLines(2023, 1)
 	if err != nil {
 		panic(err)
 	}

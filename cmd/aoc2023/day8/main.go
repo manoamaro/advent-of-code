@@ -5,11 +5,11 @@ import (
 	"regexp"
 	"time"
 
-	"manoamaro.github.com/aoc-2023/internal"
+	"manoamaro.github.com/advent-of-code/internal"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(8)
+	input, err := internal.ReadInputLines(2023, 8)
 	if err != nil {
 		panic(err)
 	}
