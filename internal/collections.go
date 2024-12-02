@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"iter"
 	"strconv"
 	"strings"
 )
@@ -68,4 +69,27 @@ func Diff[T comparable](a, b []T) []T {
 		}
 	}
 	return diff
+}
+
+func Slide[T any](s []T, size int) iter.Seq[[]T] {
+	if size <= 0 {
+		return nil
+	}
+	return func(yield func([]T) bool) {
+		for i := 0; i < len(s)-size+1; i++ {
+			if !yield(s[i : i+size]) {
+				return
+			}
+		}
+	}
+}
+
+func Delete[T any](s []T, i int) []T {
+	if i < 0 || i >= len(s) {
+		return s
+	}
+	cp := make([]T, len(s)-1)
+	copy(cp, s[:i])
+	copy(cp[i:], s[i+1:])
+	return cp
 }
