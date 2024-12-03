@@ -1,6 +1,10 @@
-package internal
+package test
 
-import "testing"
+import (
+	"testing"
+
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+)
 
 func TestGreatestCommonDivisor(t *testing.T) {
 	cases := []struct {
@@ -38,7 +42,7 @@ func TestGreatestCommonDivisor(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := GreatestCommonDivisor(c.a, c.b)
+		actual := math2.GreatestCommonDivisor(c.a, c.b)
 		if actual != c.expected {
 			t.Errorf("GreatestCommonDivisor(%d, %d) == %d, expected %d", c.a, c.b, actual, c.expected)
 		}
@@ -79,7 +83,7 @@ func TestLowestCommonMultiple(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := LowestCommonMultiple(c.a, c.b)
+		actual := math2.LowestCommonMultiple(c.a, c.b)
 		if actual != c.expected {
 			t.Errorf("LowestCommonMultiple(%d, %d) == %d, expected %d", c.a, c.b, actual, c.expected)
 		}
@@ -104,7 +108,7 @@ func TestSummation(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := Summation(c.n)
+		actual := math2.Summation(c.n)
 		if actual != c.expected {
 			t.Errorf("Summation(%d) == %d, expected %d", c.n, actual, c.expected)
 		}
@@ -128,7 +132,7 @@ func TestManhattanDistance(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := ManhattanDistance(c.a, c.b)
+		actual := math2.ManhattanDistance(c.a, c.b)
 		if actual != c.expected {
 			t.Errorf("ManhattanDistance(%v, %v) == %d, expected %d", c.a, c.b, actual, c.expected)
 		}

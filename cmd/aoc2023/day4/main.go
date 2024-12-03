@@ -9,11 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 4)
+	input, err := utils.ReadInputLines(2023, 4)
 	if err != nil {
 		panic(err)
 	}
@@ -35,8 +36,8 @@ func part1(input []string) {
 		}
 		//cardId := cardRgx.FindStringSubmatch(line)[1]
 		parts := strings.Split(strings.Split(line, ":")[1], "|")
-		winingNumbers := internal.MapToInt(strings.Split(parts[0], " "))
-		playedNumbers := internal.MapToInt(strings.Split(parts[1], " "))
+		winingNumbers := collections.MapToInt(strings.Split(parts[0], " "))
+		playedNumbers := collections.MapToInt(strings.Split(parts[1], " "))
 		matched := checkNumbers(winingNumbers, playedNumbers)
 		value := math.Floor(math.Pow(2, float64(len(matched)-1)))
 		sum += int(value)
@@ -54,8 +55,8 @@ func part2(input []string) {
 		}
 		cardId, _ := strconv.Atoi(cardRgx.FindStringSubmatch(line)[1])
 		parts := strings.Split(strings.Split(line, ":")[1], "|")
-		winingNumbers := internal.MapToInt(strings.Split(parts[0], " "))
-		playedNumbers := internal.MapToInt(strings.Split(parts[1], " "))
+		winingNumbers := collections.MapToInt(strings.Split(parts[0], " "))
+		playedNumbers := collections.MapToInt(strings.Split(parts[1], " "))
 		newCard := Card{cardId, winingNumbers, playedNumbers}
 		cardsStack = append(cardsStack, []Card{newCard})
 	}

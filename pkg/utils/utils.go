@@ -1,4 +1,4 @@
-package internal
+package utils
 
 import (
 	"fmt"
@@ -12,23 +12,9 @@ import (
 
 type Void struct{}
 
-func ReadInputFromCache(year int, day int) string {
-	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day))
-	if err != nil {
-		return ""
-	}
-	return string(data)
-}
-
-func SaveToCache(year int, day int, input string) {
-	data := []byte(input)
-	os.Mkdir(".cache", 0755)
-	os.WriteFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day), data, 0644)
-}
-
 func ReadInput(year int, day int) (string, error) {
 
-	if cached := ReadInputFromCache(year, day); len(cached) > 0 {
+	if cached := readInputFromCache(year, day); len(cached) > 0 {
 		return cached, nil
 	}
 
@@ -39,32 +25,22 @@ func ReadInput(year int, day int) (string, error) {
 		return "", fmt.Errorf("cannot find session")
 	}
 
-	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day), nil)
-	if err != nil {
-		return "", err
-	}
+	request := Must(http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day), nil))
 
 	request.AddCookie(&http.Cookie{
 		Name:  "session",
 		Value: session,
 	})
 
-	response, err := http.DefaultClient.Do(request)
-
-	if err != nil {
-		return "", err
-	}
+	response := Must(http.DefaultClient.Do(request))
 
 	defer response.Body.Close()
 
-	b, err := io.ReadAll(response.Body)
-	if err != nil {
-		return "", err
-	}
+	b := Must(io.ReadAll(response.Body))
 
 	input := string(b)
 
-	SaveToCache(year, day, input)
+	saveToCache(year, day, input)
 
 	return input, nil
 }
@@ -93,10 +69,23 @@ func ReadInputSlice2d(year int, day int) ([][]string, error) {
 	return slice, nil
 }
 
-func ReverseString(s string) string {
-	runes := []rune(s)
-	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-		runes[i], runes[j] = runes[j], runes[i]
+func Must[T any](t T, err error) T {
+	if err != nil {
+		panic(err)
 	}
-	return string(runes)
+	return t
+}
+
+func readInputFromCache(year int, day int) string {
+	data, err := os.ReadFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day))
+	if err != nil {
+		return ""
+	}
+	return string(data)
+}
+
+func saveToCache(year int, day int, input string) {
+	data := []byte(input)
+	os.Mkdir(".cache", 0755)
+	os.WriteFile(fmt.Sprintf(".cache/input_%d_%d.txt", year, day), data, 0644)
 }

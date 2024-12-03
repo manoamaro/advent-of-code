@@ -5,11 +5,12 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 9)
+	input, err := utils.ReadInputLines(2023, 9)
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +29,7 @@ func part1(input []string) {
 		if line == "" {
 			continue
 		}
-		i := internal.MapToInt(strings.Split(line, " "))
+		i := collections.MapToInt(strings.Split(line, " "))
 		reduced := ReduceToZeros(i)
 		extrapolated := ExtrapolateRight(reduced)
 		sum += extrapolated[0][len(extrapolated[0])-1]
@@ -43,7 +44,7 @@ func part2(input []string) {
 		if line == "" {
 			continue
 		}
-		i := internal.MapToInt(strings.Split(line, " "))
+		i := collections.MapToInt(strings.Split(line, " "))
 		reduced := ReduceToZeros(i)
 		extrapolated := ExtrapolateLeft(reduced)
 		sum += extrapolated[0][0]

@@ -6,11 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 11)
+	input, err := utils.ReadInputLines(2023, 11)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +31,7 @@ func part1(input []string) {
 	sum := 0
 	for i := 0; i < len(galaxies); i++ {
 		for j := i + 1; j < len(galaxies); j++ {
-			sum += internal.ManhattanDistance(galaxies[i], galaxies[j])
+			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
 		}
 	}
 	fmt.Println(sum)
@@ -44,7 +45,7 @@ func part2(input []string) {
 	sum := 0
 	for i := 0; i < len(galaxies); i++ {
 		for j := i + 1; j < len(galaxies); j++ {
-			sum += internal.ManhattanDistance(galaxies[i], galaxies[j])
+			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
 		}
 	}
 	fmt.Println(sum)

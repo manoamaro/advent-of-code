@@ -5,7 +5,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func testInput() []string {
@@ -21,7 +22,7 @@ func testInput() []string {
 }
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 1)
+	input, err := utils.ReadInputLines(2023, 1)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +48,7 @@ func part2(input []string) {
 	sum := 0
 	for _, line := range input {
 		firstDigit := parseNameToDigit(reg.FindString(line))
-		lastDigit := parseNameToDigit(regRev.FindString(internal.ReverseString(line)))
+		lastDigit := parseNameToDigit(regRev.FindString(strings2.ReverseString(line)))
 		numberStr := fmt.Sprintf("%d%d", firstDigit, lastDigit)
 		number, err := strconv.Atoi(numberStr)
 		if err != nil {
@@ -62,39 +63,39 @@ func parseNameToDigit(name string) int {
 	switch name {
 	case "one":
 		return 1
-	case internal.ReverseString("one"):
+	case strings2.ReverseString("one"):
 		return 1
 	case "two":
 		return 2
-	case internal.ReverseString("two"):
+	case strings2.ReverseString("two"):
 		return 2
 	case "three":
 		return 3
-	case internal.ReverseString("three"):
+	case strings2.ReverseString("three"):
 		return 3
 	case "four":
 		return 4
-	case internal.ReverseString("four"):
+	case strings2.ReverseString("four"):
 		return 4
 	case "five":
 		return 5
-	case internal.ReverseString("five"):
+	case strings2.ReverseString("five"):
 		return 5
 	case "six":
 		return 6
-	case internal.ReverseString("six"):
+	case strings2.ReverseString("six"):
 		return 6
 	case "seven":
 		return 7
-	case internal.ReverseString("seven"):
+	case strings2.ReverseString("seven"):
 		return 7
 	case "eight":
 		return 8
-	case internal.ReverseString("eight"):
+	case strings2.ReverseString("eight"):
 		return 8
 	case "nine":
 		return 9
-	case internal.ReverseString("nine"):
+	case strings2.ReverseString("nine"):
 		return 9
 	}
 	n, err := strconv.Atoi(name)

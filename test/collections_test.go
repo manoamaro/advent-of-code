@@ -1,9 +1,11 @@
-package internal
+package test
 
 import (
 	"fmt"
 	"slices"
 	"testing"
+
+	"manoamaro.github.com/advent-of-code/pkg/collections"
 )
 
 func TestDiff(t *testing.T) {
@@ -24,7 +26,7 @@ func TestDiff(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := Diff(c.a, c.b)
+		got := collections.Diff(c.a, c.b)
 		fmt.Println(got)
 		slices.Sort(got)
 		slices.Sort(c.want)

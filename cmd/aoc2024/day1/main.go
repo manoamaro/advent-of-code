@@ -6,11 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	rawInput, err := internal.ReadInputLines(2024, 1)
+	rawInput, err := utils.ReadInputLines(2024, 1)
 	if err != nil {
 		panic(err)
 	}
@@ -18,8 +19,8 @@ func main() {
 
 	for _, line := range rawInput {
 		fields := strings.Fields(line)
-		left = append(left, internal.Atoi[int](fields[0]))
-		right = append(right, internal.Atoi[int](fields[1]))
+		left = append(left, math2.Atoi[int](fields[0]))
+		right = append(right, math2.Atoi[int](fields[1]))
 	}
 
 	startTimePart1 := time.Now()
@@ -35,7 +36,7 @@ func part1(left, right []int) {
 	sort.Ints(right)
 	sumDist := 0
 	for i := 0; i < len(left); i++ {
-		sumDist += internal.Abs(left[i] - right[i])
+		sumDist += math2.Abs(left[i] - right[i])
 	}
 	fmt.Printf("Part 1: %d\n", sumDist)
 }

@@ -1,4 +1,4 @@
-package internal
+package math2
 
 import (
 	"math"

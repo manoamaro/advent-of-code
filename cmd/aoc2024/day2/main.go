@@ -6,17 +6,19 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2024, 2)
+	input, err := utils.ReadInputLines(2024, 2)
 	if err != nil {
 		panic(err)
 	}
 	reports := make([][]int, 0)
 	for _, line := range input {
-		fields := internal.MapToInt(strings.Fields(line))
+		fields := collections.MapToInt(strings.Fields(line))
 		reports = append(reports, fields)
 	}
 
@@ -48,7 +50,7 @@ func part2(input [][]int) {
 			continue
 		}
 		for i := 0; i < len(report); i++ {
-			newReport := internal.Delete(report, i)
+			newReport := collections.Delete(report, i)
 			if checkReport(newReport) {
 				valid++
 				break
@@ -60,11 +62,11 @@ func part2(input [][]int) {
 }
 
 func checkReport(report []int) bool {
-	if !slices.IsSorted(report) && !slices.IsSorted(internal.Reverse(report)) {
+	if !slices.IsSorted(report) && !slices.IsSorted(collections.Reverse(report)) {
 		return false
 	}
-	for s := range internal.Slide(report, 2) {
-		if len(s) == 2 && (internal.Abs(s[0]-s[1]) <= 0 || internal.Abs(s[0]-s[1]) > 3) {
+	for s := range collections.Slide(report, 2) {
+		if len(s) == 2 && (math2.Abs(s[0]-s[1]) <= 0 || math2.Abs(s[0]-s[1]) > 3) {
 			return false
 		}
 	}

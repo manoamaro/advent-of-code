@@ -1,13 +1,15 @@
-package internal
+package collections
 
 import (
 	"fmt"
 	"iter"
 	"strconv"
 	"strings"
+
+	m "manoamaro.github.com/advent-of-code/pkg/math2"
 )
 
-func Sum[N Number](v []N) N {
+func Sum[N m.Number](v []N) N {
 	r := N(0)
 	for _, i := range v {
 		r += i

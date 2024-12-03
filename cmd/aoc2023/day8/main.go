@@ -5,11 +5,12 @@ import (
 	"regexp"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 8)
+	input, err := utils.ReadInputLines(2023, 8)
 	if err != nil {
 		panic(err)
 	}
@@ -84,7 +85,7 @@ func part2(input []string) {
 	steps := uint64(1)
 
 	for _, v := range loopsSize {
-		steps = internal.LowestCommonMultiple(steps, v)
+		steps = math2.LowestCommonMultiple(steps, v)
 	}
 
 	fmt.Println("Steps:", steps)

@@ -7,11 +7,12 @@ import (
 	"sync"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 5)
+	input, err := utils.ReadInputLines(2023, 5)
 	if err != nil {
 		panic(err)
 	}
@@ -149,7 +150,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		if strings.Contains(line, "seeds:") {
-			seeds := internal.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
+			seeds := collections.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
 			almanac.Seeds = seeds
 		} else if strings.Contains(line, "seed-to-soil map:") {
 			parsingStep = "seed-to-soil"
@@ -174,7 +175,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		lineSplit := strings.Split(line, " ")
-		values := internal.MapToInt(lineSplit)
+		values := collections.MapToInt(lineSplit)
 		if parsingStep == "seed-to-soil" {
 			almanac.SeedToSoil = append(almanac.SeedToSoil, MapRange{values[0], values[1], values[2]})
 		} else if parsingStep == "soil-to-fertilizer" {

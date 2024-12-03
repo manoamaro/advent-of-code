@@ -6,11 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 13)
+	input, err := utils.ReadInputLines(2023, 13)
 	if err != nil {
 		panic(err)
 	}
@@ -96,8 +98,8 @@ func FindSmudge(pattern []string) (int, int) {
 			p[j] = toggle(p[j])
 			pattern[i] = strings.Join(p, "")
 
-			dv := internal.Diff(v, ovm)
-			dh := internal.Diff(h, ohm)
+			dv := collections.Diff(v, ovm)
+			dh := collections.Diff(h, ohm)
 
 			if len(dv) > 0 {
 				fmt.Println("New V:", v, h, dv)
@@ -150,11 +152,11 @@ func FindFold(pattern []string) []int {
 	l := len(pattern)
 	acc := []int{}
 	for i := 1; i < l; i++ {
-		pb := internal.Min(i+i, l)
-		pa := internal.Max(0, i-(pb-i))
+		pb := math2.Min(i+i, l)
+		pa := math2.Max(0, i-(pb-i))
 		p1 := pattern[pa:i]
 		p2 := pattern[i:pb]
-		p1 = internal.Reverse(p1)
+		p1 = collections.Reverse(p1)
 		if slices.Compare(p1, p2) == 0 {
 			acc = append(acc, i)
 		}

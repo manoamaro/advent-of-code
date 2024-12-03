@@ -5,11 +5,13 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 12)
+	input, err := utils.ReadInputLines(2023, 12)
 	if err != nil {
 		panic(err)
 	}
@@ -80,7 +82,7 @@ func Calculate(input string, groups []int, memo map[string]int) int {
 
 	if input[0] == '#' || input[0] == '?' {
 		if len(input) >= groups[0] && !strings.ContainsRune(input[:groups[0]], '.') && (len(input) == groups[0] || input[groups[0]] != '#') {
-			n := internal.Min(groups[0]+1, len(input))
+			n := math2.Min(groups[0]+1, len(input))
 			result += Calculate(input[n:], groups[1:], memo)
 		}
 	}
@@ -91,6 +93,6 @@ func Calculate(input string, groups []int, memo map[string]int) int {
 
 func parseLine(line string) (string, []int) {
 	parts := strings.Split(line, " ")
-	groups := internal.MapToInt(strings.Split(parts[1], ","))
+	groups := collections.MapToInt(strings.Split(parts[1], ","))
 	return parts[0], groups
 }

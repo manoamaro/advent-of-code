@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/internal"
+	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
 func main() {
-	input, err := internal.ReadInputLines(2023, 7)
+	input, err := utils.ReadInputLines(2023, 7)
 	if err != nil {
 		panic(err)
 	}
