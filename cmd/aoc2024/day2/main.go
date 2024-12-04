@@ -8,6 +8,7 @@ import (
 
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -18,7 +19,7 @@ func main() {
 	}
 	reports := make([][]int, 0)
 	for _, line := range input {
-		fields := collections.MapToInt(strings.Fields(line))
+		fields := strings2.MapToInt(strings.Fields(line))
 		reports = append(reports, fields)
 	}
 
@@ -65,7 +66,7 @@ func checkReport(report []int) bool {
 	if !slices.IsSorted(report) && !slices.IsSorted(collections.Reverse(report)) {
 		return false
 	}
-	for s := range collections.Slide(report, 2) {
+	for s := range collections.SlideSeq(report, 2) {
 		if len(s) == 2 && (math2.Abs(s[0]-s[1]) <= 0 || math2.Abs(s[0]-s[1]) > 3) {
 			return false
 		}

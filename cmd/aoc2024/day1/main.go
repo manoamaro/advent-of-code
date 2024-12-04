@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -19,8 +20,8 @@ func main() {
 
 	for _, line := range rawInput {
 		fields := strings.Fields(line)
-		left = append(left, math2.Atoi[int](fields[0]))
-		right = append(right, math2.Atoi[int](fields[1]))
+		left = append(left, strings2.Atoi[int](fields[0]))
+		right = append(right, strings2.Atoi[int](fields[1]))
 	}
 
 	startTimePart1 := time.Now()

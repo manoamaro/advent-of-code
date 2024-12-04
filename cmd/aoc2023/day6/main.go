@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -63,10 +63,10 @@ func part2(input []string) {
 
 func parseMultiple(input []string) []Race {
 	durationsRaw := strings.Split(strings.Split(input[0], ":")[1], " ")
-	durations := collections.MapToInt(durationsRaw)
+	durations := strings2.MapToInt(durationsRaw)
 
 	distancesRaw := strings.Split(strings.Split(input[1], ":")[1], " ")
-	distances := collections.MapToInt(distancesRaw)
+	distances := strings2.MapToInt(distancesRaw)
 
 	races := make([]Race, 0)
 	for i := 0; i < len(durations); i++ {

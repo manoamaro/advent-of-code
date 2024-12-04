@@ -3,8 +3,6 @@ package collections
 import (
 	"fmt"
 	"iter"
-	"strconv"
-	"strings"
 
 	m "manoamaro.github.com/advent-of-code/pkg/math2"
 )
@@ -17,17 +15,39 @@ func Sum[N m.Number](v []N) N {
 	return r
 }
 
-func MapToInt(in []string) []int {
-	r := make([]int, 0)
+func Map[T any, U any](in []T, f func(T) U) []U {
+	r := make([]U, len(in))
+	for i, v := range in {
+		r[i] = f(v)
+	}
+	return r
+}
+
+func MapSeq[T any, U any](in []T, f func(T) U) iter.Seq[U] {
+	return func(yield func(U) bool) {
+		for _, v := range in {
+			if !yield(f(v)) {
+				return
+			}
+		}
+	}
+}
+
+func MapNotError[T any, U any](in []T, f func(T) (U, error)) []U {
+	r := make([]U, 0)
 	for _, v := range in {
-		v = strings.TrimSpace(v)
-		if v == "" {
-			continue
-		}
-		_r, err := strconv.Atoi(v)
+		u, err := f(v)
 		if err == nil {
-			r = append(r, _r)
+			r = append(r, u)
 		}
+	}
+	return r
+}
+
+func FlatMap[T any, U any](in []T, f func(T) []U) []U {
+	r := make([]U, 0)
+	for _, v := range in {
+		r = append(r, f(v)...)
 	}
 	return r
 }
@@ -73,7 +93,7 @@ func Diff[T comparable](a, b []T) []T {
 	return diff
 }
 
-func Slide[T any](s []T, size int) iter.Seq[[]T] {
+func SlideSeq[T any](s []T, size int) iter.Seq[[]T] {
 	if size <= 0 {
 		return nil
 	}

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -29,7 +29,7 @@ func part1(input []string) {
 		if line == "" {
 			continue
 		}
-		i := collections.MapToInt(strings.Split(line, " "))
+		i := strings2.MapToInt(strings.Split(line, " "))
 		reduced := ReduceToZeros(i)
 		extrapolated := ExtrapolateRight(reduced)
 		sum += extrapolated[0][len(extrapolated[0])-1]
@@ -44,7 +44,7 @@ func part2(input []string) {
 		if line == "" {
 			continue
 		}
-		i := collections.MapToInt(strings.Split(line, " "))
+		i := strings2.MapToInt(strings.Split(line, " "))
 		reduced := ReduceToZeros(i)
 		extrapolated := ExtrapolateLeft(reduced)
 		sum += extrapolated[0][0]

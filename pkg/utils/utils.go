@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"manoamaro.github.com/advent-of-code/pkg/errors"
 )
 
 type Void struct{}
@@ -25,18 +26,18 @@ func ReadInput(year int, day int) (string, error) {
 		return "", fmt.Errorf("cannot find session")
 	}
 
-	request := Must(http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day), nil))
+	request := errors.Must(http.NewRequest(http.MethodGet, fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day), nil))
 
 	request.AddCookie(&http.Cookie{
 		Name:  "session",
 		Value: session,
 	})
 
-	response := Must(http.DefaultClient.Do(request))
+	response := errors.Must(http.DefaultClient.Do(request))
 
 	defer response.Body.Close()
 
-	b := Must(io.ReadAll(response.Body))
+	b := errors.Must(io.ReadAll(response.Body))
 
 	input := string(b)
 
@@ -46,11 +47,8 @@ func ReadInput(year int, day int) (string, error) {
 }
 
 func ReadInputLines(year int, day int) ([]string, error) {
-	input, err := ReadInput(year, day)
+	input := errors.Must(ReadInput(year, day))
 	input = strings.TrimSpace(input)
-	if err != nil {
-		return nil, err
-	}
 	return strings.Split(input, "\n"), nil
 }
 
@@ -67,13 +65,6 @@ func ReadInputSlice2d(year int, day int) ([][]string, error) {
 		slice = append(slice, strings.Split(line, ""))
 	}
 	return slice, nil
-}
-
-func Must[T any](t T, err error) T {
-	if err != nil {
-		panic(err)
-	}
-	return t
 }
 
 func readInputFromCache(year int, day int) string {

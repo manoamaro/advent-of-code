@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -28,7 +28,7 @@ func part1(input string) {
 	matches := regex.FindAllStringSubmatch(input, -1)
 	sum := 0
 	for _, match := range matches {
-		x, y := math2.Atoi[int](match[1]), math2.Atoi[int](match[2])
+		x, y := strings2.Atoi[int](match[1]), strings2.Atoi[int](match[2])
 		sum += x * y
 	}
 	fmt.Println("Sum: ", sum)
@@ -47,7 +47,7 @@ func part2(input string) {
 			enabled = false
 		} else {
 			if enabled {
-				x, y := math2.Atoi[int](match[2]), math2.Atoi[int](match[3])
+				x, y := strings2.Atoi[int](match[2]), strings2.Atoi[int](match[3])
 				sum += x * y
 			}
 		}

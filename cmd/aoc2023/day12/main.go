@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -93,6 +93,6 @@ func Calculate(input string, groups []int, memo map[string]int) int {
 
 func parseLine(line string) (string, []int) {
 	parts := strings.Split(line, " ")
-	groups := collections.MapToInt(strings.Split(parts[1], ","))
+	groups := strings2.MapToInt(strings.Split(parts[1], ","))
 	return parts[0], groups
 }

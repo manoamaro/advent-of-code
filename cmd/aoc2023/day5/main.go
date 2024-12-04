@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/strings2"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
@@ -150,7 +150,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		if strings.Contains(line, "seeds:") {
-			seeds := collections.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
+			seeds := strings2.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
 			almanac.Seeds = seeds
 		} else if strings.Contains(line, "seed-to-soil map:") {
 			parsingStep = "seed-to-soil"
@@ -175,7 +175,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		lineSplit := strings.Split(line, " ")
-		values := collections.MapToInt(lineSplit)
+		values := strings2.MapToInt(lineSplit)
 		if parsingStep == "seed-to-soil" {
 			almanac.SeedToSoil = append(almanac.SeedToSoil, MapRange{values[0], values[1], values[2]})
 		} else if parsingStep == "soil-to-fertilizer" {

@@ -2,7 +2,6 @@ package math2
 
 import (
 	"math"
-	"strconv"
 )
 
 type Integer interface {
@@ -94,26 +93,6 @@ func Min[T Number](a, b T) T {
 		return a
 	}
 	return b
-}
-
-func Atoi[T Number](str string) T {
-	var zero T
-	switch any(zero).(type) {
-	case int:
-		num, _ := strconv.Atoi(str)
-		return T(num)
-	case int64:
-		num, _ := strconv.ParseInt(str, 10, 64)
-		return T(num)
-	case float32:
-		num, _ := strconv.ParseFloat(str, 32)
-		return T(num)
-	case float64:
-		num, _ := strconv.ParseFloat(str, 64)
-		return T(num)
-	default:
-		return zero
-	}
 }
 
 func Abs[T Number](a T) T {
