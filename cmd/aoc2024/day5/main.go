@@ -1,74 +1,92 @@
 package main
 
 import (
-	"fmt"
 	"slices"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
+	"manoamaro.github.com/advent-of-code/pkg/maps"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var day = aoc.New(2024, 5, parseInput, solvePt1, solvePt2)
+
 func main() {
-	input, err := utils.ReadInputLines(2024, 5)
-	if err != nil {
-		panic(err)
-	}
-
-	rules := [][]int{}
-	updates := [][]int{}
-	readingRules := true
-	for _, line := range input {
-		if line == "" {
-			readingRules = false
-			continue
-		}
-		if readingRules {
-			rules = append(rules, strings2.MapToInt(strings.Split(line, "|")))
-		} else {
-			updates = append(updates, strings2.MapToInt(strings.Split(line, ",")))
-		}
-	}
-
-	startTimePart1 := time.Now()
-	part1(rules, updates)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(rules, updates)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	day.Run()
 }
 
-func sortFunc(rules [][]int) func(a, b int) int {
+type Rule struct {
+	l, r int
+}
+
+type Input struct {
+	rules                                   maps.Map[Rule, bool]
+	updates, sortedUpdates, unsortedUpdates [][]int
+}
+
+func sortFunc(rules maps.Map[Rule, bool]) func(a, b int) int {
 	return func(a, b int) int {
-		for _, r := range rules {
-			if r[0] == a && r[1] == b {
-				return -1
-			} else if r[0] == b && r[1] == a {
-				return 1
-			}
+		if rules.Has(Rule{a, b}) {
+			return -1
+		} else if rules.Has(Rule{b, a}) {
+			return 1
 		}
 		return 0
 	}
 }
 
-func part1(rules [][]int, updates [][]int) {
-	sum := 0
-	for _, update := range updates {
-		if slices.IsSortedFunc(update, sortFunc(rules)) {
-			sum += update[len(update)/2]
+func parseInput(input string) (Input, error) {
+	rules := maps.New[Rule, bool]()
+	updates := [][]int{}
+	readingRules := true
+	for _, line := range strings.Split(input, "\n") {
+		if line == "" {
+			readingRules = false
+			continue
+		}
+		if readingRules {
+			r := strings2.MapToInt(strings.Split(line, "|"))
+			rk := Rule{r[0], r[1]}
+			rules.Set(rk, true)
+		} else {
+			updates = append(updates, strings2.MapToInt(strings.Split(line, ",")))
 		}
 	}
-	fmt.Println("Part 1:", sum)
+	sortedUpdates := make([][]int, len(updates))
+	unsortedUpdates := make([][]int, len(updates))
+
+	sFunc := sortFunc(rules)
+
+	for i, update := range updates {
+		if slices.IsSortedFunc(update, sFunc) {
+			sortedUpdates[i] = update
+		} else {
+			unsortedUpdates[i] = update
+		}
+	}
+
+	return Input{rules, updates, sortedUpdates, unsortedUpdates}, nil
 }
 
-func part2(rules [][]int, updates [][]int) {
+func solvePt1(input Input) (int, error) {
 	sum := 0
-	for _, update := range updates {
-		if !slices.IsSortedFunc(update, sortFunc(rules)) {
-			slices.SortFunc(update, sortFunc(rules))
+	for _, update := range input.sortedUpdates {
+		if len(update) > 0 {
 			sum += update[len(update)/2]
 		}
 	}
-	fmt.Println("Part 2:", sum)
+	return sum, nil
+}
+
+func solvePt2(input Input) (int, error) {
+	sum := 0
+	sFunc := sortFunc(input.rules)
+	for _, update := range input.unsortedUpdates {
+		if len(update) == 0 {
+			continue
+		}
+		slices.SortFunc(update, sFunc)
+		sum += update[len(update)/2]
+	}
+	return sum, nil
 }

@@ -7,6 +7,8 @@ import (
 	m "manoamaro.github.com/advent-of-code/pkg/math2"
 )
 
+type SortFunc[T comparable] func(a, b T) int
+
 func Sum[N m.Number](v []N) N {
 	r := N(0)
 	for _, i := range v {
