@@ -38,7 +38,7 @@ func main() {
 
 	t := template.Must(template.New("day").Parse(fs))
 
-	folderPath := fmt.Sprintf("cmd/aoc%d/day%d", data.Year, data.Day)
+	folderPath := fmt.Sprintf("cmd/%d/%d", data.Year, data.Day)
 	os.MkdirAll(folderPath, 0755)
 	mainFilePath := fmt.Sprintf("%s/main.go", folderPath)
 	mainFile, err := os.OpenFile(mainFilePath, os.O_CREATE|os.O_WRONLY, 0644)
