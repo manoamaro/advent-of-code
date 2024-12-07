@@ -6,8 +6,8 @@ This repository contains my solutions to the [Advent of Code](https://adventofco
 ![2024](https://img.shields.io/badge/days%20completed-7-red)
 
 ## 2023
-![2023](https://img.shields.io/badge/stars%20⭐-32-yellow)
-![2023](https://img.shields.io/badge/days%20completed-16-red)
+![2023](https://img.shields.io/badge/stars%20⭐-35-yellow)
+![2023](https://img.shields.io/badge/days%20completed-17-red)
 
 ## 2022
 ![2022](https://img.shields.io/badge/stars%20⭐-15-yellow)
