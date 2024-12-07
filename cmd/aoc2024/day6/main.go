@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"sync"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
@@ -13,13 +14,13 @@ func main() {
 	day.Run()
 }
 
-type Dir [2]int
+type Dir [3]int
 
 var (
-	up    = Dir{-1, 0}
-	down  = Dir{1, 0}
-	left  = Dir{0, -1}
-	right = Dir{0, 1}
+	up    = Dir{-1, 0, 0}
+	down  = Dir{1, 0, 1}
+	left  = Dir{0, -1, 2}
+	right = Dir{0, 1, 3}
 )
 
 type Cell [2]int
@@ -28,7 +29,7 @@ func (c Cell) move(dir Dir) Cell {
 	return Cell{c[0] + dir[0], c[1] + dir[1]}
 }
 
-type Guard struct {
+type guard struct {
 	cell Cell
 	dir  Dir
 }
@@ -46,18 +47,18 @@ func parseInput(input string) (grid.Grid[byte], error) {
 	return grid, nil
 }
 
-func findGuard(grid grid.Grid[byte]) Guard {
+func findGuard(grid grid.Grid[byte]) guard {
 	for i, row := range grid {
 		for j, cell := range row {
 			if cell == '^' {
-				return Guard{cell: Cell{i, j}, dir: up}
+				return guard{cell: Cell{i, j}, dir: up}
 			}
 		}
 	}
 	panic("guard not found")
 }
 
-func hasObstacleInFront(grid grid.Grid[byte], guard Guard) bool {
+func hasObstacleInFront(grid grid.Grid[byte], guard guard) bool {
 	nextCell := guard.cell.move(guard.dir)
 	v := grid.Get(nextCell[0], nextCell[1])
 	return v != nil && *v == '#'
@@ -91,46 +92,64 @@ func part1(grid grid.Grid[byte]) (int, error) {
 	return len(visited), nil
 }
 
-func part2(grid grid.Grid[byte]) (int, error) {
-	count := 0
-	for cell := range grid.ItemsSeq() {
-		if *cell == '^' {
+func findLoop(grid grid.Grid[byte]) bool {
+	guard := findGuard(grid)
+	visited := make([]bool, grid.Rows()*grid.Cols()*4)
+	for {
+		if hasObstacleInFront(grid, guard) {
+			// turn right 90 degrees
+			switch guard.dir {
+			case up:
+				guard.dir = right
+			case down:
+				guard.dir = left
+			case left:
+				guard.dir = up
+			case right:
+				guard.dir = down
+			}
 			continue
 		}
-		prev := *cell
-		*cell = '#'
+		// move forward
+		guard.cell = guard.cell.move(guard.dir)
+		if grid.Get(guard.cell[0], guard.cell[1]) == nil {
+			break
+		}
+		h := (guard.cell[0]*grid.Rows()+guard.cell[1])*4 + guard.dir[2]
+		if visited[h] {
+			return true
+		}
+		visited[h] = true
+	}
+	return false
+}
 
-		guard := findGuard(grid)
-		visited := make(map[Guard]bool)
-		for {
-			if hasObstacleInFront(grid, guard) {
-				// turn right 90 degrees
-				switch guard.dir {
-				case up:
-					guard.dir = right
-				case down:
-					guard.dir = left
-				case left:
-					guard.dir = up
-				case right:
-					guard.dir = down
-				}
+func part2(grid grid.Grid[byte]) (int, error) {
+	var wg sync.WaitGroup
+	count := make(chan int, 17190)
+	for i := 0; i < grid.Rows(); i++ {
+		for j := 0; j < grid.Cols(); j++ {
+			if grid[i][j] == '^' {
 				continue
 			}
-			// move forward
-			guard.cell = guard.cell.move(guard.dir)
-			if grid.Get(guard.cell[0], guard.cell[1]) == nil {
-				break
-			}
-			p := Guard{cell: guard.cell, dir: guard.dir}
-
-			if visited[p] {
-				count++
-				break
-			}
-			visited[p] = true
+			g := grid.Copy()
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				g[i][j] = '#'
+				if findLoop(g) {
+					count <- 1
+				}
+			}()
 		}
-		*cell = prev
 	}
-	return count, nil
+	go func() {
+		wg.Wait()
+		close(count)
+	}()
+	c := 0
+	for v := range count {
+		c += v
+	}
+	return c, nil
 }

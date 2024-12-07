@@ -34,6 +34,14 @@ func (g Grid[T]) Cols() int {
 	return len(g[0])
 }
 
+func (g Grid[T]) Copy() Grid[T] {
+	c := New[T](g.Rows(), g.Cols())
+	for i := range g {
+		copy(c[i], g[i])
+	}
+	return c
+}
+
 func (g *Grid[T]) ItemsSeq() iter.Seq[*T] {
 	return func(yield func(*T) bool) {
 		for i := range *g {
