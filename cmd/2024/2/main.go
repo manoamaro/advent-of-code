@@ -1,49 +1,31 @@
 package main
 
 import (
-	"fmt"
 	"slices"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
-func main() {
-	input, err := utils.ReadInputLines(2024, 2)
-	if err != nil {
-		panic(err)
-	}
-	reports := make([][]int, 0)
-	for _, line := range input {
-		fields := strings2.MapToInt(strings.Fields(line))
-		reports = append(reports, fields)
-	}
+var challenge = aoc.New(2024, 2, aoc.Ints2dProcessor(strings.Fields), part1, part2)
 
-	startTimePart1 := time.Now()
-	part1(reports)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(reports)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+func main() {
+	challenge.Run()
 }
 
-func part1(input [][]int) {
-	fmt.Println("Part 1")
+func part1(input [][]int) int {
 	valid := 0
 	for _, report := range input {
 		if checkReport(report) {
 			valid++
 		}
 	}
-	fmt.Println("Valid reports:", valid)
+	return valid
 }
 
-func part2(input [][]int) {
-	fmt.Println("Part 2")
+func part2(input [][]int) int {
 	valid := 0
 	for _, report := range input {
 		if checkReport(report) {
@@ -58,8 +40,7 @@ func part2(input [][]int) {
 			}
 		}
 	}
-	fmt.Println("Valid reports:", valid)
-
+	return valid
 }
 
 func checkReport(report []int) bool {

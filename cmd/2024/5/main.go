@@ -35,7 +35,7 @@ func sortFunc(rules maps.Map[Rule, bool]) func(a, b int) int {
 	}
 }
 
-func parseInput(input string) (Input, error) {
+func parseInput(input string) Input {
 	rules := maps.New[Rule, bool]()
 	updates := [][]int{}
 	readingRules := true
@@ -65,20 +65,20 @@ func parseInput(input string) (Input, error) {
 		}
 	}
 
-	return Input{rules, updates, sortedUpdates, unsortedUpdates}, nil
+	return Input{rules, updates, sortedUpdates, unsortedUpdates}
 }
 
-func solvePt1(input Input) (int, error) {
+func solvePt1(input Input) int {
 	sum := 0
 	for _, update := range input.sortedUpdates {
 		if len(update) > 0 {
 			sum += update[len(update)/2]
 		}
 	}
-	return sum, nil
+	return sum
 }
 
-func solvePt2(input Input) (int, error) {
+func solvePt2(input Input) int {
 	sum := 0
 	sFunc := sortFunc(input.rules)
 	for _, update := range input.unsortedUpdates {
@@ -88,5 +88,5 @@ func solvePt2(input Input) (int, error) {
 		slices.SortFunc(update, sFunc)
 		sum += update[len(update)/2]
 	}
-	return sum, nil
+	return sum
 }

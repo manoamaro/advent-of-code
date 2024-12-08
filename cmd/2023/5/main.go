@@ -5,27 +5,18 @@ import (
 	"math"
 	"strings"
 	"sync"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 5, aoc.LinesProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 5)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
+func part1(input []string) int {
 	almanac := parse(input)
 	waitGroup := sync.WaitGroup{}
 	locations := make(chan int)
@@ -48,11 +39,10 @@ func part1(input []string) {
 			lowestLocation = location
 		}
 	}
-	fmt.Println(lowestLocation)
+	return lowestLocation
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
+func part2(input []string) int {
 	almanac := parse(input)
 	realSeeds := [][]int{}
 	for idx, seed := range almanac.Seeds {
@@ -92,7 +82,7 @@ func part2(input []string) {
 			lowestLocation = location
 		}
 	}
-	fmt.Println(lowestLocation)
+	return lowestLocation
 
 }
 

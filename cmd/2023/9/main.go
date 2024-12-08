@@ -1,58 +1,47 @@
 package main
 
 import (
-	"fmt"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 9, aoc.LinesProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 9)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
+func part1(input []string) int {
 	sum := 0
 	for _, line := range input {
 		if line == "" {
 			continue
 		}
 		i := strings2.MapToInt(strings.Split(line, " "))
-		reduced := ReduceToZeros(i)
-		extrapolated := ExtrapolateRight(reduced)
+		reduced := reduceToZeros(i)
+		extrapolated := extrapolateRight(reduced)
 		sum += extrapolated[0][len(extrapolated[0])-1]
 	}
-	fmt.Println("Sum:", sum)
+	return sum
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
+func part2(input []string) int {
 	sum := 0
 	for _, line := range input {
 		if line == "" {
 			continue
 		}
 		i := strings2.MapToInt(strings.Split(line, " "))
-		reduced := ReduceToZeros(i)
-		extrapolated := ExtrapolateLeft(reduced)
+		reduced := reduceToZeros(i)
+		extrapolated := extrapolateLeft(reduced)
 		sum += extrapolated[0][0]
 	}
-	fmt.Println("Sum:", sum)
+	return sum
 }
 
-func ReduceToZeros(input []int) [][]int {
+func reduceToZeros(input []int) [][]int {
 	allArray := make([][]int, 0)
 	allArray = append(allArray, input)
 	currentArray := input
@@ -77,7 +66,7 @@ func ReduceToZeros(input []int) [][]int {
 	return allArray
 }
 
-func ExtrapolateRight(input [][]int) [][]int {
+func extrapolateRight(input [][]int) [][]int {
 	input[len(input)-1] = append(input[len(input)-1], 0)
 	for i := len(input) - 2; i >= 0; i-- {
 		lastNewValue := input[i+1][len(input[i+1])-1]
@@ -86,7 +75,7 @@ func ExtrapolateRight(input [][]int) [][]int {
 	return input
 }
 
-func ExtrapolateLeft(input [][]int) [][]int {
+func extrapolateLeft(input [][]int) [][]int {
 	// prepend 0
 	input[len(input)-1] = append([]int{0}, input[len(input)-1]...)
 	for i := len(input) - 2; i >= 0; i-- {

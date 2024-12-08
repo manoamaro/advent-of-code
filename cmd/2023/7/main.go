@@ -1,34 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
-	"manoamaro.github.com/advent-of-code/pkg/utils"
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
+var challenge = aoc.New(2023, 7, parseHands, part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 7)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	hands := ParseHands(input)
+func part1(hands []*hand) int {
 
 	sort.Slice(hands, func(i, j int) bool {
-		return CompareToPart1(*hands[i], *hands[j])
+		return compareToPart1(*hands[i], *hands[j])
 	})
 
 	maxRank := len(hands)
@@ -36,22 +25,16 @@ func part1(input []string) {
 	for i, h := range hands {
 		total += h.bid * (maxRank - i)
 	}
-	fmt.Println("Total:", total)
+	return total
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
-	hands := ParseHands(input)
-
+func part2(hands []*hand) int {
 	for _, h := range hands {
-		h.value = ValueWithJoker(*h)
+		h.value = valueWithJoker(*h)
 	}
 
-	fmt.Println(hands)
-	fmt.Println("Sorting...")
-
 	sort.Slice(hands, func(i, j int) bool {
-		return CompareToPart2(*hands[i], *hands[j])
+		return compareToPart2(*hands[i], *hands[j])
 	})
 
 	maxRank := len(hands)
@@ -59,7 +42,7 @@ func part2(input []string) {
 	for i, h := range hands {
 		total += h.bid * (maxRank - i)
 	}
-	fmt.Println("Total:", total)
+	return total
 }
 
 var cardValuesPart1 = map[rune]int{
@@ -94,9 +77,10 @@ var cardValuesPart2 = map[rune]int{
 	'A': 13,
 }
 
-func ParseHands(input []string) []*Hand {
-	hands := make([]*Hand, 0)
-	for _, line := range input {
+func parseHands(input string) []*hand {
+	hands := make([]*hand, 0)
+	lines := strings.Split(input, "\n")
+	for _, line := range lines {
 		if line == "" {
 			continue
 		}
@@ -105,29 +89,25 @@ func ParseHands(input []string) []*Hand {
 		if err != nil {
 			panic(err)
 		}
-		hands = append(hands, NewHand(parts[0], bid))
+		hands = append(hands, newHand(parts[0], bid))
 	}
 	return hands
 }
 
-type Hand struct {
+type hand struct {
 	cardsRaw string
 	bid      int
 	value    int
 }
 
-func NewHand(cardsRaw string, bid int) *Hand {
-	return &Hand{
+func newHand(cardsRaw string, bid int) *hand {
+	return &hand{
 		cardsRaw: cardsRaw,
 		bid:      bid,
 	}
 }
 
-func (h Hand) String() string {
-	return fmt.Sprintf("%v %v %v", h.cardsRaw, h.bid, h.value)
-}
-
-func (h Hand) Cards(values map[rune]int) []int {
+func (h hand) Cards(values map[rune]int) []int {
 	cards := make([]int, 0)
 	for _, c := range h.cardsRaw {
 		cards = append(cards, values[c])
@@ -135,11 +115,11 @@ func (h Hand) Cards(values map[rune]int) []int {
 	return cards
 }
 
-func (h Hand) HasJoker() bool {
+func (h hand) HasJoker() bool {
 	return strings.Contains(h.cardsRaw, "J")
 }
 
-func CompareToPart1(hand1, hand2 Hand) bool {
+func compareToPart1(hand1, hand2 hand) bool {
 	h1v := hand1.Value(cardValuesPart1)
 	h2v := hand2.Value(cardValuesPart1)
 	if h1v == h2v {
@@ -156,11 +136,9 @@ func CompareToPart1(hand1, hand2 Hand) bool {
 	return h1v > h2v
 }
 
-func CompareToPart2(hand1, hand2 Hand) bool {
+func compareToPart2(hand1, hand2 hand) bool {
 	h1v := hand1.value
 	h2v := hand2.value
-	fmt.Println(hand1)
-	fmt.Println(hand2)
 	if h1v == h2v {
 		for k := 0; k < 5; k++ {
 			h1c := hand1.cardsRaw[k]
@@ -174,7 +152,7 @@ func CompareToPart2(hand1, hand2 Hand) bool {
 	}
 	return h1v > h2v
 }
-func ValueWithJoker(h Hand) int {
+func valueWithJoker(h hand) int {
 	if !h.HasJoker() {
 		return h.Value(cardValuesPart2)
 	}
@@ -185,9 +163,9 @@ func ValueWithJoker(h Hand) int {
 				if k == 'J' {
 					continue
 				}
-				newHand := NewHand(h.cardsRaw, h.bid)
+				newHand := newHand(h.cardsRaw, h.bid)
 				newHand.cardsRaw = newHand.cardsRaw[:i] + string(k) + newHand.cardsRaw[i+1:]
-				v := ValueWithJoker(*newHand)
+				v := valueWithJoker(*newHand)
 				if v > biggest {
 					biggest = v
 				}
@@ -197,7 +175,7 @@ func ValueWithJoker(h Hand) int {
 	return biggest
 }
 
-func (h Hand) Value(values map[rune]int) int {
+func (h hand) Value(values map[rune]int) int {
 	cards := h.Cards(values)
 	sort.Ints(cards)
 	// Five of a kind

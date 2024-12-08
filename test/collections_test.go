@@ -35,3 +35,52 @@ func TestDiff(t *testing.T) {
 		}
 	}
 }
+
+func TestCombinations(t *testing.T) {
+	cases := []struct {
+		input    []int
+		size     int
+		expected [][]int
+	}{
+		{
+			input: []int{1, 2, 3},
+			size:  2,
+			expected: [][]int{
+				{1, 2},
+				{1, 3},
+				{2, 3},
+			},
+		},
+		{
+			input: []int{1, 2, 3, 4},
+			size:  2,
+			expected: [][]int{
+				{1, 2},
+				{1, 3},
+				{1, 4},
+				{2, 3},
+				{2, 4},
+				{3, 4},
+			},
+		},
+		{
+			input: []int{1, 2, 3, 4},
+			size:  3,
+			expected: [][]int{
+				{1, 2, 3},
+				{1, 2, 4},
+				{1, 3, 4},
+				{2, 3, 4},
+			},
+		},
+	}
+
+	for _, c := range cases {
+		got := collections.Combinations(c.input, c.size)
+		for i, g := range got {
+			if slices.Compare(g, c.expected[i]) != 0 {
+				t.Errorf("Combinations(%v, %v) == %v, want %v", c.input, c.size, got, c.expected)
+			}
+		}
+	}
+}

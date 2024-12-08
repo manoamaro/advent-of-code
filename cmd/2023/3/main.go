@@ -1,26 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"unicode"
 
-	"manoamaro.github.com/advent-of-code/pkg/utils"
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
-func main() {
-	input, err := utils.ReadInputLines(2023, 3)
-	if err != nil {
-		panic(err)
-	}
+var challenge = aoc.New(2023, 3, aoc.LinesProcessor(), part1, part2)
 
-	part1(input)
-	part2(input)
+func main() {
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
+func part1(input []string) int64 {
 	numberReg := regexp.MustCompile(`(\d+)`)
 	engines := make([]int, 0)
 	for idx, currentLine := range input {
@@ -55,11 +49,10 @@ func part1(input []string) {
 	for _, engine := range engines {
 		sum += int64(engine)
 	}
-	fmt.Println("Sum", sum)
+	return sum
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
+func part2(input []string) int64 {
 	sum := int64(0)
 	for lineIdx, currentLine := range input {
 		if len(currentLine) == 0 {
@@ -77,13 +70,12 @@ func part2(input []string) {
 			if currentLine[i] == '*' {
 				engines := findAllNumbersAroundADigit(currentLine, previousLine, nextLine, i)
 				if len(engines) == 2 {
-					fmt.Println("Found * at", lineIdx+1, engines)
 					sum += int64(engines[0] * engines[1])
 				}
 			}
 		}
 	}
-	fmt.Println("Sum", sum)
+	return sum
 }
 
 func findAllNumbersAroundADigit(currentLine string, previousLine string, nextLine string, idx int) []int {

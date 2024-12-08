@@ -21,10 +21,10 @@ func TestFindGalaxies(t *testing.T) {
 	}
 	e := 9
 
-	input := ParseMatrixRaw(i)
+	input := parseMatrixRaw(i)
 	expected := e
 
-	actual := FindGalaxies(input)
+	actual := findGalaxies(input)
 	fmt.Println(actual)
 
 	if len(actual) != expected {
@@ -46,13 +46,13 @@ func TestExpandGalaxies(t *testing.T) {
 		"#...#.....",
 	}
 
-	input := ParseMatrixRaw(i)
-	actual := FindGalaxies(input)
+	input := parseMatrixRaw(i)
+	actual := findGalaxies(input)
 
-	expectedMatrix := ExpandBruteForce(input, 100)
-	expected := FindGalaxies(expectedMatrix)
+	expectedMatrix := expandBruteForce(input, 100)
+	expected := findGalaxies(expectedMatrix)
 
-	expanded := ExpandGalaxySpaces(input, 100)
+	expanded := expandGalaxySpaces(input, 100)
 	fmt.Println(actual)
 	fmt.Println(expected)
 	fmt.Println(expanded)

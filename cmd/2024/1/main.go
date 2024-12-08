@@ -1,62 +1,62 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
-func main() {
-	rawInput, err := utils.ReadInputLines(2024, 1)
-	if err != nil {
-		panic(err)
-	}
-	left, right := []int{}, []int{}
+type INPUT struct {
+	left  []int
+	right []int
+}
 
-	for _, line := range rawInput {
+type OUTPUT int
+
+var challenge = aoc.New(2024, 1, parseInput, part1, part2)
+
+func main() {
+	challenge.Run()
+}
+
+func parseInput(input string) INPUT {
+	left, right := []int{}, []int{}
+	lines := strings.Split(input, "\n")
+	for _, line := range lines {
 		fields := strings.Fields(line)
 		left = append(left, strings2.Atoi[int](fields[0]))
 		right = append(right, strings2.Atoi[int](fields[1]))
 	}
-
-	startTimePart1 := time.Now()
-	part1(left, right)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(left, right)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	return INPUT{left, right}
 }
 
-func part1(left, right []int) {
-	sort.Ints(left)
-	sort.Ints(right)
+func part1(input INPUT) OUTPUT {
+	sort.Ints(input.left)
+	sort.Ints(input.right)
 	sumDist := 0
-	for i := 0; i < len(left); i++ {
-		sumDist += math2.Abs(left[i] - right[i])
+	for i := 0; i < len(input.left); i++ {
+		sumDist += math2.Abs(input.left[i] - input.right[i])
 	}
-	fmt.Printf("Part 1: %d\n", sumDist)
+	return OUTPUT(sumDist)
 }
 
-func part2(left, right []int) {
-	fmt.Println("Part 2")
-	sort.Ints(left)
-	sort.Ints(right)
+func part2(input INPUT) OUTPUT {
+	sort.Ints(input.left)
+	sort.Ints(input.right)
 
 	indexMap := make(map[int]int)
-	for _, v := range right {
+	for _, v := range input.right {
 		indexMap[v]++
 	}
 
 	sumSimilarityScores := 0
-	for _, v := range left {
+	for _, v := range input.left {
 		if indexMap[v] > 0 {
 			sumSimilarityScores += v * indexMap[v]
 		}
 	}
-	fmt.Printf("Part 2: %d\n", sumSimilarityScores)
+	return OUTPUT(sumSimilarityScores)
 }

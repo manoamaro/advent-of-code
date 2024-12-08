@@ -1,32 +1,37 @@
 package main
 
 import (
-	"fmt"
 	"slices"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 11, parseInput, part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 11)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	matrix := ParseMatrixRaw(input)
-	galaxies := ExpandGalaxySpaces(matrix, 1)
+func parseInput(input string) [][]bool {
+	lines := strings.Split(input, "\n")
+	return parseMatrixRaw(lines)
+}
+
+func part1(matrix [][]bool) int {
+	galaxies := expandGalaxySpaces(matrix, 1)
+	sum := 0
+	for i := 0; i < len(galaxies); i++ {
+		for j := i + 1; j < len(galaxies); j++ {
+			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
+		}
+	}
+	return sum
+}
+
+func part2(matrix [][]bool) int {
+	galaxies := expandGalaxySpaces(matrix, 999999)
 
 	sum := 0
 	for i := 0; i < len(galaxies); i++ {
@@ -34,24 +39,10 @@ func part1(input []string) {
 			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
 		}
 	}
-	fmt.Println(sum)
+	return sum
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
-	matrix := ParseMatrixRaw(input)
-	galaxies := ExpandGalaxySpaces(matrix, 999999)
-
-	sum := 0
-	for i := 0; i < len(galaxies); i++ {
-		for j := i + 1; j < len(galaxies); j++ {
-			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
-		}
-	}
-	fmt.Println(sum)
-}
-
-func FindGalaxies(input [][]bool) [][]int {
+func findGalaxies(input [][]bool) [][]int {
 	galaxies := make([][]int, 0)
 	for i := 0; i < len(input); i++ {
 		for j := 0; j < len(input[i]); j++ {
@@ -63,7 +54,7 @@ func FindGalaxies(input [][]bool) [][]int {
 	return galaxies
 }
 
-func ParseMatrixRaw(input []string) [][]bool {
+func parseMatrixRaw(input []string) [][]bool {
 	output := make([][]bool, 0)
 	for _, v := range input {
 		if v == "" {
@@ -78,9 +69,9 @@ func ParseMatrixRaw(input []string) [][]bool {
 	return output
 }
 
-func ExpandGalaxySpaces(input [][]bool, size int) [][]int {
-	galaxies := FindGalaxies(input)
-	newGalaxies := FindGalaxies(input)
+func expandGalaxySpaces(input [][]bool, size int) [][]int {
+	galaxies := findGalaxies(input)
+	newGalaxies := findGalaxies(input)
 	for i := 0; i < len(input); i++ {
 		if !slices.Contains(input[i], true) {
 			for g, galaxy := range galaxies {
@@ -110,7 +101,7 @@ func ExpandGalaxySpaces(input [][]bool, size int) [][]int {
 	return newGalaxies
 }
 
-func ExpandBruteForce(input [][]bool, size int) [][]bool {
+func expandBruteForce(input [][]bool, size int) [][]bool {
 	output := make([][]bool, 0)
 	// copy row if row contains only .
 	for i := 0; i < len(input); i++ {
