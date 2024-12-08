@@ -34,7 +34,7 @@ type guard struct {
 	dir  Dir
 }
 
-func parseInput(input string) (grid.Grid[byte], error) {
+func parseInput(input string) grid.Grid[byte] {
 	input = strings.TrimSpace(input)
 	lines := strings.Split(input, "\n")
 	grid := make(grid.Grid[byte], len(lines))
@@ -44,7 +44,7 @@ func parseInput(input string) (grid.Grid[byte], error) {
 			grid[i][j] = byte(char)
 		}
 	}
-	return grid, nil
+	return grid
 }
 
 func findGuard(grid grid.Grid[byte]) guard {
@@ -64,7 +64,7 @@ func hasObstacleInFront(grid grid.Grid[byte], guard guard) bool {
 	return v != nil && *v == '#'
 }
 
-func part1(grid grid.Grid[byte]) (int, error) {
+func part1(grid grid.Grid[byte]) int {
 	guard := findGuard(grid)
 	visited := make(map[Cell]bool)
 	for {
@@ -89,7 +89,7 @@ func part1(grid grid.Grid[byte]) (int, error) {
 		}
 		visited[guard.cell] = true
 	}
-	return len(visited), nil
+	return len(visited)
 }
 
 func findLoop(grid grid.Grid[byte]) bool {
@@ -124,7 +124,7 @@ func findLoop(grid grid.Grid[byte]) bool {
 	return false
 }
 
-func part2(grid grid.Grid[byte]) (int, error) {
+func part2(grid grid.Grid[byte]) int {
 	var wg sync.WaitGroup
 	count := make(chan int, 17190)
 	for i := 0; i < grid.Rows(); i++ {
@@ -151,5 +151,5 @@ func part2(grid grid.Grid[byte]) (int, error) {
 	for v := range count {
 		c += v
 	}
-	return c, nil
+	return c
 }

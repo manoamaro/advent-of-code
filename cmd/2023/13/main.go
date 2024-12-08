@@ -4,50 +4,36 @@ import (
 	"fmt"
 	"slices"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 13, parseInput, part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 13)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	patterns := parseInput(input)
-
+func part1(patterns [][]string) int {
 	sum := 0
 
 	for _, pattern := range patterns {
-		vh, v := FindFirstFoldVH(pattern)
+		vh, v := findFirstFoldVH(pattern)
 		if vh == 0 {
 			sum += v
 		} else if vh == 1 {
 			sum += 100 * v
 		}
 	}
-	fmt.Println(sum)
+	return sum
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
-	patterns := parseInput(input)
-
+func part2(patterns [][]string) int {
 	sum := 0
 	for _, pattern := range patterns {
-		vh, v := FindSmudge(pattern)
+		vh, v := findSmudge(pattern)
 		if vh == 0 {
 			sum += v
 		} else if vh == 1 {
@@ -56,7 +42,7 @@ func part2(input []string) {
 		fmt.Println()
 	}
 
-	fmt.Println(sum)
+	return sum
 }
 
 func toggle(s string) string {
@@ -66,10 +52,11 @@ func toggle(s string) string {
 	return "."
 }
 
-func parseInput(input []string) [][]string {
+func parseInput(input string) [][]string {
+	lines := strings.Split(input, "\n")
 	patterns := [][]string{{}}
 	p := 0
-	for _, line := range input {
+	for _, line := range lines {
 		if line == "" {
 			p++
 			patterns = append(patterns, []string{})
@@ -80,9 +67,9 @@ func parseInput(input []string) [][]string {
 	return patterns
 }
 
-func FindSmudge(pattern []string) (int, int) {
-	ovm := FindFoldV(pattern)
-	ohm := FindFoldH(pattern)
+func findSmudge(pattern []string) (int, int) {
+	ovm := findFoldV(pattern)
+	ohm := findFoldH(pattern)
 
 	fmt.Println("Old:", ovm, ohm)
 
@@ -92,8 +79,8 @@ func FindSmudge(pattern []string) (int, int) {
 			p[j] = toggle(p[j])
 			pattern[i] = strings.Join(p, "")
 
-			v := FindFoldV(pattern)
-			h := FindFoldH(pattern)
+			v := findFoldV(pattern)
+			h := findFoldH(pattern)
 
 			p[j] = toggle(p[j])
 			pattern[i] = strings.Join(p, "")
@@ -115,23 +102,23 @@ func FindSmudge(pattern []string) (int, int) {
 	return 0, 0
 }
 
-func FindFoldV(pattern []string) []int {
+func findFoldV(pattern []string) []int {
 	vertical := make([]string, len(pattern[0]))
 	for i := 0; i < len(pattern[0]); i++ {
 		for _, line := range pattern {
 			vertical[i] += string(line[i])
 		}
 	}
-	return FindFold(vertical)
+	return findFold(vertical)
 }
 
-func FindFoldH(pattern []string) []int {
-	return FindFold(pattern)
+func findFoldH(pattern []string) []int {
+	return findFold(pattern)
 }
 
-func FindFirstFoldVH(pattern []string) (int, int) {
-	verticalFold := FindFoldV(pattern)
-	horizontalFold := FindFoldH(pattern)
+func findFirstFoldVH(pattern []string) (int, int) {
+	verticalFold := findFoldV(pattern)
+	horizontalFold := findFoldH(pattern)
 	if len(verticalFold) > 0 {
 		return 0, verticalFold[0]
 	} else if len(horizontalFold) > 0 {
@@ -140,7 +127,7 @@ func FindFirstFoldVH(pattern []string) (int, int) {
 	return -1, -1
 }
 
-func FindFold(pattern []string) []int {
+func findFold(pattern []string) []int {
 	if len(pattern) <= 1 {
 		return nil
 	}

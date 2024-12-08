@@ -1,29 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2024, 3, aoc.NoOpProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInput(2024, 3)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input string) {
-	fmt.Println("Part 1")
+func part1(input string) int {
 	regex := regexp.MustCompile(`mul\((\d+)\,(\d+)\)`)
 	matches := regex.FindAllStringSubmatch(input, -1)
 	sum := 0
@@ -31,11 +21,10 @@ func part1(input string) {
 		x, y := strings2.Atoi[int](match[1]), strings2.Atoi[int](match[2])
 		sum += x * y
 	}
-	fmt.Println("Sum: ", sum)
+	return sum
 }
 
-func part2(input string) {
-	fmt.Println("Part 2")
+func part2(input string) int {
 	regex := regexp.MustCompile(`(mul\((\d+)\,(\d+)\))|(do\(\))|(don't\(\))`)
 	matches := regex.FindAllStringSubmatch(input, -1)
 	sum := 0
@@ -52,5 +41,5 @@ func part2(input string) {
 			}
 		}
 	}
-	fmt.Println("Sum: ", sum)
+	return sum
 }

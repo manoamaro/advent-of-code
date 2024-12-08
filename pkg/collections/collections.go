@@ -108,6 +108,29 @@ func SlideSeq[T any](s []T, size int) iter.Seq[[]T] {
 	}
 }
 
+func Combinations[T any](s []T, size int) [][]T {
+	if size == 0 {
+		return [][]T{{}}
+	}
+	if len(s) == 0 {
+		return nil
+	}
+	if size == 1 {
+		r := make([][]T, len(s))
+		for i, v := range s {
+			r[i] = []T{v}
+		}
+		return r
+	}
+	var r [][]T
+	for i, v := range s {
+		for _, c := range Combinations(s[i+1:], size-1) {
+			r = append(r, append([]T{v}, c...))
+		}
+	}
+	return r
+}
+
 func Delete[T any](s []T, i int) []T {
 	if i < 0 || i >= len(s) {
 		return s

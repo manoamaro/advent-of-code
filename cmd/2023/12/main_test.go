@@ -38,7 +38,7 @@ func TestCalculate(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := Calculate(c.input, c.groups, map[string]int{})
+		got := calculate(c.input, c.groups, map[string]int{})
 		if got != c.want {
 			t.Errorf("Calculate(%q, %v) == %d, want %d", c.input, c.groups, got, c.want)
 		}

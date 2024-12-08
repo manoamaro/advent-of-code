@@ -3,39 +3,29 @@ package main
 import (
 	"fmt"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 12, aoc.LinesProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 12)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
+func part1(input []string) int {
 	count := 0
 
 	for _, line := range input {
 		line, groups := parseLine(line)
-		count += Calculate(line, groups, map[string]int{})
+		count += calculate(line, groups, map[string]int{})
 	}
-	fmt.Println(count)
+	return count
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
+func part2(input []string) int {
 	count := 0
 
 	for _, line := range input {
@@ -49,13 +39,13 @@ func part2(input []string) {
 			newGroups = append(newGroups, groups...)
 		}
 
-		count += Calculate(newLine, newGroups, map[string]int{})
+		count += calculate(newLine, newGroups, map[string]int{})
 	}
 
-	fmt.Println(count)
+	return count
 }
 
-func Calculate(input string, groups []int, memo map[string]int) int {
+func calculate(input string, groups []int, memo map[string]int) int {
 	if len(input) == 0 {
 		if len(groups) == 0 {
 			return 1
@@ -77,13 +67,13 @@ func Calculate(input string, groups []int, memo map[string]int) int {
 
 	result := 0
 	if input[0] == '.' || input[0] == '?' {
-		result += Calculate(input[1:], groups, memo)
+		result += calculate(input[1:], groups, memo)
 	}
 
 	if input[0] == '#' || input[0] == '?' {
 		if len(input) >= groups[0] && !strings.ContainsRune(input[:groups[0]], '.') && (len(input) == groups[0] || input[groups[0]] != '#') {
 			n := math2.Min(groups[0]+1, len(input))
-			result += Calculate(input[n:], groups[1:], memo)
+			result += calculate(input[n:], groups[1:], memo)
 		}
 	}
 

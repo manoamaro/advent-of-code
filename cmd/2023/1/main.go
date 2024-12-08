@@ -5,32 +5,17 @@ import (
 	"regexp"
 	"strconv"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
-func testInput() []string {
-	return []string{
-		"sixsevenfivefourxf4mzhmkztwonepzt",
-		"nineninesixskjkbhx6nineoneightj",
-		"abcone2threexyz",
-		"xtwone3four",
-		"4nineeightseven2",
-		"zoneight234",
-		"7pqrstsixteen",
-	}
-}
+var challenge = aoc.New(2023, 1, aoc.LinesProcessor(), part1, part2)
 
 func main() {
-	input, err := utils.ReadInputLines(2023, 1)
-	if err != nil {
-		panic(err)
-	}
-	part1(input)
-	part2(input)
+	challenge.Run()
 }
 
-func part1(input []string) {
+func part1(input []string) int {
 	re := regexp.MustCompile(`\d`)
 	sum := 0
 	for _, line := range input {
@@ -39,10 +24,10 @@ func part1(input []string) {
 		number, _ := strconv.Atoi(numberStr)
 		sum += number
 	}
-	fmt.Println(sum)
+	return sum
 }
 
-func part2(input []string) {
+func part2(input []string) int {
 	reg := regexp.MustCompile(`\d|one|two|three|four|five|six|seven|eight|nine`)
 	regRev := regexp.MustCompile(`\d|enin|thgie|neves|xis|evif|ruof|eerht|owt|eno`)
 	sum := 0
@@ -56,7 +41,7 @@ func part2(input []string) {
 		}
 		sum += number
 	}
-	fmt.Println(sum)
+	return sum
 }
 
 func parseNameToDigit(name string) int {

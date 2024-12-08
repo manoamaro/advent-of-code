@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"slices"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
+
+var challenge = aoc.New(2023, 10, aoc.GridStringProcessor(), part1, part2)
 
 func main() {
 	input, err := utils.ReadInputSlice2d(2023, 10)
@@ -13,17 +16,17 @@ func main() {
 		panic(err)
 	}
 
-	pipes := Pipes(input)
+	pipes := pipes_T(input)
 	part1(pipes)
 	part2(pipes)
 }
 
-func part1(input Pipes) {
-	fmt.Println("Part 1")
-	fmt.Println(input.NavigateLoop())
+func part1(input [][]string) int {
+	i := pipes_T(input)
+	return i.navigateLoop()
 }
 
-func IsOnLoop(x, y int, loop [][]int) bool {
+func isOnLoop(x, y int, loop [][]int) bool {
 	for _, l := range loop {
 		if l[0] == x && l[1] == y {
 			return true
@@ -32,9 +35,9 @@ func IsOnLoop(x, y int, loop [][]int) bool {
 	return false
 }
 
-func part2(input Pipes) {
-	fmt.Println("Part 2")
-	loop := input.GetLoop()
+func part2(i [][]string) int {
+	input := pipes_T(i)
+	loop := input.getLoop()
 	floodMap := make([][]bool, len(input))
 	for i := 0; i < len(input); i++ {
 		floodMap[i] = make([]bool, len(input[i]))
@@ -44,7 +47,7 @@ func part2(input Pipes) {
 	isUp := false
 	for i := 0; i < len(input); i++ {
 		for j := 0; j < len(input[i]); j++ {
-			if IsOnLoop(i, j, loop) {
+			if isOnLoop(i, j, loop) {
 				c := input[i][j]
 				if c == "S" && isUp {
 					isUp = false
@@ -84,7 +87,7 @@ func part2(input Pipes) {
 		fmt.Println()
 	}
 
-	fmt.Println(count)
+	return count
 }
 
 var PIPE_VERTICAL = "|"
@@ -98,9 +101,9 @@ var DOWN_START = []string{PIPE_VERTICAL, PIPE_J, PIPE_L}
 var LEFT_START = []string{PIPE_HORIZONTAL, PIPE_L, PIPE_F}
 var RIGHT_START = []string{PIPE_HORIZONTAL, PIPE_J, PIPE_7}
 
-type Pipes [][]string
+type pipes_T [][]string
 
-func (p Pipes) Start() (x, y int) {
+func (p pipes_T) start() (x, y int) {
 	for x, line := range p {
 		for y, pipe := range line {
 			if pipe == "S" {
@@ -111,8 +114,8 @@ func (p Pipes) Start() (x, y int) {
 	return -1, -1
 }
 
-func (p Pipes) StartAndTerminations() (start []int, terminations [][]int) {
-	x, y := p.Start()
+func (p pipes_T) startAndTerminations() (start []int, terminations [][]int) {
+	x, y := p.start()
 	start = append(start, x, y)
 	if x-1 >= 0 && slices.Contains(UP_START, p[x-1][y]) {
 		terminations = append(terminations, []int{x - 1, y})
@@ -130,13 +133,13 @@ func (p Pipes) StartAndTerminations() (start []int, terminations [][]int) {
 	return start, terminations
 }
 
-func (p Pipes) GetLoop() [][]int {
-	start, terminations := p.StartAndTerminations()
+func (p pipes_T) getLoop() [][]int {
+	start, terminations := p.startAndTerminations()
 	loop := [][]int{start}
 	px, py := start[0], start[1]
 	nx, ny := terminations[0][0], terminations[0][1]
 	for {
-		x, y := p.NavigateNext(px, py, nx, ny)
+		x, y := p.navigateNext(px, py, nx, ny)
 		if nx == -1 || ny == -1 {
 			return loop
 		}
@@ -148,8 +151,8 @@ func (p Pipes) GetLoop() [][]int {
 	}
 }
 
-func (p Pipes) NavigateLoop() int {
-	start, loops := p.StartAndTerminations()
+func (p pipes_T) navigateLoop() int {
+	start, loops := p.startAndTerminations()
 	ploop1 := []int{start[0], start[1]}
 	ploop2 := []int{start[0], start[1]}
 	loop1 := loops[0]
@@ -158,11 +161,11 @@ func (p Pipes) NavigateLoop() int {
 	count := 1
 
 	for {
-		nx1, ny1 := p.NavigateNext(ploop1[0], ploop1[1], loop1[0], loop1[1])
+		nx1, ny1 := p.navigateNext(ploop1[0], ploop1[1], loop1[0], loop1[1])
 		if nx1 == -1 || ny1 == -1 {
 			return 0
 		}
-		nx2, ny2 := p.NavigateNext(ploop2[0], ploop2[1], loop2[0], loop2[1])
+		nx2, ny2 := p.navigateNext(ploop2[0], ploop2[1], loop2[0], loop2[1])
 		if nx1 == -1 || ny1 == -1 {
 			return 0
 		}
@@ -177,7 +180,7 @@ func (p Pipes) NavigateLoop() int {
 	}
 }
 
-func (p Pipes) NavigateNext(px, py, nx, ny int) (int, int) {
+func (p pipes_T) navigateNext(px, py, nx, ny int) (int, int) {
 	// 0: up, 1: down, 2: left, 3: right
 	comingFrom := 0
 	if px == nx {

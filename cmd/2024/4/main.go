@@ -1,33 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
-	"manoamaro.github.com/advent-of-code/pkg/utils"
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
+var challenge = aoc.New(2024, 4, aoc.GridStringProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2024, 4)
-	if err != nil {
-		panic(err)
-	}
-	grid := make([][]string, len(input))
-	for i, line := range input {
-		grid[i] = make([]string, len(line))
-		for j, char := range line {
-			grid[i][j] = string(char)
-		}
-	}
-	startTimePart1 := time.Now()
-	part1(grid)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(grid)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(grid [][]string) {
+func part1(grid [][]string) int {
 	count := 0
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
@@ -38,10 +21,10 @@ func part1(grid [][]string) {
 			}
 		}
 	}
-	fmt.Println("Part 1 - XMAS count:", count)
+	return count
 }
 
-func part2(grid [][]string) {
+func part2(grid [][]string) int {
 	count := 0
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
@@ -50,7 +33,7 @@ func part2(grid [][]string) {
 			}
 		}
 	}
-	fmt.Println("Part 2 - X-MAS count:", count)
+	return count
 }
 
 var directions = [][]int{

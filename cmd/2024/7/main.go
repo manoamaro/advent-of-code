@@ -7,12 +7,9 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
 )
 
-type INPUT [][]int
-type RESULT int
-
 var challenge = aoc.New(2024, 7, parseInput, part1, part2)
 
-func parseInput(input string) (INPUT, error) {
+func parseInput(input string) [][]int {
 	input = strings.TrimSpace(input)
 	lines := strings.Split(input, "\n")
 	o := make([][]int, len(lines))
@@ -25,7 +22,7 @@ func parseInput(input string) (INPUT, error) {
 		eq = append(eq, v2...)
 		o[i] = eq
 	}
-	return o, nil
+	return o
 }
 
 func calculatePart1(expected int, curr int, nums []int) bool {
@@ -35,14 +32,14 @@ func calculatePart1(expected int, curr int, nums []int) bool {
 	return calculatePart1(expected, curr+nums[0], nums[1:]) || calculatePart1(expected, curr*nums[0], nums[1:])
 }
 
-func part1(input INPUT) (RESULT, error) {
+func part1(input [][]int) int {
 	total := 0
 	for _, eq := range input {
 		if calculatePart1(eq[0], eq[1], eq[2:]) {
 			total += eq[0]
 		}
 	}
-	return RESULT(total), nil
+	return total
 }
 
 // concat: Concatenates two integers e.g. concat(1,2) = 12
@@ -61,14 +58,14 @@ func calculatePart2(expected int, curr int, nums []int) bool {
 	return calculatePart2(expected, curr+nums[0], nums[1:]) || calculatePart2(expected, curr*nums[0], nums[1:]) || calculatePart2(expected, concat(curr, nums[0]), nums[1:])
 }
 
-func part2(input INPUT) (RESULT, error) {
+func part2(input [][]int) int {
 	total := 0
 	for _, eq := range input {
 		if calculatePart2(eq[0], eq[1], eq[2:]) {
 			total += eq[0]
 		}
 	}
-	return RESULT(total), nil
+	return total
 }
 
 func main() {

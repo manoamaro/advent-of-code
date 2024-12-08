@@ -16,7 +16,7 @@ func TestFindFold(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
-			got := FindFold(strings.Split(c.pattern, ""))
+			got := findFold(strings.Split(c.pattern, ""))
 			if slices.Compare(got, c.want) != 0 {
 				t.Errorf("FindFold(%q) == %d, want %d", c.pattern, got, c.want)
 			}

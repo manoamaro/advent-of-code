@@ -1,40 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"regexp"
 	"slices"
 	"strconv"
 	"strings"
-	"time"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 4, aoc.LinesProcessor(), part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 4)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	//cardRgx := regexp.MustCompile(`Card\s(\d+):`)
+func part1(input []string) int {
 	sum := 0
 	for _, line := range input {
 		if strings.TrimSpace(line) == "" {
 			continue
 		}
-		//cardId := cardRgx.FindStringSubmatch(line)[1]
 		parts := strings.Split(strings.Split(line, ":")[1], "|")
 		winingNumbers := strings2.MapToInt(strings.Split(parts[0], " "))
 		playedNumbers := strings2.MapToInt(strings.Split(parts[1], " "))
@@ -42,12 +30,11 @@ func part1(input []string) {
 		value := math.Floor(math.Pow(2, float64(len(matched)-1)))
 		sum += int(value)
 	}
-	fmt.Println(sum)
+	return sum
 }
 
-func part2(input []string) {
+func part2(input []string) int {
 	cardRgx := regexp.MustCompile(`Card\s+(\d+):`)
-	fmt.Println("Part 2")
 	cardsStack := make([][]Card, 0)
 	for _, line := range input {
 		if len(strings.TrimSpace(line)) == 0 {
@@ -75,7 +62,7 @@ func part2(input []string) {
 	for _, cards := range cardsStack {
 		sum += len(cards)
 	}
-	fmt.Println("Total", sum)
+	return sum
 }
 
 type Card struct {

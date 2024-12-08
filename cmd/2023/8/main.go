@@ -1,33 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
-	"time"
+	"strings"
 
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/utils"
 )
 
+var challenge = aoc.New(2023, 8, parseInput, part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 8)
-	if err != nil {
-		panic(err)
-	}
-	startTimePart1 := time.Now()
-	part1(input)
-	fmt.Println("Part 1 took:", time.Since(startTimePart1))
-	startTimePart2 := time.Now()
-	part2(input)
-	fmt.Println("Part 2 took:", time.Since(startTimePart2))
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	m := ParseMap(input)
+func part1(m inputMap) uint64 {
 	curr := "AAA"
 	instrPos := 0
-	steps := 0
+	steps := uint64(0)
 	for {
 		inst := m.instructions[instrPos%len(m.instructions)]
 		node := m.nodes[curr]
@@ -43,13 +33,10 @@ func part1(input []string) {
 			break
 		}
 	}
-	fmt.Println("Steps:", steps)
+	return steps
 }
 
-func part2(input []string) {
-	fmt.Println("Part 2")
-	m := ParseMap(input)
-
+func part2(m inputMap) uint64 {
 	starts := make([]string, 0)
 	for k := range m.nodes {
 		if k[2] == 'A' {
@@ -88,26 +75,27 @@ func part2(input []string) {
 		steps = math2.LowestCommonMultiple(steps, v)
 	}
 
-	fmt.Println("Steps:", steps)
+	return steps
 }
 
-type Map struct {
+type inputMap struct {
 	instructions string
-	nodes        map[string]Node
+	nodes        map[string]node
 }
 
-func ParseMap(input []string) Map {
+func parseInput(input string) inputMap {
 	reg := regexp.MustCompile(`^(\w{3}) = \((\w{3}), (\w{3})\)$`)
-	m := Map{
-		nodes: make(map[string]Node),
+	m := inputMap{
+		nodes: make(map[string]node),
 	}
-	m.instructions = input[0]
-	for _, line := range input[2:] {
+	lines := strings.Split(input, "\n")
+	m.instructions = lines[0]
+	for _, line := range lines[2:] {
 		if line == "" {
 			continue
 		}
 		match := reg.FindStringSubmatch(line)
-		node := Node{
+		node := node{
 			left:  match[2],
 			right: match[3],
 		}
@@ -116,7 +104,7 @@ func ParseMap(input []string) Map {
 	return m
 }
 
-type Node struct {
+type node struct {
 	left  string
 	right string
 }

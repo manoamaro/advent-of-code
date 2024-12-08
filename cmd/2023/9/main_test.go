@@ -12,7 +12,7 @@ func TestReduceToZeros(t *testing.T) {
 		{3, 3, 3, 3, 3},
 		{0, 0, 0, 0},
 	}
-	actual := ReduceToZeros(input)
+	actual := reduceToZeros(input)
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("Expected %v, but got %v", expected, actual)
 	}
@@ -29,7 +29,7 @@ func TestExtrapolateRight(t *testing.T) {
 		{3, 3, 3, 3, 3, 3},
 		{0, 0, 0, 0, 0},
 	}
-	actual := ExtrapolateRight(input)
+	actual := extrapolateRight(input)
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("Expected %v, but got %v", expected, actual)
 	}
@@ -50,7 +50,7 @@ func TestExtrapolateLeft(t *testing.T) {
 		{2, 2, 2, 2},
 		{0, 0, 0},
 	}
-	actual := ExtrapolateLeft(input)
+	actual := extrapolateLeft(input)
 	if !reflect.DeepEqual(expected, actual) {
 		t.Errorf("Expected %v, but got %v", expected, actual)
 	}

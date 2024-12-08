@@ -6,32 +6,26 @@ import (
 	"strconv"
 	"strings"
 
-	"manoamaro.github.com/advent-of-code/pkg/utils"
+	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
+var challenge = aoc.New(2023, 2, parseInput, part1, part2)
+
 func main() {
-	input, err := utils.ReadInputLines(2023, 2)
-	if err != nil {
-		panic(err)
-	}
-	part1(input)
-	part2(input)
+	challenge.Run()
 }
 
-func part1(input []string) {
-	fmt.Println("Part 1")
-	games := parseInput(input)
+func part1(games []Game) int {
 	sum := 0
 	for _, game := range games {
 		if game.Matches() {
 			sum += game.id
 		}
 	}
-	fmt.Println(sum)
+	return sum
 }
 
-func part2(input []string) {
-	games := parseInput(input)
+func part2(games []Game) int {
 	sum := 0
 	for _, game := range games {
 		maxRGB := []int{0, 0, 0}
@@ -48,15 +42,15 @@ func part2(input []string) {
 		}
 		sum += maxRGB[0] * maxRGB[1] * maxRGB[2]
 	}
-	fmt.Println("Part 2")
-	fmt.Println(sum)
+	return sum
 }
 
-func parseInput(input []string) []Game {
+func parseInput(input string) []Game {
+	lines := strings.Split(input, "\n")
 	reg := regexp.MustCompile(`^Game\s(\d{1,})\:\s(.+)`)
 	reg2 := regexp.MustCompile(`((\d{1,})\s(green|red|blue)[,\s]?)`)
 	games := make([]Game, 0)
-	for _, line := range input {
+	for _, line := range lines {
 		if len(line) == 0 {
 			continue
 		}

@@ -4,8 +4,8 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
-type INPUT  string
-type RESULT int
+type inp string
+type res int
 
 var challenge = aoc.New({{.Year}}, {{.Day}}, parseInput, part1, part2)
 
@@ -13,14 +13,14 @@ func main() {
 	challenge.Run()
 }
 
-func parseInput(input string) (INPUT, error) {
-	return INPUT(input), nil
+func parseInput(input string) inp {
+	return inp(input)
 }
 
-func part1(input INPUT) (RESULT, error) {
-	return RESULT(0), nil
+func part1(input inp) res {
+	return res(0)
 }
 
-func part2(input INPUT) (RESULT, error) {
-	return RESULT(0), nil
+func part2(input inp) res {
+	return res(0)
 }
