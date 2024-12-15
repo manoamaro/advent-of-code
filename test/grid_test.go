@@ -146,7 +146,7 @@ func TestGridAdjacents(t *testing.T) {
 	g.Set(2, 0, 7)
 	g.Set(2, 1, 8)
 	g.Set(2, 2, 9)
-	adjacents := g.Adjacents(grid.Cell{1, 1})
+	adjacents := g.Neighbors(grid.Cell{1, 1})
 	expected := map[grid.Cell]*int{
 		{0, 1}: constToPtr(2),
 		{1, 0}: constToPtr(4),

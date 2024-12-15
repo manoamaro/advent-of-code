@@ -3,6 +3,7 @@ package aoc
 import (
 	"strings"
 
+	"manoamaro.github.com/advent-of-code/pkg/grid"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
 )
 
@@ -10,10 +11,8 @@ type Splitter[T comparable] func(string) []T
 
 type InputProcessor[T any] func(string) T
 
-func NoOpProcessor() InputProcessor[string] {
-	return func(input string) string {
-		return input
-	}
+func StringProcessor(input string) string {
+	return strings.TrimSpace(input)
 }
 
 func LinesProcessor() InputProcessor[[]string] {
@@ -33,11 +32,25 @@ func GridStringProcessor() InputProcessor[[][]string] {
 	}
 }
 
-func IntsProcessor() InputProcessor[[]int] {
-	return func(input string) []int {
-		lines := strings.Split(input, "\n")
-		return strings2.MapToInt(lines)
+func RuneGridProcessor(input string) grid.Grid[rune] {
+	lines := strings.Split(input, "\n")
+	g := grid.New[rune](len(lines), len(lines[0]))
+	for r, line := range lines {
+		for c, char := range line {
+			g.Set(r, c, char)
+		}
 	}
+	return g
+}
+
+func IntGridProcessor(input string) grid.Grid[int] {
+	lines := strings.Split(input, "\n")
+	var grid grid.Grid[int]
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		grid = append(grid, strings2.MapCharsToInts([]rune(line)))
+	}
+	return grid
 }
 
 func Ints2dProcessor(splitter Splitter[string]) InputProcessor[[][]int] {

@@ -7,7 +7,7 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
 )
 
-var challenge = aoc.New(2024, 3, aoc.NoOpProcessor(), part1, part2)
+var challenge = aoc.New(2024, 3, aoc.StringProcessor, part1, part2)
 
 func main() {
 	challenge.Run()

@@ -22,6 +22,12 @@ func MapToInt(in []string) []int {
 	})
 }
 
+func MapCharsToInts(in []rune) []int {
+	return collections.MapNotError(in, func(r rune) (int, error) {
+		return int(r - '0'), nil
+	})
+}
+
 func Atoi[T math2.Number](str string) T {
 	var zero T
 	switch any(zero).(type) {

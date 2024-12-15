@@ -42,7 +42,7 @@ func TestGreatestCommonDivisor(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := math2.GreatestCommonDivisor(c.a, c.b)
+		actual := math2.GCD(c.a, c.b)
 		if actual != c.expected {
 			t.Errorf("GreatestCommonDivisor(%d, %d) == %d, expected %d", c.a, c.b, actual, c.expected)
 		}
@@ -83,7 +83,7 @@ func TestLowestCommonMultiple(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := math2.LowestCommonMultiple(c.a, c.b)
+		actual := math2.LCM(c.a, c.b)
 		if actual != c.expected {
 			t.Errorf("LowestCommonMultiple(%d, %d) == %d, expected %d", c.a, c.b, actual, c.expected)
 		}

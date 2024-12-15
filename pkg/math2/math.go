@@ -17,12 +17,12 @@ type Number interface {
 }
 
 // LowestCommonMultiple returns the lowest common multiple of a and b.
-func LowestCommonMultiple[N Integer](a, b N) N {
-	return a / GreatestCommonDivisor(a, b) * b
+func LCM[N Integer](a, b N) N {
+	return (a / GCD(a, b)) * b
 }
 
 // GreatestCommonDivisor returns the greatest common divisor of a and b.
-func GreatestCommonDivisor[N Integer](a, b N) N {
+func GCD[N Integer](a, b N) N {
 	for b != 0 {
 		a, b = b, a%b
 	}
@@ -100,4 +100,16 @@ func Abs[T Number](a T) T {
 		return -a
 	}
 	return a
+}
+
+func Floor[T Number](a T) T {
+	return T(math.Floor(float64(a)))
+}
+
+func Log10[T Number](a T) T {
+	return T(math.Log10(float64(a)))
+}
+
+func Power[T Number](a, b T) T {
+	return T(math.Pow(float64(a), float64(b)))
 }
