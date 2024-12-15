@@ -93,6 +93,6 @@ func (d *Challenge[T, R]) solvePart1(input T) R {
 func (d *Challenge[T, R]) solvePart2(input T) R {
 	startTime := time.Now()
 	p1 := d.part2Solver(input)
-	log.Debug().Msgf("Part 1 took %v", time.Since(startTime))
+	log.Debug().Msgf("Part 2 took %v", time.Since(startTime))
 	return p1
 }

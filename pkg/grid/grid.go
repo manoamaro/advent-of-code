@@ -59,6 +59,16 @@ func (g *Grid[T]) ItemsSeq() iter.Seq[*T] {
 	}
 }
 
+func (g Grid[T]) Cells() []Cell {
+	var cells []Cell
+	for i := range g {
+		for j := range g[i] {
+			cells = append(cells, Cell{i, j})
+		}
+	}
+	return cells
+}
+
 func (g Grid[T]) FindFunc(f func(T) bool) *Cell {
 	for i := range g {
 		for j := range (g)[i] {
@@ -86,12 +96,24 @@ func (g Grid[T]) InBounds(c Cell) bool {
 	return c[0] >= 0 && c[0] < g.Rows() && c[1] >= 0 && c[1] < g.Cols()
 }
 
-func (g *Grid[T]) Adjacents(c Cell) map[Cell]*T {
+// Neighbors returns a map of adjacent cells and their corresponding values
+// for a given cell in the grid. It checks the four possible adjacent positions
+// (up, down, left, right) and returns a map with the adjacent cells as keys and
+// pointers to the corresponding values in the grid as values. nil is returned
+// for cells that are out of bounds.
+//
+// Parameters:
+//   - c: The cell for which to find the neighbors.
+//
+// Returns:
+//
+//	A map where the keys are the adjacent cells and the values are pointers to
+//	the corresponding values in the grid.
+func (g *Grid[T]) Neighbors(c Cell) map[Cell]*T {
 	adjacents := make(map[Cell]*T)
 	for _, d := range []Cell{{-1, 0}, {1, 0}, {0, -1}, {0, 1}} {
-		if adj := g.Get(c[0]+d[0], c[1]+d[1]); adj != nil {
-			adjacents[Cell{c[0] + d[0], c[1] + d[1]}] = adj
-		}
+		adj := g.Get(c[0]+d[0], c[1]+d[1])
+		adjacents[Cell{c[0] + d[0], c[1] + d[1]}] = adj
 	}
 	return adjacents
 }
@@ -100,7 +122,7 @@ func (g Grid[T]) String() string {
 	var b strings.Builder
 	for i := range g {
 		for j := range g[i] {
-			b.WriteString(fmt.Sprintf("%v", g[i][j]))
+			b.WriteString(fmt.Sprint(g[i][j]))
 		}
 		b.WriteString("\n")
 	}

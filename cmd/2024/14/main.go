@@ -4,7 +4,7 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 )
 
-var challenge = aoc.New({{.Year}}, {{.Day}}, aoc.StringProcessor, part1, part2)
+var challenge = aoc.New(2024, 14, aoc.StringProcessor, part1, part2)
 
 func main() {
 	challenge.Run()
