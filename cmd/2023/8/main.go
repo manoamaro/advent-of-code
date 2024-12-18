@@ -72,7 +72,7 @@ func part2(m inputMap) uint64 {
 	steps := uint64(1)
 
 	for _, v := range loopsSize {
-		steps = math2.LowestCommonMultiple(steps, v)
+		steps = math2.LCM(steps, v)
 	}
 
 	return steps
