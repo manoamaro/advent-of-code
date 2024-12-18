@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
@@ -35,17 +32,6 @@ func part1(input grid.Grid[rune]) int {
 		perimeters = append(perimeters, perimeter)
 	}
 	return collections.Sum(perimeters)
-}
-
-func print(g grid.Grid[rune]) {
-	var b strings.Builder
-	for i := range g {
-		for j := range g[i] {
-			b.WriteString(fmt.Sprintf("%c", g[i][j]))
-		}
-		b.WriteString("\n")
-	}
-	fmt.Println(b.String())
 }
 
 func part2(input grid.Grid[rune]) int {
@@ -99,7 +85,7 @@ func part2(input grid.Grid[rune]) int {
 func findFields(input grid.Grid[rune]) [][]grid.Cell {
 	cells := set.FromSlice(input.Cells())
 	fields := [][]grid.Cell{}
-	for len(cells) > 0 {
+	for cells.Len() > 0 {
 		cell := *cells.First()
 		field := exploreField(input, cell)
 		fields = append(fields, field)
@@ -124,7 +110,7 @@ func exploreField(input grid.Grid[rune], start grid.Cell) []grid.Cell {
 	for n := range queue.Seq() {
 		for nCell, nValue := range input.Neighbors(n) {
 			if nValue != nil && *value == *nValue {
-				if _, ok := seen[nCell]; !ok {
+				if seen.Contains(nCell) {
 					queue.Push(nCell)
 					seen.Add(nCell)
 				}
