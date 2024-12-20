@@ -8,13 +8,35 @@ type Entry[K comparable, V any] struct {
 	Value V
 }
 
-func New[K comparable, V any]() Map[K, V] {
-	return make(Map[K, V])
+func New[K comparable, V any](entries ...Entry[K, V]) Map[K, V] {
+	m := make(Map[K, V])
+	m.Add(entries...)
+	return m
+}
+
+func NewEntry[K comparable, V any](key K, value V) Entry[K, V] {
+	return Entry[K, V]{key, value}
 }
 
 func (m Map[K, V]) Get(key K) (V, bool) {
 	v, ok := m[key]
 	return v, ok
+}
+
+func (m *Map[K, V]) GetOrPanic(key K) *V {
+	v, ok := (*m)[key]
+	if !ok {
+		panic("key not found")
+	}
+	return &v
+}
+
+func (m Map[K, V]) GetOr(key K, defaultValue V) V {
+	v, ok := m[key]
+	if !ok {
+		return defaultValue
+	}
+	return v
 }
 
 func (m Map[K, V]) Set(key K, value V) {

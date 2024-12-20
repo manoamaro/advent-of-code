@@ -1,5 +1,7 @@
 package set
 
+import "fmt"
+
 type Set[T comparable] struct {
 	data map[T]bool
 }
@@ -10,6 +12,10 @@ func New[T comparable](items ...T) Set[T] {
 		s[v] = true
 	}
 	return Set[T]{data: s}
+}
+
+func Empty[T comparable]() Set[T] {
+	return Set[T]{data: make(map[T]bool)}
 }
 
 func FromSlice[T comparable](slice []T) Set[T] {
@@ -37,7 +43,7 @@ func (s *Set[T]) First() *T {
 	return nil
 }
 
-func (s *Set[T]) Slice() []T {
+func (s Set[T]) Slice() []T {
 	slice := make([]T, 0, len(s.data))
 	for v := range s.data {
 		slice = append(slice, v)
@@ -78,4 +84,8 @@ func (s Set[T]) Equals(other Set[T]) bool {
 
 func (s Set[T]) Len() int {
 	return len(s.data)
+}
+
+func (s Set[T]) String() string {
+	return fmt.Sprintf("%v", s.Slice())
 }
