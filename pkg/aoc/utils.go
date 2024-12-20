@@ -5,10 +5,18 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/joho/godotenv"
 	"manoamaro.github.com/advent-of-code/pkg/errors"
 )
+
+func GetSourceFilePath(file string) string {
+	_, path, _, _ := runtime.Caller(1)
+	path = filepath.Dir(path)
+	return filepath.Join(path, file)
+}
 
 func GetInput(year int, day int) string {
 
