@@ -30,6 +30,7 @@ func MapCharsToInts(in []rune) []int {
 
 func Atoi[T math2.Number](str string) T {
 	var zero T
+	str = strings.TrimSpace(str)
 	switch any(zero).(type) {
 	case int:
 		num, _ := strconv.Atoi(str)
