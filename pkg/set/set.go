@@ -55,6 +55,10 @@ func (s *Set[T]) RemoveAll(v []T) {
 	}
 }
 
+func (s *Set[T]) Clear() {
+	s.data = make(map[T]bool)
+}
+
 func (s Set[T]) Contains(v T) bool {
 	_, ok := s.data[v]
 	return ok
