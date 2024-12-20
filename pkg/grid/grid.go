@@ -7,7 +7,6 @@ import (
 )
 
 type Grid[T comparable] [][]T
-type Cell [2]int
 
 func New[T comparable](rows, cols int) Grid[T] {
 	grid := make([][]T, rows)
@@ -68,6 +67,9 @@ func (g Grid[T]) Cells() []Cell {
 	}
 	return cells
 }
+func (g Grid[T]) Find(value T) *Cell {
+	return g.FindFunc(func(v T) bool { return v == value })
+}
 
 func (g Grid[T]) FindFunc(f func(T) bool) *Cell {
 	for i := range g {
@@ -78,6 +80,10 @@ func (g Grid[T]) FindFunc(f func(T) bool) *Cell {
 		}
 	}
 	return nil
+}
+
+func (g Grid[T]) FindAll(value T) []Cell {
+	return g.FindAllFunc(func(v T) bool { return v == value })
 }
 
 func (g Grid[T]) FindAllFunc(f func(T) bool) []Cell {

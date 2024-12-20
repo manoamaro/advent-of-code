@@ -54,6 +54,14 @@ func FlatMap[T any, U any](in []T, f func(T) []U) []U {
 	return r
 }
 
+func Fold[T any, U any](in []T, initial U, f func(U, T) U) U {
+	r := initial
+	for _, v := range in {
+		r = f(r, v)
+	}
+	return r
+}
+
 func Reverse[T any](input []T) []T {
 	r := make([]T, len(input))
 	for i, v := range input {
