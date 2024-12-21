@@ -34,7 +34,7 @@ func parseInput(input string) []int {
 
 func combo(i, a, b, c int) int {
 	switch {
-	case i < 4:
+	case i <= 3:
 		return i
 	case i == 4:
 		return a
@@ -42,8 +42,6 @@ func combo(i, a, b, c int) int {
 		return b
 	case i == 6:
 		return c
-	case i == 7:
-		fallthrough
 	default:
 		panic("invalid combo")
 	}
@@ -51,34 +49,32 @@ func combo(i, a, b, c int) int {
 
 func solve(prog []int, rA, rB, rC int) []int {
 	out := []int{}
-	i := 0
-	for {
-		if i >= len(prog) {
-			break
-		}
-		op := prog[i]
-		switch op {
-		case 0:
-			rA >>= combo(prog[i+1], rA, rB, rC)
-		case 1:
-			rB ^= prog[i+1]
-		case 2:
-			rB = combo(prog[i+1], rA, rB, rC) & 7
-		case 3:
+	pointer := 0
+	for pointer < len(prog) {
+		inst := prog[pointer]
+		op := prog[pointer+1]
+		switch inst {
+		case 0: // adv
+			rA >>= combo(op, rA, rB, rC)
+		case 1: // bxl
+			rB ^= op
+		case 2: // bst
+			rB = combo(op, rA, rB, rC) % 8
+		case 3: // jnz
 			if rA != 0 {
-				i = prog[i+1]
+				pointer = op
 				continue
 			}
-		case 4:
+		case 4: // bxc
 			rB ^= rC
-		case 5:
-			out = append(out, combo(prog[i+1], rA, rB, rC)&7)
-		case 6:
-			rB = rA >> combo(prog[i+1], rA, rB, rC)
-		case 7:
-			rC = rA >> combo(prog[i+1], rA, rB, rC)
+		case 5: // out
+			out = append(out, combo(op, rA, rB, rC)%8)
+		case 6: // bdv
+			rB = rA >> combo(op, rA, rB, rC)
+		case 7: // cdv
+			rC = rA >> combo(op, rA, rB, rC)
 		}
-		i += 2
+		pointer += 2
 	}
 	return out
 }
