@@ -83,7 +83,7 @@ func part2(input grid.Grid[rune]) int {
 // Returns:
 //   - A slice of slices of grid.Cell, where each inner slice represents a distinct field of connected cells.
 func findFields(input grid.Grid[rune]) [][]grid.Cell {
-	cells := set.FromSlice(input.Cells())
+	cells := set.New(input.Cells()...)
 	fields := [][]grid.Cell{}
 	for cells.Len() > 0 {
 		cell := *cells.First()
@@ -106,12 +106,12 @@ func findFields(input grid.Grid[rune]) [][]grid.Cell {
 func exploreField(input grid.Grid[rune], start grid.Cell) []grid.Cell {
 	value := input.Get(start[0], start[1])
 	seen := set.New[grid.Cell](start)
-	queue := queue.New[grid.Cell](start)
-	for n := range queue.Seq() {
+	q := queue.New[grid.Cell](start)
+	for n := range q.Seq() {
 		for nCell, nValue := range input.Neighbors(n) {
 			if nValue != nil && *value == *nValue {
 				if seen.Contains(nCell) {
-					queue.Push(nCell)
+					q.Push(nCell)
 					seen.Add(nCell)
 				}
 			}

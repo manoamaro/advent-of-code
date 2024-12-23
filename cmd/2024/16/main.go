@@ -134,22 +134,23 @@ func part2(input grid.Grid[byte]) int {
 		}
 	}
 
-	queue := deque.New(endStates.Slice()...)
+	q := deque.New(endStates.Slice()...)
 	seen := set.New[value](endStates.Slice()...)
-	for state := range queue.SeqFront() {
-		b := backtrack.GetOr(state, set.Empty[value]())
+	for state := range q.SeqFront() {
+		b := backtrack.GetOr(state, set.New[value]())
 		for _, last := range b.Slice() {
 			if seen.Contains(last) {
 				continue
 			}
 			seen.Add(last)
-			queue.PushBack(last)
+			q.PushBack(last)
 		}
 	}
 	seenCells := collections.Map(seen.Slice(), func(v value) grid.Cell {
 		return v.pos
 	})
-	uniqueCells := set.New(seenCells...).Slice()
+	s := set.New(seenCells...)
+	uniqueCells := s.Slice()
 	slices.SortFunc(uniqueCells, func(a, b grid.Cell) int {
 		return a[0] - b[0]
 	})
