@@ -38,16 +38,12 @@ type value struct {
 }
 
 func findPath(memory grid.Grid[bool], start grid.Cell, end grid.Cell) int {
-	queue := queue.New(value{cell: start, dist: 0})
+	q := queue.New(value{cell: start, dist: 0})
 	seen := set.New(start)
 
-	for v := range queue.Seq() {
-		for _, dir := range []grid.Dir{grid.Up, grid.Right, grid.Down, grid.Left} {
-			next := v.cell.Move(dir)
-			if !memory.InBounds(next) {
-				continue
-			}
-			if *memory.Get(next[0], next[1]) {
+	for v := range q.Seq() {
+		for next, nextValue := range memory.Neighbors(v.cell) {
+			if *nextValue {
 				continue
 			}
 			if seen.Contains(next) {
@@ -57,7 +53,7 @@ func findPath(memory grid.Grid[bool], start grid.Cell, end grid.Cell) int {
 				return v.dist + 1
 			}
 			seen.Add(next)
-			queue.Push(value{cell: next, dist: v.dist + 1})
+			q.Push(value{cell: next, dist: v.dist + 1})
 		}
 	}
 	return 0

@@ -23,10 +23,10 @@ func main() {
 	challenge.Run()
 }
 
-var width, height int = 0, 0
+var width, height = 0, 0
 
 func parseInput(input string) []robot {
-	regex := regexp.MustCompile(`^p\=(\-?\d+)\,(\-?\d+) v\=(\-?\d+),(\-?\d+)$`)
+	regex := regexp.MustCompile(`^p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)$`)
 	res := []robot{}
 	for _, line := range strings.Split(input, "\n") {
 		parts := regex.FindAllStringSubmatch(line, -1)

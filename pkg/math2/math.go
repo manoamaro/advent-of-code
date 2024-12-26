@@ -77,8 +77,8 @@ func Summation[T Number](n T) T {
 // ManhattanDistance calculates the Manhattan distance between two points in a 2D space.
 // It takes two integer slices, 'a' and 'b', representing the coordinates of the two points.
 // The function returns the Manhattan distance as an integer.
-func ManhattanDistance[T Integer](a, b []T) T {
-	return T(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
+func ManhattanDistance[T Integer](a, b [2]T) T {
+	return Abs(a[0]-b[0]) + Abs(a[1]-b[1])
 }
 
 func Max[T Number](a, b T) T {

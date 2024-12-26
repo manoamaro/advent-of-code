@@ -24,8 +24,8 @@ func parseInput(input string) []block {
 		if i%2 == 0 {
 			id = i / 2
 		}
-		len := int(c - 48) // simple conversion from char [0-9] to int
-		blocks = append(blocks, block{id, len})
+		l := int(c - 48) // simple conversion from char [0-9] to int
+		blocks = append(blocks, block{id, l})
 	}
 	return blocks
 }

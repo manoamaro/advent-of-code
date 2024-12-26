@@ -1,6 +1,7 @@
 package aoc
 
 import (
+	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/grid"
@@ -18,6 +19,17 @@ func StringProcessor(input string) string {
 func LinesProcessor() InputProcessor[[]string] {
 	return func(input string) []string {
 		return strings.Split(input, "\n")
+	}
+}
+
+func GridProcessor[T comparable](f func(rune) T) InputProcessor[grid.Grid[T]] {
+	return func(input string) grid.Grid[T] {
+		lines := strings.Split(input, "\n")
+		var g grid.Grid[T]
+		for _, line := range lines {
+			g = append(g, collections.Map([]rune(line), f))
+		}
+		return g
 	}
 }
 

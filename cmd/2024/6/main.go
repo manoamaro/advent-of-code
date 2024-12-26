@@ -37,14 +37,14 @@ type guard struct {
 func parseInput(input string) grid.Grid[byte] {
 	input = strings.TrimSpace(input)
 	lines := strings.Split(input, "\n")
-	grid := make(grid.Grid[byte], len(lines))
+	g := make(grid.Grid[byte], len(lines))
 	for i, line := range lines {
-		grid[i] = make([]byte, len(line))
+		g[i] = make([]byte, len(line))
 		for j, char := range line {
-			grid[i][j] = byte(char)
+			g[i][j] = byte(char)
 		}
 	}
-	return grid
+	return g
 }
 
 func findGuard(grid grid.Grid[byte]) guard {

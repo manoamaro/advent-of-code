@@ -88,7 +88,7 @@ func part1(in input) int {
 				boxes = append(boxes, next)
 			}
 		}
-		print(warehouse)
+		p(warehouse)
 	}
 	boxes := warehouse.FindAll('O')
 	return collections.Fold(boxes, 0, func(acc int, box grid.Cell) int {
@@ -117,7 +117,7 @@ func part2(in input) int {
 	robot := *warehouse.Find('@')
 
 	for _, m := range in.movements {
-		print(warehouse)
+		p(warehouse)
 
 		dir := dirMap[m]
 		nextRobot := robot.Move(dir)
@@ -130,9 +130,9 @@ func part2(in input) int {
 		}
 
 		if nextPos == '[' || nextPos == ']' {
-			queue := queue.New(nextRobot)
+			q := queue.New(nextRobot)
 			seen := set.New[grid.Cell]()
-			for n := range queue.Seq() {
+			for n := range q.Seq() {
 				if seen.Contains(n) {
 					continue
 				}
@@ -142,15 +142,15 @@ func part2(in input) int {
 				}
 				seen.Add(n)
 				if v == '[' {
-					queue.Push(n.Move(grid.Right))
+					q.Push(n.Move(grid.Right))
 				} else if v == ']' {
-					queue.Push(n.Move(grid.Left))
+					q.Push(n.Move(grid.Left))
 				} else if v == '#' {
 					// hit a wall, cannot move
 					seen.Clear()
 					break
 				}
-				queue.Push(n.Move(dir))
+				q.Push(n.Move(dir))
 			}
 			if seen.Len() == 0 {
 				continue
@@ -175,14 +175,14 @@ func part2(in input) int {
 		}
 	}
 
-	print(warehouse)
+	p(warehouse)
 	boxes := warehouse.FindAll('[')
 	return collections.Fold(boxes, 0, func(acc int, box grid.Cell) int {
 		return acc + (box[0] * 100) + box[1]
 	})
 }
 
-func print(warehouse grid.Grid[byte]) {
+func p(warehouse grid.Grid[byte]) {
 	buffer := strings.Builder{}
 	buffer.WriteRune('\n')
 	for _, c := range warehouse {

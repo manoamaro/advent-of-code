@@ -42,12 +42,12 @@ func part2(matrix [][]bool) int {
 	return sum
 }
 
-func findGalaxies(input [][]bool) [][]int {
-	galaxies := make([][]int, 0)
+func findGalaxies(input [][]bool) [][2]int {
+	galaxies := make([][2]int, 0)
 	for i := 0; i < len(input); i++ {
 		for j := 0; j < len(input[i]); j++ {
 			if input[i][j] {
-				galaxies = append(galaxies, []int{i, j})
+				galaxies = append(galaxies, [2]int{i, j})
 			}
 		}
 	}
@@ -69,7 +69,7 @@ func parseMatrixRaw(input []string) [][]bool {
 	return output
 }
 
-func expandGalaxySpaces(input [][]bool, size int) [][]int {
+func expandGalaxySpaces(input [][]bool, size int) [][2]int {
 	galaxies := findGalaxies(input)
 	newGalaxies := findGalaxies(input)
 	for i := 0; i < len(input); i++ {

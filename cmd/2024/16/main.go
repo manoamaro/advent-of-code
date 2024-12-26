@@ -28,13 +28,13 @@ type value struct {
 
 func parseInput(input string) grid.Grid[byte] {
 	lines := strings.Split(input, "\n")
-	grid := grid.New[byte](len(lines), len(lines[0]))
+	g := grid.New[byte](len(lines), len(lines[0]))
 	for i, line := range lines {
 		for j, c := range line {
-			grid[i][j] = byte(c)
+			g[i][j] = byte(c)
 		}
 	}
-	return grid
+	return g
 }
 
 func part1(input grid.Grid[byte]) int {

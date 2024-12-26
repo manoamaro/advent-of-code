@@ -117,18 +117,18 @@ func TestSummation(t *testing.T) {
 
 func TestManhattanDistance(t *testing.T) {
 	cases := []struct {
-		a, b     []int
+		a, b     [2]int
 		expected int
 	}{
-		{a: []int{0, 0}, b: []int{0, 0}, expected: 0},
-		{a: []int{0, 0}, b: []int{1, 0}, expected: 1},
-		{a: []int{0, 0}, b: []int{0, 1}, expected: 1},
-		{a: []int{0, 0}, b: []int{1, 1}, expected: 2},
-		{a: []int{1, 1}, b: []int{0, 0}, expected: 2},
-		{a: []int{-1, -1}, b: []int{0, 0}, expected: 2},
-		{a: []int{0, 0}, b: []int{-1, -1}, expected: 2},
-		{a: []int{1, 1}, b: []int{-1, -1}, expected: 4},
-		{a: []int{-1, -1}, b: []int{1, 1}, expected: 4},
+		{a: [2]int{0, 0}, b: [2]int{0, 0}, expected: 0},
+		{a: [2]int{0, 0}, b: [2]int{1, 0}, expected: 1},
+		{a: [2]int{0, 0}, b: [2]int{0, 1}, expected: 1},
+		{a: [2]int{0, 0}, b: [2]int{1, 1}, expected: 2},
+		{a: [2]int{1, 1}, b: [2]int{0, 0}, expected: 2},
+		{a: [2]int{-1, -1}, b: [2]int{0, 0}, expected: 2},
+		{a: [2]int{0, 0}, b: [2]int{-1, -1}, expected: 2},
+		{a: [2]int{1, 1}, b: [2]int{-1, -1}, expected: 4},
+		{a: [2]int{-1, -1}, b: [2]int{1, 1}, expected: 4},
 	}
 
 	for _, c := range cases {

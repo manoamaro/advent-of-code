@@ -14,7 +14,7 @@ func main() {
 }
 
 func part1(input string) int {
-	regex := regexp.MustCompile(`mul\((\d+)\,(\d+)\)`)
+	regex := regexp.MustCompile(`mul\((\d+),(\d+)\)`)
 	matches := regex.FindAllStringSubmatch(input, -1)
 	sum := 0
 	for _, match := range matches {
@@ -25,7 +25,7 @@ func part1(input string) int {
 }
 
 func part2(input string) int {
-	regex := regexp.MustCompile(`(mul\((\d+)\,(\d+)\))|(do\(\))|(don't\(\))`)
+	regex := regexp.MustCompile(`(mul\((\d+),(\d+)\))|(do\(\))|(don't\(\))`)
 	matches := regex.FindAllStringSubmatch(input, -1)
 	sum := 0
 	enabled := true

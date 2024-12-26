@@ -56,7 +56,7 @@ func TestGridInBounds(t *testing.T) {
 	}
 }
 
-func TestGridItemsSeq(t *testing.T) {
+func TestGridValuesSeq(t *testing.T) {
 	g := grid.New[int](3, 3)
 	g.Set(0, 0, 1)
 	g.Set(0, 1, 2)
@@ -68,7 +68,7 @@ func TestGridItemsSeq(t *testing.T) {
 	g.Set(2, 1, 8)
 	g.Set(2, 2, 9)
 	var items []int
-	for item := range g.ItemsSeq() {
+	for item := range g.ValuesSeq() {
 		items = append(items, *item)
 	}
 	expected := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}

@@ -43,7 +43,7 @@ func part1(input [][]string) int {
 			count++
 		}
 	}
-	print(input, antinodes)
+	p(input, antinodes)
 	return count
 }
 
@@ -86,11 +86,11 @@ func part2(input [][]string) int {
 			count++
 		}
 	}
-	print(input, antinodes)
+	p(input, antinodes)
 	return count
 }
 
-func print(input [][]string, antinodes maps.Map[[2]int, bool]) {
+func p(input [][]string, antinodes maps.Map[[2]int, bool]) {
 	for r, row := range input {
 		s := ""
 		for c, cell := range row {

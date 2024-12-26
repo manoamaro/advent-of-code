@@ -22,8 +22,8 @@ func main() {
 }
 
 func parseInput(input string) []machine {
-	btnRegexp := regexp.MustCompile(`^Button [AB]\: X\+(\d+)\, Y\+(\d+)$`)
-	priceRegexp := regexp.MustCompile(`Prize\: X\=(\d+)\, Y\=(\d+)$`)
+	btnRegexp := regexp.MustCompile(`^Button [AB]: X\+(\d+), Y\+(\d+)$`)
+	priceRegexp := regexp.MustCompile(`Prize: X=(\d+), Y=(\d+)$`)
 	machines := strings.Split(input, "\n\n")
 	var res []machine
 	for _, m := range machines {
