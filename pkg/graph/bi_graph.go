@@ -2,7 +2,6 @@ package graph
 
 import (
 	"fmt"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 	"math"
@@ -12,25 +11,8 @@ import (
 
 type Edge[T comparable, V any] struct {
 	To     *T
-	Weight int
 	Value  V
-}
-
-type BiGraph[T comparable, V any] struct {
-	Edges map[T][]Edge[T, V]
-}
-
-func NewBiGraph[T comparable, V any]() *BiGraph[T, V] {
-	return &BiGraph[T, V]{Edges: make(map[T][]Edge[T, V])}
-}
-
-func (g *BiGraph[T, V]) AddEdge(from, to T, weight1, weight2 int, value1, value2 V) {
-	g.AddEdgeOneWay(from, to, weight1, value1)
-	g.AddEdgeOneWay(to, from, weight2, value2)
-}
-
-func (g *BiGraph[T, V]) AddEdgeOneWay(from, to T, weight int, value V) {
-	g.Edges[from] = append(g.Edges[from], Edge[T, V]{To: &to, Weight: weight, Value: value})
+	Weight int
 }
 
 type NodeValue[T comparable, V any] struct {
@@ -40,64 +22,85 @@ type NodeValue[T comparable, V any] struct {
 
 type Path[T comparable] []T
 
-func (g *BiGraph[T, V]) FindShortestPathBetween(start, end T) Path[T] {
+type Graph[T comparable, V any] struct {
+	Edges map[T][]Edge[T, V]
+}
+
+func New[T comparable, V any]() *Graph[T, V] {
+	return &Graph[T, V]{Edges: make(map[T][]Edge[T, V])}
+}
+
+func (g *Graph[T, V]) AddTwoWayEdge(from, to T, weight1, weight2 int, value1, value2 V) {
+	g.AddOneWayEdge(from, to, weight1, value1)
+	g.AddOneWayEdge(to, from, weight2, value2)
+}
+
+func (g *Graph[T, V]) AddOneWayEdge(from, to T, weight int, value V) {
+	g.Edges[from] = append(g.Edges[from], Edge[T, V]{To: &to, Weight: weight, Value: value})
+}
+
+func (g *Graph[T, V]) FindShortestPathBetween(start, end T) Path[T] {
 	var result Path[T]
 	pq := queue.NewPriorityQueue[Path[T]]()
 	pq.PushValue(Path[T]{start}, 0)
 	seen := set.New[T]()
 	best := math.MaxInt
-	for currPath, prio := range pq.SeqPriority() {
+	for currPath, prior := range pq.SeqPriority() {
 		currIndex := len(currPath) - 1
 		currNode := currPath[currIndex]
 		seen.Add(currNode)
-		if currNode == end && prio < best {
+		if currNode == end && prior < best {
 			result = currPath
-			best = prio
+			best = prior
 			continue
 		}
 		for _, edge := range g.Edges[currNode] {
-			if seen.Contains(*edge.To) || prio+edge.Weight >= best {
+			if seen.Contains(*edge.To) || prior+edge.Weight >= best {
 				continue
 			}
 			newPath := slices.Clone(currPath)
 			newPath = append(newPath, *edge.To)
-			pq.PushValue(newPath, prio+edge.Weight)
+			pq.PushValue(newPath, prior+edge.Weight)
 		}
 	}
 	return result
 }
 
-func (g *BiGraph[T, V]) FindShortestPathsBetween(start, end T) []Path[T] {
+func (g *Graph[T, V]) FindShortestPathsBetween(start, end T) []Path[T] {
 	var results []Path[T]
 	pq := queue.NewPriorityQueue[Path[T]]()
 	pq.PushValue(Path[T]{start}, 0)
 	seen := set.New[T]()
 	best := math.MaxInt
-	for currPath, prio := range pq.SeqPriority() {
+	for currPath, prior := range pq.SeqPriority() {
 		currIndex := len(currPath) - 1
 		currNode := currPath[currIndex]
 		seen.Add(currNode)
-		if currNode == end && prio <= best {
+		if currNode == end && prior <= best {
 			results = append(results, currPath)
-			best = prio
+			best = prior
 			continue
 		}
 		for _, edge := range g.Edges[currNode] {
-			if seen.Contains(*edge.To) || prio+edge.Weight >= best {
+			if seen.Contains(*edge.To) || prior+edge.Weight >= best {
 				continue
 			}
 			newPath := slices.Clone(currPath)
 			newPath = append(newPath, *edge.To)
-			pq.PushValue(newPath, prio+edge.Weight)
+			pq.PushValue(newPath, prior+edge.Weight)
 		}
 	}
-	return collections.FilterFunc(results, func(p Path[T]) bool { return len(p) == best+1 })
+	return results
 }
 
-func (g *BiGraph[T, V]) String() string {
+func (g *Graph[T, V]) String() string {
 	var sb strings.Builder
 	for k, v := range g.Edges {
-		sb.WriteString(fmt.Sprintf("%v -> %v\n", k, v))
+		sb.WriteString(fmt.Sprintf("%v -> ", k))
+		for _, e := range v {
+			sb.WriteString(fmt.Sprintf("%s ", &e))
+		}
+		sb.WriteString("\n")
 	}
 	return sb.String()
 }

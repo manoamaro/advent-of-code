@@ -1,14 +1,15 @@
 package collections
 
 import (
-	"fmt"
 	"iter"
 	m "manoamaro.github.com/advent-of-code/pkg/math2"
 	"slices"
 )
 
+// SortFunc defines a function type for sorting elements of type T.
 type SortFunc[T comparable] func(a, b T) int
 
+// Sum calculates the sum of a slice of numbers.
 func Sum[N m.Number](v []N) N {
 	r := N(0)
 	for _, i := range v {
@@ -17,6 +18,7 @@ func Sum[N m.Number](v []N) N {
 	return r
 }
 
+// Map applies a function to each element of a slice and returns a new slice with the results.
 func Map[T any, U any](in []T, f func(T) U) []U {
 	r := make([]U, len(in))
 	for i, v := range in {
@@ -25,16 +27,7 @@ func Map[T any, U any](in []T, f func(T) U) []U {
 	return r
 }
 
-func MapSeq[T any, U any](in []T, f func(T) U) iter.Seq[U] {
-	return func(yield func(U) bool) {
-		for _, v := range in {
-			if !yield(f(v)) {
-				return
-			}
-		}
-	}
-}
-
+// MapNotError applies a function to each element of a slice and returns a new slice with the results, ignoring errors.
 func MapNotError[T any, U any](in []T, f func(T) (U, error)) []U {
 	r := make([]U, 0)
 	for _, v := range in {
@@ -46,6 +39,7 @@ func MapNotError[T any, U any](in []T, f func(T) (U, error)) []U {
 	return r
 }
 
+// FlatMap applies a function to each element of a slice and flattens the results into a single slice.
 func FlatMap[T any, U any](in []T, f func(T) []U) []U {
 	r := make([]U, 0)
 	for _, v := range in {
@@ -54,6 +48,7 @@ func FlatMap[T any, U any](in []T, f func(T) []U) []U {
 	return r
 }
 
+// Fold reduces a slice to a single value using a provided function and an initial value.
 func Fold[T any, U any](in []T, initial U, f func(U, T) U) U {
 	r := initial
 	for _, v := range in {
@@ -62,6 +57,7 @@ func Fold[T any, U any](in []T, initial U, f func(U, T) U) U {
 	return r
 }
 
+// Reverse returns a new slice with the elements of the input slice in reverse order.
 func Reverse[T any](input []T) []T {
 	r := make([]T, len(input))
 	for i, v := range input {
@@ -70,25 +66,7 @@ func Reverse[T any](input []T) []T {
 	return r
 }
 
-func PrintSlice[T any](input []T) {
-	fmt.Print("[")
-	for _, v := range input {
-		fmt.Printf("%v,", v)
-	}
-	fmt.Println("]")
-}
-
-func Count[T comparable](input []T, value T) int {
-	r := 0
-	for _, v := range input {
-		if v == value {
-			r++
-		}
-	}
-	return r
-}
-
-// Diff returns the elements in a that aren't in b.
+// Diff returns the elements in slice a that aren't in slice b.
 func Diff[T comparable](a, b []T) []T {
 	mb := make(map[T]struct{}, len(b))
 	for _, x := range b {
@@ -103,6 +81,7 @@ func Diff[T comparable](a, b []T) []T {
 	return diff
 }
 
+// SlideSeq returns a sequence of slices of a given size from the input slice.
 func SlideSeq[T any](s []T, size int) iter.Seq[[]T] {
 	if size <= 0 {
 		return nil
@@ -116,6 +95,7 @@ func SlideSeq[T any](s []T, size int) iter.Seq[[]T] {
 	}
 }
 
+// Combinations returns all combinations of a given size from the input slice.
 func Combinations[T any](s []T, size int) [][]T {
 	if size == 0 {
 		return [][]T{{}}
@@ -139,6 +119,7 @@ func Combinations[T any](s []T, size int) [][]T {
 	return r
 }
 
+// Delete removes the element at the specified index from the slice and returns the new slice.
 func Delete[T any](s []T, i int) []T {
 	if i < 0 || i >= len(s) {
 		return s
@@ -149,6 +130,7 @@ func Delete[T any](s []T, i int) []T {
 	return cp
 }
 
+// FirstFunc returns a pointer to the first element in the slice that satisfies the provided function.
 func FirstFunc[T any](s []T, f func(i T) bool) *T {
 	for _, v := range s {
 		if f(v) {
@@ -158,6 +140,7 @@ func FirstFunc[T any](s []T, f func(i T) bool) *T {
 	return nil
 }
 
+// FilterFunc returns a new slice containing only the elements that satisfy the provided function.
 func FilterFunc[T any](s []T, f func(i T) bool) []T {
 	r := make([]T, 0, len(s))
 	for _, v := range s {
@@ -166,4 +149,19 @@ func FilterFunc[T any](s []T, f func(i T) bool) []T {
 		}
 	}
 	return slices.Clip(r)
+}
+
+// ProductFunc returns a new slice containing the results of applying a function to all pairs of elements from two slices.
+func ProductFunc[T any](s1, s2 []T, f func(a, b T) T) []T {
+	if len(s1) == 0 {
+		return s2
+	}
+	totalCombinations := len(s1) * len(s2)
+	combinations := make([]T, 0, totalCombinations)
+	for _, v1 := range s1 {
+		for _, v2 := range s2 {
+			combinations = append(combinations, f(v1, v2))
+		}
+	}
+	return combinations
 }
