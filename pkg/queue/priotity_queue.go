@@ -19,16 +19,16 @@ func NewPriorityQueue[T any]() *PriorityQueue[T] {
 	return &res
 }
 
-func (pq PriorityQueue[T]) Len() int { return len(pq) }
+func (pq *PriorityQueue[T]) Len() int { return len(*pq) }
 
-func (pq PriorityQueue[T]) Less(i, j int) bool {
-	return pq[i].Priority < pq[j].Priority
+func (pq *PriorityQueue[T]) Less(i, j int) bool {
+	return (*pq)[i].Priority < (*pq)[j].Priority
 }
 
-func (pq PriorityQueue[T]) Swap(i, j int) {
-	pq[i], pq[j] = pq[j], pq[i]
-	pq[i].index = i
-	pq[j].index = j
+func (pq *PriorityQueue[T]) Swap(i, j int) {
+	(*pq)[i], (*pq)[j] = (*pq)[j], (*pq)[i]
+	(*pq)[i].index = i
+	(*pq)[j].index = j
 }
 
 func (pq *PriorityQueue[T]) Push(x any) {

@@ -3,8 +3,8 @@ package collections
 import (
 	"fmt"
 	"iter"
-
 	m "manoamaro.github.com/advent-of-code/pkg/math2"
+	"slices"
 )
 
 type SortFunc[T comparable] func(a, b T) int
@@ -132,7 +132,7 @@ func Combinations[T any](s []T, size int) [][]T {
 	}
 	var r [][]T
 	for i, v := range s {
-		for _, c := range Combinations(s[i+1:], size-1) {
+		for _, c := range Combinations[T](s[i+1:], size-1) {
 			r = append(r, append([]T{v}, c...))
 		}
 	}
@@ -147,4 +147,23 @@ func Delete[T any](s []T, i int) []T {
 	copy(cp, s[:i])
 	copy(cp[i:], s[i+1:])
 	return cp
+}
+
+func FirstFunc[T any](s []T, f func(i T) bool) *T {
+	for _, v := range s {
+		if f(v) {
+			return &v
+		}
+	}
+	return nil
+}
+
+func FilterFunc[T any](s []T, f func(i T) bool) []T {
+	r := make([]T, 0, len(s))
+	for _, v := range s {
+		if f(v) {
+			r = append(r, v)
+		}
+	}
+	return slices.Clip(r)
 }
