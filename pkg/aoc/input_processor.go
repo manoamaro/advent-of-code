@@ -22,6 +22,10 @@ func LinesProcessor() InputProcessor[[]string] {
 	}
 }
 
+func IntLinesProcessor(input string) []int {
+	return strings2.MapToInt(strings.Split(input, "\n"))
+}
+
 func GridProcessor[T comparable](f func(rune) T) InputProcessor[grid.Grid[T]] {
 	return func(input string) grid.Grid[T] {
 		lines := strings.Split(input, "\n")
