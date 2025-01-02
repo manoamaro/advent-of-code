@@ -2,8 +2,8 @@
 This repository contains my solutions to the [Advent of Code](https://adventofcode.com/) challenges.
 
 ## 2024
-![2024](https://img.shields.io/badge/stars%20⭐-40-yellow)
-![2024](https://img.shields.io/badge/days%20completed-20-red)
+![2024](https://img.shields.io/badge/stars%20⭐-44-yellow)
+![2024](https://img.shields.io/badge/days%20completed-22-red)
 
 ## 2023
 ![2023](https://img.shields.io/badge/stars%20⭐-38-yellow)
