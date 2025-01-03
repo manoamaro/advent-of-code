@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"strings"
+
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/graph"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
-	"math"
-	"strings"
 )
 
 var challenge = aoc.New(2024, 21, aoc.StringProcessor, part1, part2)
@@ -50,7 +51,7 @@ func init() {
 func buildPathFromValues(g *graph.Graph[rune, rune], seq []rune) string {
 	sb := strings.Builder{}
 	for c := range collections.SlideSeq(seq, 2) {
-		edges := g.Edges[c[0]]
+		edges := g.edges[c[0]]
 		edge := collections.FirstFunc(edges, func(e graph.Edge[rune, rune]) bool {
 			return *e.To == c[1]
 		})

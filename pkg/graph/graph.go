@@ -2,11 +2,14 @@ package graph
 
 import (
 	"fmt"
-	"manoamaro.github.com/advent-of-code/pkg/queue"
-	"manoamaro.github.com/advent-of-code/pkg/set"
 	"math"
 	"slices"
 	"strings"
+
+	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/queue"
+	"manoamaro.github.com/advent-of-code/pkg/set"
 )
 
 type Edge[T comparable, V any] struct {
@@ -23,11 +26,11 @@ type NodeValue[T comparable, V any] struct {
 type Path[T comparable] []T
 
 type Graph[T comparable, V any] struct {
-	Edges map[T][]Edge[T, V]
+	edges map[T][]Edge[T, V]
 }
 
 func New[T comparable, V any]() *Graph[T, V] {
-	return &Graph[T, V]{Edges: make(map[T][]Edge[T, V])}
+	return &Graph[T, V]{edges: make(map[T][]Edge[T, V])}
 }
 
 func (g *Graph[T, V]) AddTwoWayEdge(from, to T, weight1, weight2 int, value1, value2 V) {
@@ -36,7 +39,33 @@ func (g *Graph[T, V]) AddTwoWayEdge(from, to T, weight1, weight2 int, value1, va
 }
 
 func (g *Graph[T, V]) AddOneWayEdge(from, to T, weight int, value V) {
-	g.Edges[from] = append(g.Edges[from], Edge[T, V]{To: &to, Weight: weight, Value: value})
+	g.edges[from] = append(g.edges[from], Edge[T, V]{To: &to, Weight: weight, Value: value})
+}
+
+func (g *Graph[T, V]) HasEdge(a, b T) bool {
+	for _, edge := range g.edges[a] {
+		if *edge.To == b {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *Graph[T, V]) Edges() maps.Map[T, []T] {
+	edges := maps.New[T, []T]()
+	for k, v := range g.edges {
+		neighbors := collections.Map(v, func(e Edge[T, V]) T { return *e.To })
+		edges.Set(k, neighbors)
+	}
+	return edges
+}
+
+func (g *Graph[T, V]) Neighbors(node T) []T {
+	neighbors := make([]T, len(g.edges[node]))
+	for i, edge := range g.edges[node] {
+		neighbors[i] = *edge.To
+	}
+	return neighbors
 }
 
 func (g *Graph[T, V]) FindShortestPathBetween(start, end T) Path[T] {
@@ -54,7 +83,7 @@ func (g *Graph[T, V]) FindShortestPathBetween(start, end T) Path[T] {
 			best = prior
 			continue
 		}
-		for _, edge := range g.Edges[currNode] {
+		for _, edge := range g.edges[currNode] {
 			if seen.Contains(*edge.To) || prior+edge.Weight >= best {
 				continue
 			}
@@ -81,7 +110,7 @@ func (g *Graph[T, V]) FindShortestPathsBetween(start, end T) []Path[T] {
 			best = prior
 			continue
 		}
-		for _, edge := range g.Edges[currNode] {
+		for _, edge := range g.edges[currNode] {
 			if seen.Contains(*edge.To) || prior+edge.Weight >= best {
 				continue
 			}
@@ -95,7 +124,7 @@ func (g *Graph[T, V]) FindShortestPathsBetween(start, end T) []Path[T] {
 
 func (g *Graph[T, V]) String() string {
 	var sb strings.Builder
-	for k, v := range g.Edges {
+	for k, v := range g.edges {
 		sb.WriteString(fmt.Sprintf("%v -> ", k))
 		for _, e := range v {
 			sb.WriteString(fmt.Sprintf("%s ", &e))
