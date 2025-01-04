@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 )
@@ -51,8 +51,8 @@ func (g *Graph[T, V]) HasEdge(a, b T) bool {
 	return false
 }
 
-func (g *Graph[T, V]) Edges() maps.Map[T, []T] {
-	edges := maps.New[T, []T]()
+func (g *Graph[T, V]) Edges() maps2.Map[T, []T] {
+	edges := maps2.New[T, []T]()
 	for k, v := range g.edges {
 		neighbors := collections.Map(v, func(e Edge[T, V]) T { return *e.To })
 		edges.Set(k, neighbors)
@@ -66,6 +66,15 @@ func (g *Graph[T, V]) Neighbors(node T) []T {
 		neighbors[i] = *edge.To
 	}
 	return neighbors
+}
+
+func (g *Graph[T, V]) GetEdge(from, to T) *Edge[T, V] {
+	for _, edge := range g.edges[from] {
+		if *edge.To == to {
+			return &edge
+		}
+	}
+	return nil
 }
 
 func (g *Graph[T, V]) FindShortestPathBetween(start, end T) Path[T] {

@@ -1,4 +1,4 @@
-package maps
+package maps2
 
 type MultiMap[K comparable, V any] map[K][]V
 

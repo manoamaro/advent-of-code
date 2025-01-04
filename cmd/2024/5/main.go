@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/strings2"
 )
 
@@ -20,11 +20,11 @@ type Rule struct {
 }
 
 type Input struct {
-	rules                                   maps.Map[Rule, bool]
+	rules                                   maps2.Map[Rule, bool]
 	updates, sortedUpdates, unsortedUpdates [][]int
 }
 
-func sortFunc(rules maps.Map[Rule, bool]) func(a, b int) int {
+func sortFunc(rules maps2.Map[Rule, bool]) func(a, b int) int {
 	return func(a, b int) int {
 		if rules.Has(Rule{a, b}) {
 			return -1
@@ -36,7 +36,7 @@ func sortFunc(rules maps.Map[Rule, bool]) func(a, b int) int {
 }
 
 func parseInput(input string) Input {
-	rules := maps.New[Rule, bool]()
+	rules := maps2.New[Rule, bool]()
 	updates := [][]int{}
 	readingRules := true
 	for _, line := range strings.Split(input, "\n") {

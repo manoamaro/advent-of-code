@@ -10,7 +10,7 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/deque"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 )
@@ -85,8 +85,8 @@ func part2(input grid.Grid[byte]) int {
 	pq := queue.NewPriorityQueue[value]()
 	initial := value{start, grid.Right}
 	pq.PushValue(initial, 0)
-	lowestCostToCell := maps.New(maps.NewEntry(initial, 0))
-	backtrack := maps.New[value, set.Set[value]]()
+	lowestCostToCell := maps2.New(maps2.NewEntry(initial, 0))
+	backtrack := maps2.New[value, set.Set[value]]()
 	endStates := set.New[value]()
 
 	bestCost := math.MaxInt

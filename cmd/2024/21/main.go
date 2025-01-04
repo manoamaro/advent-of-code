@@ -51,10 +51,7 @@ func init() {
 func buildPathFromValues(g *graph.Graph[rune, rune], seq []rune) string {
 	sb := strings.Builder{}
 	for c := range collections.SlideSeq(seq, 2) {
-		edges := g.edges[c[0]]
-		edge := collections.FirstFunc(edges, func(e graph.Edge[rune, rune]) bool {
-			return *e.To == c[1]
-		})
+		edge := g.GetEdge(c[0], c[1])
 		if edge != nil {
 			sb.WriteRune(edge.Value)
 		}

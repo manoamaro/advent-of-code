@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 )
 
 func TestSetGet(t *testing.T) {
@@ -21,7 +21,7 @@ func TestSetGet(t *testing.T) {
 		{key: 2, value: 9},
 	}
 
-	m := maps.New[int, int]()
+	m := maps2.New[int, int]()
 	for _, c := range cases {
 		m.Set(c.key, c.value)
 		if v, ok := m.Get(c.key); !ok || v != c.value {

@@ -2,7 +2,7 @@ package main
 
 import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 	"strings"
 )
@@ -38,7 +38,7 @@ func parseInput(input string) in {
 	}
 }
 
-var cache = maps.New[string, bool]()
+var cache = maps2.New[string, bool]()
 
 func isPossible(patterns set.Set[string], design string, maxLenPattern int) bool {
 	if len(design) == 0 {
@@ -57,7 +57,7 @@ func isPossible(patterns set.Set[string], design string, maxLenPattern int) bool
 	return false
 }
 
-var cacheCount = maps.New[string, int]()
+var cacheCount = maps2.New[string, int]()
 
 func countPossibilities(patterns set.Set[string], design string, maxLenPattern int) int {
 	if len(design) == 0 {

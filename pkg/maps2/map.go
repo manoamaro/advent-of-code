@@ -1,4 +1,4 @@
-package maps
+package maps2
 
 import "maps"
 

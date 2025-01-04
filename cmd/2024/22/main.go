@@ -2,7 +2,7 @@ package main
 
 import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 	"slices"
 )
@@ -34,7 +34,7 @@ func part1(input []int) int {
 }
 
 func part2(input []int) int {
-	pricesDiffTotal := maps.New[[4]int, int]()
+	pricesDiffTotal := maps2.New[[4]int, int]()
 	for _, secret := range input {
 		prices := make([]int, 2000)
 		prices[0] = secret % 10

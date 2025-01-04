@@ -4,7 +4,7 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/fn"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
-	"manoamaro.github.com/advent-of-code/pkg/maps"
+	"manoamaro.github.com/advent-of-code/pkg/maps2"
 	"manoamaro.github.com/advent-of-code/pkg/math2"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
@@ -55,7 +55,7 @@ func part1(input grid.Grid[rune]) int {
 func part2(input grid.Grid[rune]) int {
 	start := *input.FindFunc(fn.Eq('S'))
 	end := *input.FindFunc(fn.Eq('E'))
-	path := maps.New[grid.Cell, int]()
+	path := maps2.New[grid.Cell, int]()
 	path.Set(start, 0)
 	pos := start
 	for pos != end {
