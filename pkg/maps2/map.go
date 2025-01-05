@@ -104,3 +104,9 @@ func (m Map[K, V]) Map(fn func(k K, v V) (K, V)) Map[K, V] {
 	}
 	return r
 }
+
+func (m Map[K, V]) Clone() Map[K, V] {
+	return m.Map(func(k K, v V) (K, V) {
+		return k, v
+	})
+}

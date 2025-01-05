@@ -42,6 +42,7 @@ func (d *Challenge[T, R]) setup() {
 	flag.Parse()
 	// Set up logger
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	zerolog.DurationFieldUnit = time.Microsecond
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	if *debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
@@ -81,9 +82,9 @@ func (d *Challenge[T, R]) TestPart1(file string, expected R) {
 	rawInput := errors.Must(os.ReadFile(file))
 	p1 := d.solvePart1(string(rawInput))
 	if p1 != expected {
-		log.Error().Msgf("Expected %v, got %v", expected, p1)
+		log.Error().Any("expected", expected).Any("got", p1).Msg("Test Part 1 failed.")
 	} else {
-		log.Info().Msgf("Test passed")
+		log.Info().Msg("Test Part 1 passed")
 	}
 }
 
@@ -94,16 +95,16 @@ func (d *Challenge[T, R]) TestPart2(file string, expected R) {
 	rawInput := errors.Must(os.ReadFile(file))
 	p2 := d.solvePart2(string(rawInput))
 	if p2 != expected {
-		log.Error().Msgf("Expected %v, got %v", expected, p2)
+		log.Error().Any("expected", expected).Any("got", p2).Msg("Test Part 2 failed.")
 	} else {
-		log.Info().Msgf("Test passed")
+		log.Info().Msg("Test Part2 passed")
 	}
 }
 
 func (d *Challenge[T, R]) processInput(input string) T {
 	startTime := time.Now()
 	in := d.inputProcessor(input)
-	log.Debug().Msgf("Input processing took %v", time.Since(startTime))
+	log.Debug().Dur("took", time.Since(startTime)).Msgf("Finished input")
 	return in
 }
 
@@ -113,8 +114,8 @@ func (d *Challenge[T, R]) solvePart1(rawInput string) R {
 		input := d.processInput(rawInput)
 		startTime := time.Now()
 		r = d.part1Solver(input)
-		log.Debug().Msgf("Part 1 took %v", time.Since(startTime))
-		log.Info().Msgf("%d %d Part 1: %v", d.year, d.day, r)
+		log.Debug().Dur("took", time.Since(startTime)).Msgf("Part 1")
+		log.Info().Int("year", d.year).Int("day", d.day).Any("result", r).Msg("Part 1")
 	}
 	return r
 }
@@ -125,8 +126,8 @@ func (d *Challenge[T, R]) solvePart2(rawInput string) R {
 		input := d.processInput(rawInput)
 		startTime := time.Now()
 		r = d.part2Solver(input)
-		log.Debug().Msgf("Part 2 took %v", time.Since(startTime))
-		log.Info().Msgf("%d %d Part 2: %v", d.year, d.day, r)
+		log.Debug().Dur("took", time.Since(startTime)).Msg("Part 2")
+		log.Info().Int("year", d.year).Int("day", d.day).Any("result", r).Msg("Part 2")
 	}
 	return r
 }

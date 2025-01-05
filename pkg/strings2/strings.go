@@ -32,7 +32,7 @@ func Atoi[T math2.Number](str string) T {
 	var zero T
 	str = strings.TrimSpace(str)
 	switch any(zero).(type) {
-	case int:
+	case int, int8, int16, int32, byte:
 		num, _ := strconv.Atoi(str)
 		return T(num)
 	case int64:
