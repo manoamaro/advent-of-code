@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"strings"
+	"testing"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -39,6 +40,9 @@ func (d *Challenge[T, R]) setup() {
 	debug := flag.Bool("debug", false, "sets log level to debug")
 	part := flag.Int("p", 0, "runs only the specified part")
 	runTests := flag.Bool("test", false, "runs tests")
+	// testing.Init registers the flags used by the testing package so
+	// that calling flag.Parse() doesn't error when running `go test`.
+	testing.Init()
 	flag.Parse()
 	// Set up logger
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
