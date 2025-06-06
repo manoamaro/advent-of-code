@@ -10,7 +10,7 @@ type Grid[T comparable] [][]T
 
 func New[T comparable](rows, cols int) Grid[T] {
 	grid := make([][]T, rows)
-	for i := range rows {
+	for i := 0; i < rows; i++ {
 		grid[i] = make([]T, cols)
 	}
 	return grid
