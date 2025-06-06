@@ -35,27 +35,26 @@ func New[T any, R comparable](year, day int, inputProcessor InputProcessor[T], p
 }
 
 func (d *Challenge[T, R]) setup() {
-	// Parse args flags
-	debug := flag.Bool("debug", false, "sets log level to debug")
-	part := flag.Int("p", 0, "runs only the specified part")
-	runTests := flag.Bool("test", false, "runs tests")
-	flag.Parse()
-	// Set up logger
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	zerolog.DurationFieldUnit = time.Microsecond
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-	if *debug {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	}
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-	d.debug = *debug
-	d.runPart = *part
-	d.runTests = *runTests
-	// input file if provided
-	d.inputFile = flag.Arg(0)
+	// register flags
+	flag.BoolVar(&d.debug, "debug", false, "sets log level to debug")
+	flag.IntVar(&d.runPart, "p", 0, "runs only the specified part")
+	flag.BoolVar(&d.runTests, "test", false, "runs tests")
 }
 
 func (d *Challenge[T, R]) Run() {
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+	// Set up logger after parsing flags
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	zerolog.DurationFieldUnit = time.Microsecond
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	if d.debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	}
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	d.inputFile = flag.Arg(0)
+
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error().Msgf("Recovered from panic: %v", r)

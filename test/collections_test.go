@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"slices"
 	"testing"
 
@@ -27,7 +26,6 @@ func TestDiff(t *testing.T) {
 
 	for _, c := range cases {
 		got := collections.Diff(c.a, c.b)
-		fmt.Println(got)
 		slices.Sort(got)
 		slices.Sort(c.want)
 		if slices.Compare(got, c.want) != 0 {
@@ -77,6 +75,10 @@ func TestCombinations(t *testing.T) {
 
 	for _, c := range cases {
 		got := collections.Combinations(c.input, c.size)
+		if len(got) != len(c.expected) {
+			t.Errorf("Combinations(%v, %v) produced %d results, want %d", c.input, c.size, len(got), len(c.expected))
+			continue
+		}
 		for i, g := range got {
 			if slices.Compare(g, c.expected[i]) != 0 {
 				t.Errorf("Combinations(%v, %v) == %v, want %v", c.input, c.size, got, c.expected)
