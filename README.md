@@ -39,18 +39,22 @@ This repository contains my solutions to the [Advent of Code](https://adventofco
 
 ## Usage
 
-### Running the Solutions
+### Running a Solution
 
-To run the solutions for a specific year and day, use the following command:
+Each day has its own command under `cmd/<YEAR>/<DAY>`. Run a specific
+solution directly with `go run`:
 
 ```sh
-make run YEAR=2023 DAY=8
+go run ./cmd/2023/08
 ```
 
 ### Running All Solutions
 
-To run all solutions, use the following command:
+To execute every solution for a given year, iterate over the directories in
+`cmd/<YEAR>`:
 
 ```sh
-make run-all
+for dir in cmd/2023/*; do
+    go run "./$dir"
+done
 ```
