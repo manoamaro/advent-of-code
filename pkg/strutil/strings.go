@@ -1,11 +1,11 @@
-package strings2
+package strutil
 
 import (
 	"strconv"
 	"strings"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 func ReverseString(s string) string {
@@ -17,18 +17,18 @@ func ReverseString(s string) string {
 }
 
 func MapToInt(in []string) []int {
-	return collections.MapNotError(in, func(s string) (int, error) {
+	return sliceutil.MapNotError(in, func(s string) (int, error) {
 		return strconv.Atoi(strings.TrimSpace(s))
 	})
 }
 
 func MapCharsToInts(in []rune) []int {
-	return collections.MapNotError(in, func(r rune) (int, error) {
+	return sliceutil.MapNotError(in, func(r rune) (int, error) {
 		return int(r - '0'), nil
 	})
 }
 
-func Atoi[T math2.Number](str string) T {
+func Atoi[T mathx.Number](str string) T {
 	var zero T
 	str = strings.TrimSpace(str)
 	switch any(zero).(type) {

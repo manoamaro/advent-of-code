@@ -1,4 +1,4 @@
-package math2
+package mathx
 
 import (
 	"math"

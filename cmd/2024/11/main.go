@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2024, 11, parseInput, part1, part2)
@@ -16,7 +16,7 @@ func main() {
 
 func parseInput(input string) []int {
 	input = strings.TrimSpace(input)
-	return strings2.MapToInt(strings.Fields(input))
+	return strutil.MapToInt(strings.Fields(input))
 }
 
 func part1(input []int) int {
@@ -27,7 +27,7 @@ func part1(input []int) int {
 			case input[j] == 0:
 				newInput = append(newInput, 1)
 			case numDigits(input[j])%2 == 0:
-				p := math2.Power(10, numDigits(input[j])/2)
+				p := mathx.Power(10, numDigits(input[j])/2)
 				newInput = append(newInput, input[j]/p)
 				newInput = append(newInput, input[j]%p)
 			default:
@@ -51,7 +51,7 @@ func part2(input []int) int {
 			case i == 0:
 				newCount[1] += c
 			case numDigits(i)%2 == 0:
-				p := math2.Power(10, numDigits(i)/2)
+				p := mathx.Power(10, numDigits(i)/2)
 				l, r := i/p, i%p
 				newCount[l] += c
 				newCount[r] += c
@@ -72,5 +72,5 @@ func numDigits(n int) int {
 	if n == 0 {
 		return 1
 	}
-	return math2.Floor(math2.Log10(math2.Abs(n))) + 1
+	return mathx.Floor(mathx.Log10(mathx.Abs(n))) + 1
 }

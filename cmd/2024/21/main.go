@@ -7,9 +7,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/graph"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2024, 21, aoc.StringProcessor, part1, part2)
@@ -50,7 +50,7 @@ func init() {
 
 func buildPathFromValues(g *graph.Graph[rune, rune], seq []rune) string {
 	sb := strings.Builder{}
-	for c := range collections.SlideSeq(seq, 2) {
+	for c := range sliceutil.SlideSeq(seq, 2) {
 		edge := g.GetEdge(c[0], c[1])
 		if edge != nil {
 			sb.WriteRune(edge.Value)
@@ -61,14 +61,14 @@ func buildPathFromValues(g *graph.Graph[rune, rune], seq []rune) string {
 
 func findAllPaths(g *graph.Graph[rune, rune], seq string) []string {
 	possibilities := make([]string, 0)
-	for c := range collections.SlideSeq([]rune(seq), 2) {
+	for c := range sliceutil.SlideSeq([]rune(seq), 2) {
 		paths := g.FindShortestPathsBetween(c[0], c[1])
 		var p []string
 		for _, path := range paths {
 			dirs := buildPathFromValues(g, path) + "A"
 			p = append(p, dirs)
 		}
-		possibilities = collections.ProductFunc(possibilities, p, func(a, b string) string {
+		possibilities = sliceutil.ProductFunc(possibilities, p, func(a, b string) string {
 			return a + b
 		})
 	}
@@ -78,7 +78,7 @@ func findAllPaths(g *graph.Graph[rune, rune], seq string) []string {
 func part1(input string) int {
 	sum := 0
 	for _, code := range strings.Split(input, "\n") {
-		numCode := strings2.Atoi[int](code[0:3])
+		numCode := strutil.Atoi[int](code[0:3])
 		robot1 := findAllPaths(numKeypad, "A"+code)
 		minLen := math.MaxInt
 		for _, nextRobot := range robot1 {
@@ -93,7 +93,7 @@ func part1(input string) int {
 func part2(input string) int {
 	sum := 0
 	for _, code := range strings.Split(input, "\n") {
-		numCode := strings2.Atoi[int](code[0:3])
+		numCode := strutil.Atoi[int](code[0:3])
 		robot1 := findAllPaths(numKeypad, "A"+code)
 		minLen := math.MaxInt
 		for _, nextRobot := range robot1 {
@@ -118,7 +118,7 @@ func solve(g *graph.Graph[rune, rune], seq string, depth int) int {
 		return v
 	}
 	total := 0
-	for c := range collections.SlideSeq([]rune("A"+seq), 2) {
+	for c := range sliceutil.SlideSeq([]rune("A"+seq), 2) {
 		paths := g.FindShortestPathsBetween(c[0], c[1])
 		minLength := math.MaxInt
 		for _, path := range paths {

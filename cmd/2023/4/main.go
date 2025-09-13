@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 4, aoc.LinesProcessor(), part1, part2)
@@ -24,8 +24,8 @@ func part1(input []string) int {
 			continue
 		}
 		parts := strings.Split(strings.Split(line, ":")[1], "|")
-		winingNumbers := strings2.MapToInt(strings.Split(parts[0], " "))
-		playedNumbers := strings2.MapToInt(strings.Split(parts[1], " "))
+		winingNumbers := strutil.MapToInt(strings.Split(parts[0], " "))
+		playedNumbers := strutil.MapToInt(strings.Split(parts[1], " "))
 		matched := checkNumbers(winingNumbers, playedNumbers)
 		value := math.Floor(math.Pow(2, float64(len(matched)-1)))
 		sum += int(value)
@@ -42,8 +42,8 @@ func part2(input []string) int {
 		}
 		cardId, _ := strconv.Atoi(cardRgx.FindStringSubmatch(line)[1])
 		parts := strings.Split(strings.Split(line, ":")[1], "|")
-		winingNumbers := strings2.MapToInt(strings.Split(parts[0], " "))
-		playedNumbers := strings2.MapToInt(strings.Split(parts[1], " "))
+		winingNumbers := strutil.MapToInt(strings.Split(parts[0], " "))
+		playedNumbers := strutil.MapToInt(strings.Split(parts[1], " "))
 		newCard := Card{cardId, winingNumbers, playedNumbers}
 		cardsStack = append(cardsStack, []Card{newCard})
 	}

@@ -1,10 +1,10 @@
-package collections
+package sliceutil
 
 import (
 	"iter"
 	"slices"
 
-	m "manoamaro.github.com/advent-of-code/pkg/math2"
+	m "manoamaro.github.com/advent-of-code/pkg/mathx"
 )
 
 // SortFunc defines a function type for sorting elements of type T.

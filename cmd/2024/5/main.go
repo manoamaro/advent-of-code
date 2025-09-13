@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var day = aoc.New(2024, 5, parseInput, solvePt1, solvePt2)
@@ -20,11 +20,11 @@ type Rule struct {
 }
 
 type Input struct {
-	rules                                   maps2.Map[Rule, bool]
+	rules                                   mapx.Map[Rule, bool]
 	updates, sortedUpdates, unsortedUpdates [][]int
 }
 
-func sortFunc(rules maps2.Map[Rule, bool]) func(a, b int) int {
+func sortFunc(rules mapx.Map[Rule, bool]) func(a, b int) int {
 	return func(a, b int) int {
 		if rules.Has(Rule{a, b}) {
 			return -1
@@ -36,7 +36,7 @@ func sortFunc(rules maps2.Map[Rule, bool]) func(a, b int) int {
 }
 
 func parseInput(input string) Input {
-	rules := maps2.New[Rule, bool]()
+	rules := mapx.New[Rule, bool]()
 	updates := [][]int{}
 	readingRules := true
 	for _, line := range strings.Split(input, "\n") {
@@ -45,11 +45,11 @@ func parseInput(input string) Input {
 			continue
 		}
 		if readingRules {
-			r := strings2.MapToInt(strings.Split(line, "|"))
+			r := strutil.MapToInt(strings.Split(line, "|"))
 			rk := Rule{r[0], r[1]}
 			rules.Set(rk, true)
 		} else {
-			updates = append(updates, strings2.MapToInt(strings.Split(line, ",")))
+			updates = append(updates, strutil.MapToInt(strings.Split(line, ",")))
 		}
 	}
 	sortedUpdates := make([][]int, len(updates))

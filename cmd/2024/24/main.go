@@ -8,9 +8,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 func main() {
@@ -20,19 +20,19 @@ func main() {
 }
 
 type i struct {
-	wires maps2.Map[string, int]
-	ops   maps2.Map[string, [3]string] // left, op, right
+	wires mapx.Map[string, int]
+	ops   mapx.Map[string, [3]string] // left, op, right
 }
 
 func parseInput(input string) *i {
 	parts := strings.Split(input, "\n\n")
-	wires := maps2.New[string, int]()
+	wires := mapx.New[string, int]()
 	for _, line := range strings.Split(parts[0], "\n") {
 		wv := strings.Split(line, ": ")
-		wires.Set(wv[0], strings2.Atoi[int](wv[1]))
+		wires.Set(wv[0], strutil.Atoi[int](wv[1]))
 	}
 
-	ops := maps2.New[string, [3]string]()
+	ops := mapx.New[string, [3]string]()
 	opsReg := regexp.MustCompile(`^(.{3})\s(AND|OR|XOR)\s(.{3})\s->\s(.{3})$`)
 	for _, line := range strings.Split(parts[1], "\n") {
 		opsParts := opsReg.FindStringSubmatch(line)
@@ -64,14 +64,14 @@ func calculateWire(input *i, wire string) int {
 }
 
 func calculateWires(input *i, wires []string) int {
-	return collections.Fold(wires, 0, func(acc int, e string) int {
+	return sliceutil.Fold(wires, 0, func(acc int, e string) int {
 		return acc<<1 | calculateWire(input, e)
 	})
 }
 
 func part1(input *i) string {
-	zWires := collections.FilterFunc(input.ops.Keys(), func(s string) bool { return strings.HasPrefix(s, "z") })
-	slices.SortFunc(zWires, func(a, b string) int { return strings2.Atoi[int](b[1:]) - strings2.Atoi[int](a[1:]) })
+	zWires := sliceutil.FilterFunc(input.ops.Keys(), func(s string) bool { return strings.HasPrefix(s, "z") })
+	slices.SortFunc(zWires, func(a, b string) int { return strutil.Atoi[int](b[1:]) - strutil.Atoi[int](a[1:]) })
 	result := calculateWires(input, zWires)
 	return fmt.Sprintf("%d", result)
 }
@@ -105,8 +105,8 @@ func part2(input *i) string {
 }
 
 func findFirstInvalid(input *i) int {
-	zWires := collections.FilterFunc(input.ops.Keys(), func(s string) bool { return strings.HasPrefix(s, "z") })
-	slices.SortFunc(zWires, func(a, b string) int { return strings2.Atoi[int](a[1:]) - strings2.Atoi[int](b[1:]) })
+	zWires := sliceutil.FilterFunc(input.ops.Keys(), func(s string) bool { return strings.HasPrefix(s, "z") })
+	slices.SortFunc(zWires, func(a, b string) int { return strutil.Atoi[int](a[1:]) - strutil.Atoi[int](b[1:]) })
 	for i, wire := range zWires {
 		if !verify(input, wire, i) {
 			return i

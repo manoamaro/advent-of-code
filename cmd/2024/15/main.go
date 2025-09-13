@@ -6,10 +6,10 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 type input struct {
@@ -91,7 +91,7 @@ func part1(in input) int {
 		p(warehouse)
 	}
 	boxes := warehouse.FindAll('O')
-	return collections.Fold(boxes, 0, func(acc int, box grid.Cell) int {
+	return sliceutil.Fold(boxes, 0, func(acc int, box grid.Cell) int {
 		return acc + (box[0] * 100) + box[1]
 	})
 }
@@ -177,7 +177,7 @@ func part2(in input) int {
 
 	p(warehouse)
 	boxes := warehouse.FindAll('[')
-	return collections.Fold(boxes, 0, func(acc int, box grid.Cell) int {
+	return sliceutil.Fold(boxes, 0, func(acc int, box grid.Cell) int {
 		return acc + (box[0] * 100) + box[1]
 	})
 }

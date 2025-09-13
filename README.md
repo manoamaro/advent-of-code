@@ -21,8 +21,14 @@ This repository contains my solutions to the [Advent of Code](https://adventofco
 
 ### Prerequisites
 
-- Go 1.23 or later
+- Go 1.25 or later
 - Make
+
+Note on Go toolchain
+
+- The repo pins `toolchain go1.25.0` in `go.mod`. If prompted, install it with:
+  `go toolchain install go1.25.0`
+- Alternatively ensure a Go 1.25 binary is on PATH (e.g., macOS: `brew install go@1.25 && brew link --overwrite go@1.25`).
 
 ### Installation
 

@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 type INPUT struct {
@@ -27,8 +27,8 @@ func parseInput(input string) INPUT {
 	lines := strings.Split(input, "\n")
 	for _, line := range lines {
 		fields := strings.Fields(line)
-		left = append(left, strings2.Atoi[int](fields[0]))
-		right = append(right, strings2.Atoi[int](fields[1]))
+		left = append(left, strutil.Atoi[int](fields[0]))
+		right = append(right, strutil.Atoi[int](fields[1]))
 	}
 	return INPUT{left, right}
 }
@@ -38,7 +38,7 @@ func part1(input INPUT) OUTPUT {
 	sort.Ints(input.right)
 	sumDist := 0
 	for i := 0; i < len(input.left); i++ {
-		sumDist += math2.Abs(input.left[i] - input.right[i])
+		sumDist += mathx.Abs(input.left[i] - input.right[i])
 	}
 	return OUTPUT(sumDist)
 }

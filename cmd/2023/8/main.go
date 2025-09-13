@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
 )
 
 var challenge = aoc.New(2023, 8, parseInput, part1, part2)
@@ -72,7 +72,7 @@ func part2(m inputMap) uint64 {
 	steps := uint64(1)
 
 	for _, v := range loopsSize {
-		steps = math2.LCM(steps, v)
+		steps = mathx.LCM(steps, v)
 	}
 
 	return steps

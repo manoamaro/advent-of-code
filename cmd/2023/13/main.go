@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 var challenge = aoc.New(2023, 13, parseInput, part1, part2)
@@ -85,8 +85,8 @@ func findSmudge(pattern []string) (int, int) {
 			p[j] = toggle(p[j])
 			pattern[i] = strings.Join(p, "")
 
-			dv := collections.Diff(v, ovm)
-			dh := collections.Diff(h, ohm)
+			dv := sliceutil.Diff(v, ovm)
+			dh := sliceutil.Diff(h, ohm)
 
 			if len(dv) > 0 {
 				fmt.Println("New V:", v, h, dv)
@@ -139,11 +139,11 @@ func findFold(pattern []string) []int {
 	l := len(pattern)
 	acc := []int{}
 	for i := 1; i < l; i++ {
-		pb := math2.Min(i+i, l)
-		pa := math2.Max(0, i-(pb-i))
+		pb := mathx.Min(i+i, l)
+		pa := mathx.Max(0, i-(pb-i))
 		p1 := pattern[pa:i]
 		p2 := pattern[i:pb]
-		p1 = collections.Reverse(p1)
+		p1 = sliceutil.Reverse(p1)
 		if slices.Compare(p1, p2) == 0 {
 			acc = append(acc, i)
 		}

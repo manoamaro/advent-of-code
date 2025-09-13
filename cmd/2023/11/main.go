@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
 )
 
 var challenge = aoc.New(2023, 11, parseInput, part1, part2)
@@ -24,7 +24,7 @@ func part1(matrix [][]bool) int {
 	sum := 0
 	for i := 0; i < len(galaxies); i++ {
 		for j := i + 1; j < len(galaxies); j++ {
-			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
+			sum += mathx.ManhattanDistance(galaxies[i], galaxies[j])
 		}
 	}
 	return sum
@@ -36,7 +36,7 @@ func part2(matrix [][]bool) int {
 	sum := 0
 	for i := 0; i < len(galaxies); i++ {
 		for j := i + 1; j < len(galaxies); j++ {
-			sum += math2.ManhattanDistance(galaxies[i], galaxies[j])
+			sum += mathx.ManhattanDistance(galaxies[i], galaxies[j])
 		}
 	}
 	return sum

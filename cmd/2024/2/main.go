@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 var challenge = aoc.New(2024, 2, aoc.Ints2dProcessor(strings.Fields), part1, part2)
@@ -33,7 +33,7 @@ func part2(input [][]int) int {
 			continue
 		}
 		for i := 0; i < len(report); i++ {
-			newReport := collections.Delete(report, i)
+			newReport := sliceutil.Delete(report, i)
 			if checkReport(newReport) {
 				valid++
 				break
@@ -44,11 +44,11 @@ func part2(input [][]int) int {
 }
 
 func checkReport(report []int) bool {
-	if !slices.IsSorted(report) && !slices.IsSorted(collections.Reverse(report)) {
+	if !slices.IsSorted(report) && !slices.IsSorted(sliceutil.Reverse(report)) {
 		return false
 	}
-	for s := range collections.SlideSeq(report, 2) {
-		if len(s) == 2 && (math2.Abs(s[0]-s[1]) <= 0 || math2.Abs(s[0]-s[1]) > 3) {
+	for s := range sliceutil.SlideSeq(report, 2) {
+		if len(s) == 2 && (mathx.Abs(s[0]-s[1]) <= 0 || mathx.Abs(s[0]-s[1]) > 3) {
 			return false
 		}
 	}

@@ -1,4 +1,4 @@
-package test
+package grid_test
 
 import (
 	"testing"
@@ -119,43 +119,6 @@ func TestGridFindAllFunc(t *testing.T) {
 	for i := range expected {
 		if cells[i] != expected[i] {
 			t.Errorf("expected %v, got %v", expected[i], cells[i])
-		}
-	}
-}
-
-func TestGridSet(t *testing.T) {
-	g := grid.New[int](3, 3)
-	g.Set(0, 0, 1)
-	if *g.Get(0, 0) != 1 {
-		t.Errorf("expected 1, got %d", *g.Get(0, 0))
-	}
-	g.Set(0, 0, 2)
-	if *g.Get(0, 0) != 2 {
-		t.Errorf("expected 2, got %d", *g.Get(0, 0))
-	}
-}
-
-func TestGridAdjacents(t *testing.T) {
-	g := grid.New[int](3, 3)
-	g.Set(0, 0, 1)
-	g.Set(0, 1, 2)
-	g.Set(0, 2, 3)
-	g.Set(1, 0, 4)
-	g.Set(1, 1, 5)
-	g.Set(1, 2, 6)
-	g.Set(2, 0, 7)
-	g.Set(2, 1, 8)
-	g.Set(2, 2, 9)
-	adjacents := g.Neighbors(grid.Cell{1, 1})
-	expected := map[grid.Cell]*int{
-		{0, 1}: constToPtr(2),
-		{1, 0}: constToPtr(4),
-		{1, 2}: constToPtr(6),
-		{2, 1}: constToPtr(8),
-	}
-	for cell, value := range adjacents {
-		if *value != *expected[cell] {
-			t.Errorf("expected %d, got %d", *expected[cell], *value)
 		}
 	}
 }

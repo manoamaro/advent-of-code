@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2024, 7, parseInput, part1, part2)
@@ -15,8 +15,8 @@ func parseInput(input string) [][]int {
 	o := make([][]int, len(lines))
 	for i, line := range lines {
 		parts := strings.Split(line, ":")
-		v := strings2.Atoi[int](parts[0])
-		v2 := strings2.MapToInt(strings.Fields(parts[1]))
+		v := strutil.Atoi[int](parts[0])
+		v2 := strutil.MapToInt(strings.Fields(parts[1]))
 		eq := make([]int, 1)
 		eq[0] = v
 		eq = append(eq, v2...)
