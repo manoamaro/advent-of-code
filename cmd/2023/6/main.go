@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 6, aoc.LinesProcessor(), part1, part2)
@@ -52,10 +52,10 @@ func part2(input []string) int {
 
 func parseMultiple(input []string) []Race {
 	durationsRaw := strings.Split(strings.Split(input[0], ":")[1], " ")
-	durations := strings2.MapToInt(durationsRaw)
+	durations := strutil.MapToInt(durationsRaw)
 
 	distancesRaw := strings.Split(strings.Split(input[1], ":")[1], " ")
-	distances := strings2.MapToInt(distancesRaw)
+	distances := strutil.MapToInt(distancesRaw)
 
 	races := make([]Race, 0)
 	for i := 0; i < len(durations); i++ {

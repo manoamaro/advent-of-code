@@ -1,11 +1,11 @@
 package aoc
 
 import (
-	"manoamaro.github.com/advent-of-code/pkg/collections"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/grid"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 type Splitter[T comparable] func(string) []T
@@ -23,7 +23,7 @@ func LinesProcessor() InputProcessor[[]string] {
 }
 
 func IntLinesProcessor(input string) []int {
-	return strings2.MapToInt(strings.Split(input, "\n"))
+	return strutil.MapToInt(strings.Split(input, "\n"))
 }
 
 func GridProcessor[T comparable](f func(rune) T) InputProcessor[grid.Grid[T]] {
@@ -31,7 +31,7 @@ func GridProcessor[T comparable](f func(rune) T) InputProcessor[grid.Grid[T]] {
 		lines := strings.Split(input, "\n")
 		var g grid.Grid[T]
 		for _, line := range lines {
-			g = append(g, collections.Map([]rune(line), f))
+			g = append(g, sliceutil.Map([]rune(line), f))
 		}
 		return g
 	}
@@ -64,7 +64,7 @@ func IntGridProcessor(input string) grid.Grid[int] {
 	var grid grid.Grid[int]
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		grid = append(grid, strings2.MapCharsToInts([]rune(line)))
+		grid = append(grid, strutil.MapCharsToInts([]rune(line)))
 	}
 	return grid
 }
@@ -74,7 +74,7 @@ func Ints2dProcessor(splitter Splitter[string]) InputProcessor[[][]int] {
 		lines := strings.Split(input, "\n")
 		var slice [][]int
 		for _, line := range lines {
-			slice = append(slice, strings2.MapToInt(splitter(line)))
+			slice = append(slice, strutil.MapToInt(splitter(line)))
 		}
 		return slice
 	}

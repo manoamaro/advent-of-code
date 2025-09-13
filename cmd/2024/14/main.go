@@ -7,9 +7,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/set"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2024, 14, parseInput, part1, part2)
@@ -31,10 +31,10 @@ func parseInput(input string) []robot {
 	for _, line := range strings.Split(input, "\n") {
 		parts := regex.FindAllStringSubmatch(line, -1)
 		robot := robot{
-			x:  strings2.Atoi[int](parts[0][1]),
-			y:  strings2.Atoi[int](parts[0][2]),
-			vx: strings2.Atoi[int](parts[0][3]),
-			vy: strings2.Atoi[int](parts[0][4]),
+			x:  strutil.Atoi[int](parts[0][1]),
+			y:  strutil.Atoi[int](parts[0][2]),
+			vx: strutil.Atoi[int](parts[0][3]),
+			vy: strutil.Atoi[int](parts[0][4]),
 		}
 		res = append(res, robot)
 	}
@@ -78,7 +78,7 @@ func part2(input []robot) int {
 	seen := set.New[string]()
 	count := 0
 	halfTree := []int{1, 2, 3, 4, 8, 9, 13, 14, 18, 22, 23}
-	treeBranches := collections.Map(halfTree, func(i int) string { return strings.Repeat("#", i) })
+	treeBranches := sliceutil.Map(halfTree, func(i int) string { return strings.Repeat("#", i) })
 
 	for {
 		count++

@@ -1,4 +1,4 @@
-package maps2
+package mapx
 
 import "testing"
 

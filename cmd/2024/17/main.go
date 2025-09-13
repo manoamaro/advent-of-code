@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 func main() {
@@ -23,13 +23,13 @@ var regC = 0
 func parseInput(input string) []int {
 	lines := strings.Split(input, "\n")
 	lines[0] = strings.Split(lines[0], ":")[1]
-	regA = strings2.Atoi[int](lines[0])
+	regA = strutil.Atoi[int](lines[0])
 	lines[1] = strings.Split(lines[1], ":")[1]
-	regB = strings2.Atoi[int](lines[1])
+	regB = strutil.Atoi[int](lines[1])
 	lines[2] = strings.Split(lines[2], ":")[1]
-	regC = strings2.Atoi[int](lines[2])
+	regC = strutil.Atoi[int](lines[2])
 	lines[4] = strings.Split(lines[4], ":")[1]
-	return strings2.MapToInt(strings.Split(lines[4], ","))
+	return strutil.MapToInt(strings.Split(lines[4], ","))
 }
 
 func combo(i, a, b, c int) int {
@@ -81,7 +81,7 @@ func solve(prog []int, rA, rB, rC int) []int {
 
 func part1(prog []int) string {
 	res := solve(prog, regA, regB, regC)
-	out := collections.Map(res, func(i int) string {
+	out := sliceutil.Map(res, func(i int) string {
 		return fmt.Sprintf("%v", i)
 	})
 	return strings.Join(out, ",")

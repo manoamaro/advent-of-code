@@ -4,8 +4,8 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/fn"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 )
@@ -43,7 +43,7 @@ func part1(input grid.Grid[rune]) int {
 				if *input.Get(i+d[0], j+d[1]) == '#' {
 					continue
 				}
-				if math2.Abs(*distances.GetCell(cell)-*distances.GetCell(next)) >= minPicSecSaved+2 {
+				if mathx.Abs(*distances.GetCell(cell)-*distances.GetCell(next)) >= minPicSecSaved+2 {
 					count += 1
 				}
 			}
@@ -55,7 +55,7 @@ func part1(input grid.Grid[rune]) int {
 func part2(input grid.Grid[rune]) int {
 	start := *input.FindFunc(fn.Eq('S'))
 	end := *input.FindFunc(fn.Eq('E'))
-	path := maps2.New[grid.Cell, int]()
+	path := mapx.New[grid.Cell, int]()
 	path.Set(start, 0)
 	pos := start
 	for pos != end {
@@ -82,13 +82,13 @@ func part2(input grid.Grid[rune]) int {
 			if seen.Contains([2]grid.Cell{cell, cell2}) {
 				continue
 			}
-			dist := math2.ManhattanDistance(cell, cell2)
+			dist := mathx.ManhattanDistance(cell, cell2)
 			if dist > 20 {
 				continue
 			}
 			seen.Add([2]grid.Cell{cell, cell2})
 			seen.Add([2]grid.Cell{cell2, cell})
-			if math2.Abs(value-value2) >= minPicSecSaved+dist {
+			if mathx.Abs(value-value2) >= minPicSecSaved+dist {
 				count += 1
 			}
 		}

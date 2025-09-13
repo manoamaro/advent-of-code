@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/math2"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/mathx"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 12, aoc.LinesProcessor(), part1, part2)
@@ -72,7 +72,7 @@ func calculate(input string, groups []int, memo map[string]int) int {
 
 	if input[0] == '#' || input[0] == '?' {
 		if len(input) >= groups[0] && !strings.ContainsRune(input[:groups[0]], '.') && (len(input) == groups[0] || input[groups[0]] != '#') {
-			n := math2.Min(groups[0]+1, len(input))
+			n := mathx.Min(groups[0]+1, len(input))
 			result += calculate(input[n:], groups[1:], memo)
 		}
 	}
@@ -83,6 +83,6 @@ func calculate(input string, groups []int, memo map[string]int) int {
 
 func parseLine(line string) (string, []int) {
 	parts := strings.Split(line, " ")
-	groups := strings2.MapToInt(strings.Split(parts[1], ","))
+	groups := strutil.MapToInt(strings.Split(parts[1], ","))
 	return parts[0], groups
 }

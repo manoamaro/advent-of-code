@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/deque"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 var challenge = aoc.New(2024, 16, parseInput, part1, part2)
@@ -85,8 +85,8 @@ func part2(input grid.Grid[byte]) int {
 	pq := queue.NewPriorityQueue[value]()
 	initial := value{start, grid.Right}
 	pq.PushValue(initial, 0)
-	lowestCostToCell := maps2.New(maps2.NewEntry(initial, 0))
-	backtrack := maps2.New[value, set.Set[value]]()
+	lowestCostToCell := mapx.New(mapx.NewEntry(initial, 0))
+	backtrack := mapx.New[value, set.Set[value]]()
 	endStates := set.New[value]()
 
 	bestCost := math.MaxInt
@@ -146,7 +146,7 @@ func part2(input grid.Grid[byte]) int {
 			q.PushBack(last)
 		}
 	}
-	seenCells := collections.Map(seen.Slice(), func(v value) grid.Cell {
+	seenCells := sliceutil.Map(seen.Slice(), func(v value) grid.Cell {
 		return v.pos
 	})
 	s := set.New(seenCells...)

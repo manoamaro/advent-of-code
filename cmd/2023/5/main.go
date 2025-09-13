@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 5, aoc.LinesProcessor(), part1, part2)
@@ -140,7 +140,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		if strings.Contains(line, "seeds:") {
-			seeds := strings2.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
+			seeds := strutil.MapToInt(strings.Split(strings.Split(line, ":")[1], " "))
 			almanac.Seeds = seeds
 		} else if strings.Contains(line, "seed-to-soil map:") {
 			parsingStep = "seed-to-soil"
@@ -165,7 +165,7 @@ func parse(input []string) Almanac {
 			continue
 		}
 		lineSplit := strings.Split(line, " ")
-		values := strings2.MapToInt(lineSplit)
+		values := strutil.MapToInt(lineSplit)
 		if parsingStep == "seed-to-soil" {
 			almanac.SeedToSoil = append(almanac.SeedToSoil, MapRange{values[0], values[1], values[2]})
 		} else if parsingStep == "soil-to-fertilizer" {

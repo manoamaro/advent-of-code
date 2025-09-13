@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 type machine struct {
@@ -32,9 +32,9 @@ func parseInput(input string) []machine {
 		btnB := btnRegexp.FindStringSubmatch(lines[1])
 		prize := priceRegexp.FindStringSubmatch(lines[2])
 		m := machine{
-			a:     []int{strings2.Atoi[int](btnA[1]), strings2.Atoi[int](btnA[2])},
-			b:     []int{strings2.Atoi[int](btnB[1]), strings2.Atoi[int](btnB[2])},
-			prize: []int{strings2.Atoi[int](prize[1]), strings2.Atoi[int](prize[2])},
+			a:     []int{strutil.Atoi[int](btnA[1]), strutil.Atoi[int](btnA[2])},
+			b:     []int{strutil.Atoi[int](btnB[1]), strutil.Atoi[int](btnB[2])},
+			prize: []int{strutil.Atoi[int](prize[1]), strutil.Atoi[int](prize[2])},
 		}
 		res = append(res, m)
 	}

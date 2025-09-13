@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"manoamaro.github.com/advent-of-code/pkg/collections"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 type Edge[T comparable, V any] struct {
@@ -51,10 +51,10 @@ func (g *Graph[T, V]) HasEdge(a, b T) bool {
 	return false
 }
 
-func (g *Graph[T, V]) Edges() maps2.Map[T, []T] {
-	edges := maps2.New[T, []T]()
+func (g *Graph[T, V]) Edges() mapx.Map[T, []T] {
+	edges := mapx.New[T, []T]()
 	for k, v := range g.edges {
-		neighbors := collections.Map(v, func(e Edge[T, V]) T { return *e.To })
+		neighbors := sliceutil.Map(v, func(e Edge[T, V]) T { return *e.To })
 		edges.Set(k, neighbors)
 	}
 	return edges

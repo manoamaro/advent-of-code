@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 1, aoc.LinesProcessor(), part1, part2)
@@ -33,7 +33,7 @@ func part2(input []string) int {
 	sum := 0
 	for _, line := range input {
 		firstDigit := parseNameToDigit(reg.FindString(line))
-		lastDigit := parseNameToDigit(regRev.FindString(strings2.ReverseString(line)))
+		lastDigit := parseNameToDigit(regRev.FindString(strutil.ReverseString(line)))
 		numberStr := fmt.Sprintf("%d%d", firstDigit, lastDigit)
 		number, err := strconv.Atoi(numberStr)
 		if err != nil {
@@ -48,39 +48,39 @@ func parseNameToDigit(name string) int {
 	switch name {
 	case "one":
 		return 1
-	case strings2.ReverseString("one"):
+	case strutil.ReverseString("one"):
 		return 1
 	case "two":
 		return 2
-	case strings2.ReverseString("two"):
+	case strutil.ReverseString("two"):
 		return 2
 	case "three":
 		return 3
-	case strings2.ReverseString("three"):
+	case strutil.ReverseString("three"):
 		return 3
 	case "four":
 		return 4
-	case strings2.ReverseString("four"):
+	case strutil.ReverseString("four"):
 		return 4
 	case "five":
 		return 5
-	case strings2.ReverseString("five"):
+	case strutil.ReverseString("five"):
 		return 5
 	case "six":
 		return 6
-	case strings2.ReverseString("six"):
+	case strutil.ReverseString("six"):
 		return 6
 	case "seven":
 		return 7
-	case strings2.ReverseString("seven"):
+	case strutil.ReverseString("seven"):
 		return 7
 	case "eight":
 		return 8
-	case strings2.ReverseString("eight"):
+	case strutil.ReverseString("eight"):
 		return 8
 	case "nine":
 		return 9
-	case strings2.ReverseString("nine"):
+	case strutil.ReverseString("nine"):
 		return 9
 	}
 	n, err := strconv.Atoi(name)

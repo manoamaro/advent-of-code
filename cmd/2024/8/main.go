@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/rs/zerolog/log"
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/maps2"
+	"manoamaro.github.com/advent-of-code/pkg/mapx"
 )
 
 var challenge = aoc.New(2024, 8, aoc.GridStringProcessor(), part1, part2)
@@ -13,7 +13,7 @@ func main() {
 }
 
 func part1(input [][]string) int {
-	antennas := maps2.New[string, [][2]int]()
+	antennas := mapx.New[string, [][2]int]()
 	for r, row := range input {
 		for c, cell := range row {
 			if cell != "." {
@@ -22,7 +22,7 @@ func part1(input [][]string) int {
 		}
 	}
 
-	antinodes := maps2.New[[2]int, bool]()
+	antinodes := mapx.New[[2]int, bool]()
 	for _, coords := range antennas {
 		// Combinations
 		for i := range coords {
@@ -48,8 +48,8 @@ func part1(input [][]string) int {
 }
 
 func part2(input [][]string) int {
-	antennas := maps2.New[string, [][2]int]()
-	antinodes := maps2.New[[2]int, bool]()
+	antennas := mapx.New[string, [][2]int]()
+	antinodes := mapx.New[[2]int, bool]()
 	for r, row := range input {
 		for c, cell := range row {
 			if cell != "." {
@@ -90,7 +90,7 @@ func part2(input [][]string) int {
 	return count
 }
 
-func p(input [][]string, antinodes maps2.Map[[2]int, bool]) {
+func p(input [][]string, antinodes mapx.Map[[2]int, bool]) {
 	for r, row := range input {
 		s := ""
 		for c, cell := range row {

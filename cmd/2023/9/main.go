@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var challenge = aoc.New(2023, 9, aoc.LinesProcessor(), part1, part2)
@@ -19,7 +19,7 @@ func part1(input []string) int {
 		if line == "" {
 			continue
 		}
-		i := strings2.MapToInt(strings.Split(line, " "))
+		i := strutil.MapToInt(strings.Split(line, " "))
 		reduced := reduceToZeros(i)
 		extrapolated := extrapolateRight(reduced)
 		sum += extrapolated[0][len(extrapolated[0])-1]
@@ -33,7 +33,7 @@ func part2(input []string) int {
 		if line == "" {
 			continue
 		}
-		i := strings2.MapToInt(strings.Split(line, " "))
+		i := strutil.MapToInt(strings.Split(line, " "))
 		reduced := reduceToZeros(i)
 		extrapolated := extrapolateLeft(reduced)
 		sum += extrapolated[0][0]

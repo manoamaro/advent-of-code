@@ -7,7 +7,7 @@ import (
 	"manoamaro.github.com/advent-of-code/pkg/grid"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
-	"manoamaro.github.com/advent-of-code/pkg/strings2"
+	"manoamaro.github.com/advent-of-code/pkg/strutil"
 )
 
 var size = 6
@@ -26,7 +26,7 @@ func fallBytes(input []string, amount int) grid.Grid[bool] {
 	g := grid.New[bool](size+1, size+1)
 	for _, line := range input[:amount] {
 		coords := strings.Split(line, ",")
-		x, y := strings2.Atoi[int](coords[0]), strings2.Atoi[int](coords[1])
+		x, y := strutil.Atoi[int](coords[0]), strutil.Atoi[int](coords[1])
 		g.Set(y, x, true)
 	}
 	return g
@@ -82,5 +82,5 @@ func part2(input []string) [2]int {
 			hi = mid
 		}
 	}
-	return [2]int(strings2.MapToInt(strings.Split(input[lo], ",")))
+	return [2]int(strutil.MapToInt(strings.Split(input[lo], ",")))
 }

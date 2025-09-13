@@ -2,10 +2,10 @@ package main
 
 import (
 	"manoamaro.github.com/advent-of-code/pkg/aoc"
-	"manoamaro.github.com/advent-of-code/pkg/collections"
 	"manoamaro.github.com/advent-of-code/pkg/grid"
 	"manoamaro.github.com/advent-of-code/pkg/queue"
 	"manoamaro.github.com/advent-of-code/pkg/set"
+	"manoamaro.github.com/advent-of-code/pkg/sliceutil"
 )
 
 var challenge = aoc.New(2024, 12, aoc.RuneGridProcessor, part1, part2)
@@ -31,7 +31,7 @@ func part1(input grid.Grid[rune]) int {
 		perimeter *= len(field)
 		perimeters = append(perimeters, perimeter)
 	}
-	return collections.Sum(perimeters)
+	return sliceutil.Sum(perimeters)
 }
 
 func part2(input grid.Grid[rune]) int {
