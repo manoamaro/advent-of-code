@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -21,18 +22,17 @@ type Challenge[T any, R comparable] struct {
 	inputFile                string
 	debug, runTests          bool
 	runPart                  int
+	setupOnce                sync.Once
 }
 
 func New[T any, R comparable](year, day int, inputProcessor InputProcessor[T], part1Solver Solver[T, R], part2Solver Solver[T, R]) *Challenge[T, R] {
-	challenge := &Challenge[T, R]{
+	return &Challenge[T, R]{
 		year:           year,
 		day:            day,
 		inputProcessor: inputProcessor,
 		part1Solver:    part1Solver,
 		part2Solver:    part2Solver,
 	}
-	challenge.setup()
-	return challenge
 }
 
 func (d *Challenge[T, R]) setup() {
@@ -59,7 +59,12 @@ func (d *Challenge[T, R]) setup() {
 	d.inputFile = flag.Arg(0)
 }
 
+func (d *Challenge[T, R]) ensureSetup() {
+	d.setupOnce.Do(d.setup)
+}
+
 func (d *Challenge[T, R]) Run() {
+	d.ensureSetup()
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error().Msgf("Recovered from panic: %v", r)
@@ -80,6 +85,7 @@ func (d *Challenge[T, R]) Run() {
 }
 
 func (d *Challenge[T, R]) TestPart1(file string, expected R) {
+	d.ensureSetup()
 	if !d.runTests {
 		return
 	}
@@ -93,6 +99,7 @@ func (d *Challenge[T, R]) TestPart1(file string, expected R) {
 }
 
 func (d *Challenge[T, R]) TestPart2(file string, expected R) {
+	d.ensureSetup()
 	if !d.runTests {
 		return
 	}
