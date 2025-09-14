@@ -38,6 +38,16 @@
 - Commits: short, imperative subject. Examples: `fix: flag parsing in aoc challenge`, `2024: day 24 final`.
 - PRs: include a clear description, scope (year/day or package), any linked issues, and notes on performance or complexity when relevant. Ensure `go fmt`, `go vet`, and `go test ./...` pass.
 
+## Branching Policy & Protected `main`
+- `main` is protected. Do not push directly to `main`.
+- Always create a feature branch for changes (e.g., `feat/...`, `fix/...`, `refactor/...`, `chore/...`).
+- Open a Pull Request targeting `main`. CI must pass before merge.
+- Example workflow:
+  - `git checkout -b feat/2024-05-optimizations`
+  - make changes; run `make fmt vet test`
+  - `git push -u origin feat/2024-05-optimizations`
+  - Open PR; merge after review/CI.
+
 ## Security & Configuration
 - Inputs may be fetched online using `AOC_SESSION` from `.env`. Copy `.env.example` to `.env` and set `AOC_SESSION=<your_session_cookie>`.
 - Do not commit `.env` or `.cache/` (ignored by `.gitignore`).
