@@ -45,6 +45,25 @@ Note on Go toolchain
 
 ## Usage
 
+### Meta-Runner (recommended)
+
+Run any day with a single command. Days are zero-padded (e.g., `05`).
+
+```sh
+go run ./cmd/aoc -y 2024 -d 05              # run both parts
+go run ./cmd/aoc -y 2024 -d 05 -p 1 --debug # only part 1, with debug logs
+go run ./cmd/aoc -y 2024 -d 05 --input path/to/input.txt
+```
+
+Using Make:
+
+```sh
+make run y=2024 d=05            # run both parts
+make run y=2024 d=05 p=2        # only part 2
+make run y=2024 d=05 debug=1    # enable debug logs
+make run y=2024 d=05 test=1     # enable embedded sample tests
+```
+
 ### Running a Solution
 
 Each day has its own command under `cmd/<YEAR>/<DAY>` (day zero‑padded, e.g., `05`). Run a specific
