@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"manoamaro.github.com/advent-of-code/pkg/aoc"
+    "manoamaro.github.com/advent-of-code/internal/aoc"
 	"manoamaro.github.com/advent-of-code/pkg/set"
 )
 

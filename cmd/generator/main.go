@@ -45,7 +45,7 @@ func generate(year, day int) {
 		Day:  day,
 	}
 
-	folderPath := fmt.Sprintf("cmd/%d/%d", data.Year, data.Day)
+    folderPath := fmt.Sprintf("cmd/%d/%02d", data.Year, data.Day)
 	_, err := os.Stat(folderPath)
 	if !os.IsNotExist(err) {
 		fmt.Println("Folder already exists", folderPath)
