@@ -47,7 +47,7 @@ Note on Go toolchain
 
 ### Running a Solution
 
-Each day has its own command under `cmd/<YEAR>/<DAY>`. Run a specific
+Each day has its own command under `cmd/<YEAR>/<DAY>` (day zero‑padded, e.g., `05`). Run a specific
 solution directly with `go run`:
 
 ```sh
