@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go 1.25
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+          cache: true
+
+      - name: Go version
+        run: go version
+
+      - name: Download deps
+        run: go mod download
+
+      - name: Vet
+        run: |
+          if command -v make >/dev/null 2>&1; then
+            make vet
+          else
+            go vet ./...
+          fi
+
+      - name: Test
+        run: |
+          if command -v make >/dev/null 2>&1; then
+            make test
+          else
+            go test ./...
+          fi
+
+      - name: Build meta-runner
+        run: go build ./cmd/aoc
+
